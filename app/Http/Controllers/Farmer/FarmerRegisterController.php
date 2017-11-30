@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Farmer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class FarmerRegisterController extends Controller
-{
+class FarmerRegisterController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
-        return view('farmer.registration');
+        $districts = \App\District::pluck('district_name', 'id')->toArray();
+        return view('farmer.registration', compact('districts'));
     }
 
     /**
@@ -23,8 +23,7 @@ class FarmerRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -34,8 +33,7 @@ class FarmerRegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -45,8 +43,7 @@ class FarmerRegisterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -56,8 +53,7 @@ class FarmerRegisterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -68,8 +64,7 @@ class FarmerRegisterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -79,8 +74,20 @@ class FarmerRegisterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
+    public function getBlocks($id) {
+        $blocks = \App\Block::where("district_id", $id)
+                ->pluck("block_name", "id");
+        return json_encode($blocks);
+    }
+
+    public function getVillages($id) {
+        $villages = \App\Village::where("block_id", $id)
+                ->pluck("village_name", "id");
+        return json_encode($villages);
+    }
+
 }
