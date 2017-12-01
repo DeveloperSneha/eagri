@@ -17,6 +17,12 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 
+Route::resource('roles', 'RoleController');
+Route::resource('schemes', 'Scheme\MainSchemeController');
+Route::resource('subschemes', 'Scheme\SubSchemeController');
+Route::resource('compschemes', 'Scheme\SchemeComponentController');
+
+
 Route::get('district/{id}/blocks', 'Farmer\FarmerRegisterController@getBlocks');
 Route::get('block/{id}/villages', 'Farmer\FarmerRegisterController@getVillages');
 Route::resource('farmer-reg', 'Farmer\FarmerRegisterController');

@@ -4,7 +4,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Agri</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Agriculture Department Of Haryana</b></span>
+        <img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200">
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -60,13 +60,13 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="dist/img/user.jpg" class="user-image" alt="User Image">
+                        <img src="{{ asset('dist/img/user.jpg') }}" class="user-image" alt="User Image">
                         @auth<span class="hidden-xs">{{ Auth::user()->name }}</span>@endauth
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="dist/img/user.jpg" class="img-circle" alt="User Image">
+                            <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
 
                             @auth <p>{{ Auth::user()->name }}</p> @endauth
                         </li>
@@ -100,10 +100,10 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="dist/img/user.jpg" class="img-circle" alt="User Image">
+                <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Alexander Pierce</p>
+                @auth <p>{{ Auth::user()->name }}</p> @endauth
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -120,29 +120,28 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="active treeview">
-                <a href="#">
+            <li class="active">
+                <a href="{{ url('/')}}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+                   
                 </a>
             </li>
             <li>
-                <a href="{{ url('/farmer-reg') }}">
-                    <i class="fa fa-dashboard"></i> <span>Farmer Registration</span>
+                <a href="{{ url('/roles') }}">
+                    <i class="fa fa-user"></i> <span>Roles</span>
                 </a>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Examples</span>
+                    <i class="fa fa-folder"></i> <span>Schemes</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i></a></li>
-
+                    <li><a href="{{ url('/schemes') }}"><i class="fa fa-circle-o"></i>Main Scheme</a></li>
+                    <li><a href="{{ url('/subschemes') }}"><i class="fa fa-circle-o"></i>Sub Scheme</a></li>
+                    <li><a href="{{ url('/compschemes') }}"><i class="fa fa-circle-o"></i>Scheme Component</a></li>
                 </ul>
             </li>
         </ul>

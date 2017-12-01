@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Redirect;
-
+use Illuminate\Support\Facades\Input;
 class RegisterController extends Controller {
     /*
       |--------------------------------------------------------------------------
@@ -67,6 +67,12 @@ use RegistersUsers;
                     'name' => $data['name'],
                     'aadhaar' => $data['aadhaar'],
                     'mobile' => $data['mobile'],
+                    'father_name' => $data['father_name'],
+                    'rcno' => $data['rcno'],
+                    'farmer_category' => $data['farmer_category'],
+                    'gender' => $data['gender'],
+                    'marital_status' => $data['marital_status'],
+                    'caste' => $data['caste'],
                     // 'email' => $data['email'],
                     'password' => bcrypt($data['mobile']),
         ]);
@@ -86,7 +92,7 @@ use RegistersUsers;
         $this->validator($request->all())->validate();
         if (Verhoeff::validate($request->aadhaar) === false) {
           //  $errors = "Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है";
-            return Redirect::back()->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
+            return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
         }
 
 
