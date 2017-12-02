@@ -79,7 +79,7 @@ use RegistersUsers;
     }
 
     public function showRegistrationForm() {
-        $districts = \App\District::pluck('district_name', 'id')->toArray();
+        $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         return view('auth.register', compact('districts'));
     }
 

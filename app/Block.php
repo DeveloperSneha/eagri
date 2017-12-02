@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model {
 
-    protected $table = 'blocks';
+    protected $table = 'block';
 
     public function villages() {
-        return $this->hasMany(Village::class, 'block_id', 'id');
+        return $this->hasMany(Village::class, 'idBlock', 'idVillage');
     }
 
     public function district() {
-        return $this->belongsTo(District::class, 'district_id', 'id');
+        return $this->belongsTo(District::class, 'idDistrict', 'idBlock');
     }
 
 }

@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class District extends Model {
 
-    protected $table = 'districts';
+    protected $table = 'district';
 
     public function blocks() {
-        return $this->hasMany(Block::class, 'district_id', 'id');
+        return $this->hasMany(Block::class, 'idDistrict', 'idBlock');
     }
 
 }

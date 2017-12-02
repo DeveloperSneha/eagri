@@ -44,7 +44,7 @@
                         <div class="form-group">
                             {!! Form::label('Aadhar No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-3 {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
-                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhar No']) !!}
+                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhar No','']) !!}
                                 @if ($errors->has('name'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('aadhaar') }}</strong>

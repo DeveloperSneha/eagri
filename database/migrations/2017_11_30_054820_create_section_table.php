@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSchemeComponentsTable extends Migration
+class CreateSectionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateSchemeComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('scheme_components', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('scheme_id');
-            $table->integer('subscheme_id');
-            $table->string('name');
+        Schema::create('section', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->increments('idSection');
+            $table->string('sectionName', 100)->nullable(false)->unique();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateSchemeComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scheme_components');
+        Schema::dropIfExists('section');
     }
 }

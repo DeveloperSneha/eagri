@@ -14,7 +14,7 @@ class FarmerRegisterController extends Controller {
      */
     public function index() {
         //
-        $districts = \App\District::pluck('district_name', 'id')->toArray();
+        $districts = \App\District::pluck('districtName', 'id')->toArray();
         return view('farmer.registration', compact('districts'));
     }
 
@@ -79,14 +79,14 @@ class FarmerRegisterController extends Controller {
     }
 
     public function getBlocks($id) {
-        $blocks = \App\Block::where("district_id", $id)
-                ->pluck("block_name", "id");
+        $blocks = \App\Block::where("idDistrict", $id)
+                ->pluck("blockName", "idBlock");
         return json_encode($blocks);
     }
 
     public function getVillages($id) {
-        $villages = \App\Village::where("block_id", $id)
-                ->pluck("village_name", "id");
+        $villages = \App\Village::where("idBlock", $id)
+                ->pluck("villageName", "idVillage");
         return json_encode($villages);
     }
 

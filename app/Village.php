@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Village extends Model {
 
-    protected $table = 'villages';
+    protected $table = 'village';
 
     public function block() {
-        return $this->belongsTo(Block::class,'block_id','id');
+        return $this->belongsTo(Block::class,'idBlock','idVillage');
     }
 
 }

@@ -16,7 +16,8 @@
                         <label>Login Id is your Aadhaar Number / लॉगिन आईडी आपका आधार नंबर है</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="text" class="form-control" name="aadhaar" value="{{ old('aadhaar') }}" required autofocus>
+                            <input type="text" name="aadhaar" value="{{ old('aadhaar') }}" readonly="" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control" value="" maxlength="12" pattern="[0-9]+" required="">
+<!--                            <input type="text" class="form-control" name="aadhaar" value="{{ old('aadhaar') }}" required autofocus>-->
 
                         </div>
                         @if ($errors->has('aadhaar'))
@@ -29,7 +30,8 @@
                         <label>Password is your Mobile Number  / पासवर्ड आपका मोबाइल नंबर है</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input id="password" type="password" class="form-control" name="password" required>
+                            <input type="password" name="password" readonly="" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control" required="">
+<!--                            <input id="password" type="password" class="form-control" name="password" required>-->
                         </div>
                         @if ($errors->has('password'))
                         <span class="help-block">

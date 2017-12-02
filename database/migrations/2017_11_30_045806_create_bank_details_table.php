@@ -14,6 +14,7 @@ class CreateBankDetailsTable extends Migration
     public function up()
     {
         Schema::create('bank_details', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('bank');
             $table->string('ifsc');
