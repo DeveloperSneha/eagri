@@ -25,7 +25,6 @@ class CreateSchemeactivationTable extends Migration {
             $table->integer('totalAreaAllocated')->unsigned()->nullable(false);
             $table->integer('idUnit')->unsigned();
             $table->foreign('idUnit')->references('idUnit')->on('units')->onUpdate('cascade')->onDelete('cascade');
-            $table->char('isVendorRequired',1)->nullable(false);
             $table->integer('vendorDeliveryDayLimit');
             $table->string('guidelines',200);
             $table->timestamps();

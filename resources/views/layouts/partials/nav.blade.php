@@ -4,7 +4,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Agri</b></span>
         <!-- logo for regular state and mobile devices -->
-        <img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200">
+        <span class="logo-lg"><img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200"></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -16,47 +16,7 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Notifications: style can be found in dropdown.less -->
-                <li class="dropdown notifications-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">You have 10 notifications</li>
-                        <li>
-                            <!-- inner menu: contains the actual data -->
-                            <ul class="menu">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                                        page and may cause design problems
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users text-red"></i> 5 new members joined
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-user text-red"></i> You changed your username
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="footer"><a href="#">View all</a></li>
-                    </ul>
-                </li>
+               
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -73,7 +33,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{ url('/')}}" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
                                 <a href="{{ route('logout') }}" class="btn btn-default btn-flat"
@@ -106,9 +66,12 @@
                 @auth <p>{{ Auth::user()->name }}</p> @endauth
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
+            
+        
         </div>
+        <div id="google_translate_element"  class="sidebar-form"></div>
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+<!--        <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
@@ -116,14 +79,18 @@
                     </button>
                 </span>
             </div>
-        </form>
+        </form>-->
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="active">
+            <li class="{{ checkActive(['/']) }}">
                 <a href="{{ url('/')}}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                   
+                </a>
+            </li>
+            <li class="{{ checkActive(['user-registration']) }}">
+                <a href="{{ url('/user-registration') }}">
+                    <i class="fa fa-user"></i> <span>Add User</span>
                 </a>
             </li>
             <li>
@@ -131,17 +98,56 @@
                     <i class="fa fa-user"></i> <span>Roles</span>
                 </a>
             </li>
-            <li class="treeview">
+            <li class="treeview {{ checkActive(['units','workflow','fys','certificates','schemes','sections','programs','districtdistribution','designations']) }}">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Schemes</span>
+                    <i class="fa fa-folder"></i> <span>Masters</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ url('/schemes') }}"><i class="fa fa-circle-o"></i>Main Scheme</a></li>
-                    <li><a href="{{ url('/subschemes') }}"><i class="fa fa-circle-o"></i>Sub Scheme</a></li>
-                    <li><a href="{{ url('/compschemes') }}"><i class="fa fa-circle-o"></i>Scheme Component</a></li>
+                    <li class="{{ checkActive(['designations']) }}"><a href="{{ url('/designations') }}"><i class="fa fa-circle-o"></i>Designations</a></li>
+                    <li class="{{ checkActive(['workflow']) }}"><a href="{{ url('/workflow') }}"><i class="fa fa-circle-o"></i>Workflows</a></li>
+                    <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}"><i class="fa fa-circle-o"></i>Units</a></li>
+                    <li class="{{ checkActive(['fys']) }}"><a href="{{ url('/fys') }}"><i class="fa fa-circle-o"></i>Financial Year</a></li>
+                    <li class="{{ checkActive(['certificates']) }}"><a href="{{ url('/certificates') }}"><i class="fa fa-circle-o"></i>Certificates</a></li>
+                    <li class="{{ checkActive(['sections']) }}"><a href="{{ url('/sections') }}"><i class="fa fa-circle-o"></i>Section</a></li>
+                    <li class="{{ checkActive(['schemes']) }}"><a href="{{ url('/schemes') }}"><i class="fa fa-circle-o"></i>Scheme</a></li>
+                    <li class="{{ checkActive(['programs']) }}"><a href="{{ url('/programs') }}"><i class="fa fa-circle-o"></i>Program</a></li>
+                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>
+                </ul>
+            </li>
+            
+            <li class="treeview {{ checkActive(['schemeactivations/nv']) }}">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>Non Vendor</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ checkActive(['schemeactivations/nv']) }}"><a href="{{ url('/schemeactivations/nv') }}"><i class="fa fa-circle-o"></i>Scheme Activation</a></li>
+				
+                </ul>
+            </li>
+            <li class="treeview {{ checkActive(['components','categories','compcerts','compsizes','comprates','schemeactivations','blockdistribution','villagedistribution']) }}">
+                <a href="#">
+                    <i class="fa fa-folder"></i> <span>Vendor</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ checkActive(['categories']) }}"><a href="{{ url('/categories') }}"><i class="fa fa-circle-o"></i>Item</a></li>
+                    <li class="{{ checkActive(['components']) }}"><a href="{{ url('/components') }}"><i class="fa fa-circle-o"></i>Component</a></li>
+                    <li class="{{ checkActive(['compcerts']) }}"><a href="{{ url('/compcerts') }}"><i class="fa fa-circle-o"></i>Component Certificates</a></li>
+                    <li class="{{ checkActive(['compsizes']) }}"><a href="{{ url('/compsizes') }}"><i class="fa fa-circle-o"></i>Component Size</a></li>
+                    <li class="{{ checkActive(['comprates']) }}"><a href="{{ url('/comprates') }}"><i class="fa fa-circle-o"></i>Component Rates</a></li>
+                    <li class="{{ checkActive(['schemeactivations']) }}"><a href="{{ url('/schemeactivations') }}"><i class="fa fa-circle-o"></i>Scheme Activation</a></li>
+<!--                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>-->
+                    <li class="{{ checkActive(['blockdistribution']) }}"><a href="{{ url('/blockdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution Block</a></li>
+                    <li class="{{ checkActive(['villagedistribution']) }}"><a href="{{ url('/villagedistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution Village</a></li>
+
                 </ul>
             </li>
         </ul>

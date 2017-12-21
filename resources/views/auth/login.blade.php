@@ -39,9 +39,9 @@
                         </span>
                         @endif
                     </div>
-                    <div class="form-group">
-                        <center><a href="{{url('register')}}"><h4 style="color:maroon;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
-                    </div>
+                    <!--                    <div class="form-group">
+                                            <center><a href="{{url('register')}}"><h4 style="color:maroon;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
+                                        </div>-->
                     <div class="form-group">
                         <div class="col-md-4 col-md-offset-1">
                             <div class="checkbox">
@@ -65,10 +65,10 @@
                     <p></p>
                     <center><b>Helpline / Farmers Assistance Number : 0172-2571553</b></center>
                     <center><b>हेल्पलाइन / किसान सहायता नं: 0172-2571553</b></center>
-                     <p></p>
+                    <p></p>
                     <p style="border-bottom:1px solid #dbdbdb;"></p>
                     <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>
-                   
+
                 </form>
             </div>
             <!-- /.login-box-body -->

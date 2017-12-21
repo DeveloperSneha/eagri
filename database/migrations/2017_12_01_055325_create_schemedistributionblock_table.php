@@ -15,7 +15,7 @@ class CreateSchemedistributionblockTable extends Migration
     {
         Schema::create('schemedistributionblock', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('idSchemDistributionDistrict');
+            $table->increments('idSchemDistributionBlock');
             $table->integer('idSchemeActivation')->unsigned()->nullable(false)->unique();
             $table->foreign('idSchemeActivation')->references('idSchemeActivation')->on('schemeactivation')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('schemeDistributionDistrict')->unsigned()->nullable(false)->unique();

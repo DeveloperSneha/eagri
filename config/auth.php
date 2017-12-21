@@ -45,6 +45,22 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+        'farmer' => [
+            'driver' => 'session',
+            'provider' => 'farmers',
+        ],
+        'farmer-api' => [
+            'driver' => 'token',
+            'provider' => 'farmers',
+        ],
+        'authority' => [
+            'driver' => 'session',
+            'provider' => 'authorities',
+        ],
+        'authority-api' => [
+            'driver' => 'token',
+            'provider' => 'authorities',
+        ],
     ],
 
     /*
@@ -70,6 +86,14 @@ return [
             'model' => App\User::class,
         ],
 
+        'farmers' => [
+            'driver' => 'eloquent',
+            'model' => App\Farmer::class,
+        ],
+        'authorities' => [
+            'driver' => 'eloquent',
+            'model' => App\User::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -96,6 +120,16 @@ return [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
+        ],
+        'farmers' => [
+            'provider' => 'farmers',
+            'table' => 'password_resets',
+            'expire' => 15,
+        ],
+        'authorities' => [
+            'provider' => 'authorities',
+            'table' => 'password_resets',
+            'expire' => 15,
         ],
     ],
 

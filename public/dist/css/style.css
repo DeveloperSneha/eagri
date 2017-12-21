@@ -16,7 +16,84 @@ and open the template in the editor.
     width:500px !important;
     margin: 2% auto;
 }
-.login-box-msg{
+.register-box-msg, .login-box-msg{
     font-size: 16px;
     font-weight: bold;
 }
+.register-box-body
+{
+    padding:0px;
+}
+.login-logo, .register-logo{
+    margin-bottom: 5px;
+}
+legend{
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+.register-box-msg{
+    padding: 0 20px 10px 20px !important;
+}
+.form-group {
+    margin-bottom: 8px;
+}
+.form-control
+{
+    height: 30px;
+}
+.small-box
+{
+    margin:0px 20px 30px;
+}
+.small-box h3 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    white-space: nowrap;
+    padding: 0;
+}
+.help-block{
+    color: #c51515;
+/*    margin-top: 5px;*/
+    margin-bottom: 0px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice
+{
+    background-color: #00a65a;
+    border: 1px solid #fff;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+}
+.select2-container--default .select2-results__option[aria-disabled=true]
+{
+    display:none;
+}
+.skin-green-light .sidebar-form{
+    border: none;
+}
+/* .goog-logo-link {
+ display:none !important;
+} */
+/* .goog-te-gadget{
+     color: transparent !important;
+ }   */
+.goog-te-gadget{
+    height:27px !important;
+    position: relative;
+    min-height: 100%;
+    top: 0px;
+}
+#desig {
+    background: #9e9e9e52;
+    width: 250px;
+    height: auto;
+/*    padding: 10px;*/
+}
+ .required:after { 
+     content:" *"; 
+     color:red;
+ }
+ .datepicker{
+     border-radius: 0px;
+ }

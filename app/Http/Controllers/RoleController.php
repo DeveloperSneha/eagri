@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller {
@@ -33,7 +33,11 @@ class RoleController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+                      
+        $request->validate([
+            'name' => 'required|unique:roles|regex:/^[\pL\s\-)]+$/u',
+            
+        ]);
         //  dd($request->all());
         $role = new \App\Role();
         $role->fill($request->all());
@@ -76,6 +80,10 @@ class RoleController extends Controller {
     public function update(Request $request, $id) {
         //
         $role = \App\Role::findOrfail($id);
+        $request->validate([
+            'name' => 'required|regex:/^[\pL\s\-)]+$/u',Rule::unique('roles')->ignore($role->id, 'id'),
+            
+        ]);
         $role->fill($request->all());
         $role->update();
         return redirect('roles');

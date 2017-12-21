@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     @include('layouts.partials.head')
-    <body class="hold-transition skin-black sidebar-mini">
+    <body class="hold-transition skin-green-light sidebar-mini">
         <div class="wrapper">
+           
             @include('layouts.partials.nav')
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -19,7 +20,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    @if ($errors->any())
+               {{--     @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -27,18 +28,20 @@
                             @endforeach
                         </ul>
                     </div>
-                    @endif
+                    @endif --}}
                     @yield('content')
                 </section>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
             <footer class="main-footer">
-                <div class="pull-right hidden-xs">
+<!--                <div class="pull-right hidden-xs">
 
-                </div>
+                </div>-->
+<center>
                 <strong>Copyright &copy; 2017 <a href="https://hkcl.co.in">HKCL</a>.</strong> All rights
                 reserved.
+</center>
             </footer>
 
         </div>

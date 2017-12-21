@@ -5,6 +5,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+function checkActive($path, $active = 'active') {
+  if (is_string($path)) {
+    return request()->is($path) ? $active : '';
+  }
+  foreach ($path as $str) {
+    if (checkActive($str) == $active)
+      return $active;
+  }
+}
 
 function getGender() {
     $genders = ['' => '---- Select ----', 'Male' => 'Male / पुरुष', 'Female' => 'Female / महिला', 'Others' => 'Others / अन्य लोग'];
@@ -16,10 +25,20 @@ function getCasteCategory() {
         'General' => 'General / सामान्य',
         'SC' => 'SC - Schedule Caste / अनुसूचित जाति',
         'BC' => 'BC - BC / पिछड़े वर्ग',
-        'OBC' => 'OBC - Other Backward Class/ अन्य पिछड़ा वर्ग',
+        //'OBC' => 'OBC - Other Backward Class/ अन्य पिछड़ा वर्ग',
         'ST' => 'ST - Schedule tribe / अनुसूचित जनजाति'];
     return $cat;
 }
+
+function getFarmerCategory() {
+    $cat = ['' => '---- Select ----',
+        'Small Farmer' => 'Small Farmer / लघु किसान',
+        'Marginal Farmer' => 'Marginal Farmer / सीमांत किसान',
+        'Others' => 'Others / अन्य लोग',
+        ];
+    return $cat;
+}
+
 
 function getMaritalStatus() {
     $status = ['' => '---- Select ----',
