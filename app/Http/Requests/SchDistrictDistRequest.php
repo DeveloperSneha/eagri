@@ -24,7 +24,7 @@ class SchDistrictDistRequest extends FormRequest {
      */
     public function rules() {
         
-     //   dd($this->idSchemeActivation);
+      //  dd($this->all());
         $rules = [
             'idSchemeActivation' => 'required',
                 //   'idDistrict' => 'unique:schemedistributiondistrict,idDistrict,NULL,idDistrict,idSchemeActivation,' . $this->idSchemeActivation,

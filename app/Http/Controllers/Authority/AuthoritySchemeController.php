@@ -58,7 +58,7 @@ class AuthoritySchemeController extends AuthorityController {
         $approve_scheme->fill($request->all());
         $approve_scheme->haveChecked = $request->has('haveChecked') ? 'Y' : 'N';
         $approve_scheme->idDesignation = Auth::user()->userdesig->idDesignation;
-        
+
         if ($request->has('Approve')) {
             $approve_scheme->status = 'A';
             $approve_scheme->save();
@@ -113,15 +113,39 @@ class AuthoritySchemeController extends AuthorityController {
     }
 
     public function approvedScheme() {
-        $schemes = \App\SchemeApproveReject::where('status', '=', 'A')->get();
-        $schemes->idAppliedScheme = Auth::user()->userdesig->district->idDistrict;
-        return view('authority.schemes.approved_scheme', compact('schemes','district'));
+        $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+        $authority_dist = $authority->userdesig->district->idDistrict;
+        $schemes = DB::table('schemeappreject')
+                ->join('farmerapplied_scheme','schemeappreject.idAppliedScheme','=','farmerapplied_scheme.idAppliedScheme')
+                ->join('scheme','farmerapplied_scheme.idScheme','=','scheme.idScheme')
+                ->join('farmers','farmerapplied_scheme.idFarmer','=','farmers.idFarmer')
+                ->join('village','farmers.idVillage','=','village.idVillage')
+                ->join('district','farmers.idDistrict','=','district.idDistrict')
+                ->join('block','farmers.idBlock','=','block.idBlock')
+                ->where('farmers.idDistrict','=',$authority_dist)
+                ->where('schemeappreject.status','=','A')
+                ->select('farmers.name','village.villageName','scheme.schemeName','block.blockName','district.districtName')
+                ->get();
+
+//        dd($schemes);
+        return view('authority.schemes.approved_scheme', compact('schemes'));
     }
 
     public function rejectedScheme() {
-        $schemes = \App\SchemeApproveReject::where('status', '=', 'R')->get();
-        $schemes->idAppliedScheme = Auth::user()->userdesig->district->idDistrict;
-//        dd($schemes);
+        $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+        $authority_dist = $authority->userdesig->district->idDistrict;
+        $schemes = DB::table('schemeappreject')
+                ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
+                ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
+                ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
+                ->where('farmers.idDistrict', '=', $authority_dist)
+                ->where('schemeappreject.status', '=', 'R')
+                ->select('farmers.name','scheme.schemeName','district.districtName','block.blockName','village.villageName')
+                ->get();
+       // dd($schemes);
         return view('authority.schemes.rejected_scheme', compact('schemes'));
     }
 

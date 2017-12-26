@@ -3,8 +3,9 @@
     <a href="{{ url('/')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Agri</b></span>
+        <span class="logo-lg">Agriculture Department <br>Haryana</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200"></span>
+<!--        <span class="logo-lg"><img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200"></span>-->
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -16,7 +17,27 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Notifications: style can be found in dropdown.less -->
-               
+                <li class="dropdown notifications-menu">
+                    <div class="parallelogram bg-1 txt-cnt fl">
+                        <span id="Master_lbl_first" class="digital" style="font-size:Small;">Permits</span><br>
+                        <span id="spnpermits" class="digital f-b">675</span>
+                    </div>
+
+                </li>
+                <li class="dropdown notifications-menu">
+                    <div class="parallelogram bg-3 txt-cnt fl">
+
+                        <span id="Master_lbl_second" class="digital" style="font-size:Small;">Transit Forms</span><br>
+                        <span id="spntransitforms" class="digital f-b">53908</span>
+                    </div>
+                </li>
+                <li class="dropdown notifications-menu">
+                    <div class="parallelogram bg-1 txt-cnt fl">
+                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">Stationery</span><br>
+                        <span id="spnstationery" class="digital f-b">113616</span>
+
+                    </div>
+                </li>
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -58,17 +79,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
-            <div class="pull-left image">
-                <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                @auth <p>{{ Auth::user()->name }}</p> @endauth
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
-            
-        
-        </div>
+
         <div id="google_translate_element"  class="sidebar-form"></div>
         <!-- search form -->
 <!--        <form action="#" method="get" class="sidebar-form">
@@ -85,22 +96,22 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="{{ checkActive(['/']) }}">
                 <a href="{{ url('/')}}">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span>HOME</span>
                 </a>
             </li>
             <li class="{{ checkActive(['user-registration']) }}">
                 <a href="{{ url('/user-registration') }}">
-                    <i class="fa fa-user"></i> <span>Add User</span>
+                   <span>Add User</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ checkActive(['roles'])}}">
                 <a href="{{ url('/roles') }}">
-                    <i class="fa fa-user"></i> <span>Roles</span>
+                   <span>Roles</span>
                 </a>
             </li>
             <li class="treeview {{ checkActive(['units','workflow','fys','certificates','schemes','sections','programs','districtdistribution','designations']) }}">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Masters</span>
+                    <span>Masters</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -120,7 +131,7 @@
             
             <li class="treeview {{ checkActive(['schemeactivations/nv']) }}">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Non Vendor</span>
+                   <span>Non Vendor</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -132,7 +143,7 @@
             </li>
             <li class="treeview {{ checkActive(['components','categories','compcerts','compsizes','comprates','schemeactivations','blockdistribution','villagedistribution']) }}">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Vendor</span>
+                    <span>Vendor</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>

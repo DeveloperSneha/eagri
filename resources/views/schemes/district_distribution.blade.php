@@ -66,6 +66,7 @@
                                     @endif
                                 </strong>
                             </span>
+                            <input type="hidden" id="hiddenarea{{$key}}">
                         </td>
                         <td>
                             <input type="text" class="form-control " name="districts[{{$key}}][amountDistrict]" id="amtdistrict{{$key}}">
@@ -76,6 +77,7 @@
                                     @endif
                                 </strong>
                             </span>
+                            <input type="hidden" id="hiddenamount{{$key}}">
                         </td>
                     </tr>
                     @endforeach
@@ -125,84 +127,5 @@
 </div>
 @stop
 @section('script')
-<script>
-$(document).ready(function () {
-        $('.select-all').on('click', function () {
-            var checkAll = this.checked;
-            $('input[type=checkbox]').each(function () {
-                this.checked = checkAll;
-            });
-        });
-        $('select[name="idSchemeActivation"]').on('change', function() {
-            var schemeActivationID = $(this).val();
-            if(schemeActivationID) {
-                $.ajax({
-                    url: "{{url('/schemeactivations') }}"+'/' +schemeActivationID,
-                    type: "GET",
-                    dataType: "json",
-                    success:function(data) {
-                        $('#area-fund').empty();
-                        $.each(data, function(key, value) {
-                           $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly></div></div>');
-                        });
-                    }
-                });
-            }else{
-                $('#area-fund').empty();
-            }
-        });
-    $('#districtdistribution').on('submit',function(e){
-        $.ajaxSetup({
-        header:$('meta[name="_token"]').attr('content')
-    });
-        
-    var formData = $(this).serialize();
-        $.ajax({
-            type:"POST",
-            url: "{{url('/districtdistribution/') }}",
-            data:formData,
-            dataType: 'json',
-            success:function(data){
-                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
-                window.location = "{{url('districtdistribution')}}";
-                }
-                else {					//False Case: With error msg
-                $("#msg").html(data);	//$msg is the id of empty msg
-                }
-
-            },
-            error: function(data){
-                       // e.preventDefault(e);
-                        if( data.status === 422 ) {
-                           
-                          var errors = data.responseJSON.errors;
-                          errorHtml='<div class="alert alert-danger"><ul>';
-                          $.each( errors, function( key, value ) {
-                               errorHtml += '<li>' + value + '</li>';
-                         });
-                          errorHtml += '</ul></div>';
-                          $( '#formerrors' ).html( errorHtml );
-
-                    }
-                }
-        });
-        return false;
-    });
-
-});
-function getArea($key){
-    var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
-    var area ='#areadistrict'+ $key;
-    var amt = '#amtdistrict'+ $key;
-     //$(amt).val($("#area-fund #aaaaa:last-child p").text() * $(area).val()); 
-    var amount = $("#area-fund #aaaaa:last-child input").val() * $(area).val();
-                 $(amt).val(amount);
-   // var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
-   // var total_fund = tf - amount;
-    document.getElementById('area-fund #aaaaa:first-child input').value = tf - amount;
-  //  console.log(total_fund);
-   // $("#area-fund #aaaaa:first-child input").val(total_fund);
-  
-}
-</script>
+@include('view_Script.district_distribution');
 @stop
