@@ -3,7 +3,7 @@
     <a href="{{ url('/')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Agri</b></span>
-        <span class="logo-lg">Agriculture Department <br>Haryana</span>
+        <span class="logo-lg"><b>Agriculture Department <br>Haryana</b></span>
         <!-- logo for regular state and mobile devices -->
 <!--        <span class="logo-lg"><img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200"></span>-->
     </a>
@@ -39,19 +39,20 @@
                     </div>
                 </li>
                 <!-- User Account: style can be found in dropdown.less -->
-                <li class="dropdown user user-menu">
+<!--                <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ asset('dist/img/user.jpg') }}" class="user-image" alt="User Image">
                         @auth<span class="hidden-xs">{{ Auth::user()->name }}</span>@endauth
                     </a>
+                    
                     <ul class="dropdown-menu">
-                        <!-- User image -->
+                         User image 
                         <li class="user-header">
                             <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
 
                             @auth <p>{{ Auth::user()->name }}</p> @endauth
                         </li>
-                        <!-- Menu Footer-->
+                         Menu Footer
                         <li class="user-footer">
                             <div class="pull-left">
                                 <a href="{{ url('/')}}" class="btn btn-default btn-flat">Profile</a>
@@ -69,7 +70,26 @@
                             </div>
                         </li>
                     </ul>
-                </li>
+                </li>-->
+                <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                    <i class="fa fa-user"></i>&nbsp;&nbsp;{{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                           <i class="fa fa-fw fa-power-off"></i>&nbsp;&nbsp; Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
             </ul>
         </div>
     </nav>
@@ -80,7 +100,7 @@
     <section class="sidebar">
         <!-- Sidebar user panel -->
 
-        <div id="google_translate_element"  class="sidebar-form"></div>
+        <center><div id="google_translate_element"  class="sidebar-form"></div></center>
         <!-- search form -->
 <!--        <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
@@ -117,15 +137,15 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['designations']) }}"><a href="{{ url('/designations') }}"><i class="fa fa-circle-o"></i>Designations</a></li>
-                    <li class="{{ checkActive(['workflow']) }}"><a href="{{ url('/workflow') }}"><i class="fa fa-circle-o"></i>Workflows</a></li>
-                    <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}"><i class="fa fa-circle-o"></i>Units</a></li>
-                    <li class="{{ checkActive(['fys']) }}"><a href="{{ url('/fys') }}"><i class="fa fa-circle-o"></i>Financial Year</a></li>
-                    <li class="{{ checkActive(['certificates']) }}"><a href="{{ url('/certificates') }}"><i class="fa fa-circle-o"></i>Certificates</a></li>
-                    <li class="{{ checkActive(['sections']) }}"><a href="{{ url('/sections') }}"><i class="fa fa-circle-o"></i>Section</a></li>
-                    <li class="{{ checkActive(['schemes']) }}"><a href="{{ url('/schemes') }}"><i class="fa fa-circle-o"></i>Scheme</a></li>
-                    <li class="{{ checkActive(['programs']) }}"><a href="{{ url('/programs') }}"><i class="fa fa-circle-o"></i>Program</a></li>
-                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>
+                    <li class="{{ checkActive(['designations']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
+                    <li class="{{ checkActive(['workflow']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
+                    <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}">Units</a></li>
+                    <li class="{{ checkActive(['fys']) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
+                    <li class="{{ checkActive(['certificates']) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
+                    <li class="{{ checkActive(['sections']) }}"><a href="{{ url('/sections') }}">Section</a></li>
+                    <li class="{{ checkActive(['schemes']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
+                    <li class="{{ checkActive(['programs']) }}"><a href="{{ url('/programs') }}">Program</a></li>
+                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}">Scheme Distribution District</a></li>
                 </ul>
             </li>
             
@@ -137,7 +157,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['schemeactivations/nv']) }}"><a href="{{ url('/schemeactivations/nv') }}"><i class="fa fa-circle-o"></i>Scheme Activation</a></li>
+                    <li class="{{ checkActive(['schemeactivations/nv']) }}"><a href="{{ url('/schemeactivations/nv') }}">Scheme Activation</a></li>
 				
                 </ul>
             </li>
@@ -149,15 +169,15 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['categories']) }}"><a href="{{ url('/categories') }}"><i class="fa fa-circle-o"></i>Item</a></li>
-                    <li class="{{ checkActive(['components']) }}"><a href="{{ url('/components') }}"><i class="fa fa-circle-o"></i>Component</a></li>
-                    <li class="{{ checkActive(['compcerts']) }}"><a href="{{ url('/compcerts') }}"><i class="fa fa-circle-o"></i>Component Certificates</a></li>
-                    <li class="{{ checkActive(['compsizes']) }}"><a href="{{ url('/compsizes') }}"><i class="fa fa-circle-o"></i>Component Size</a></li>
-                    <li class="{{ checkActive(['comprates']) }}"><a href="{{ url('/comprates') }}"><i class="fa fa-circle-o"></i>Component Rates</a></li>
-                    <li class="{{ checkActive(['schemeactivations']) }}"><a href="{{ url('/schemeactivations') }}"><i class="fa fa-circle-o"></i>Scheme Activation</a></li>
+                    <li class="{{ checkActive(['categories']) }}"><a href="{{ url('/categories') }}">Item</a></li>
+                    <li class="{{ checkActive(['components']) }}"><a href="{{ url('/components') }}">Component</a></li>
+                    <li class="{{ checkActive(['compcerts']) }}"><a href="{{ url('/compcerts') }}">Component Certificates</a></li>
+                    <li class="{{ checkActive(['compsizes']) }}"><a href="{{ url('/compsizes') }}">Component Size</a></li>
+                    <li class="{{ checkActive(['comprates']) }}"><a href="{{ url('/comprates') }}">Component Rates</a></li>
+                    <li class="{{ checkActive(['schemeactivations']) }}"><a href="{{ url('/schemeactivations') }}">Scheme Activation</a></li>
 <!--                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>-->
-                    <li class="{{ checkActive(['blockdistribution']) }}"><a href="{{ url('/blockdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution Block</a></li>
-                    <li class="{{ checkActive(['villagedistribution']) }}"><a href="{{ url('/villagedistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution Village</a></li>
+                    <li class="{{ checkActive(['blockdistribution']) }}"><a href="{{ url('/blockdistribution') }}">Scheme Distribution Block</a></li>
+                    <li class="{{ checkActive(['villagedistribution']) }}"><a href="{{ url('/villagedistribution') }}">Scheme Distribution Village</a></li>
 
                 </ul>
             </li>

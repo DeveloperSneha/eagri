@@ -35,8 +35,8 @@
                     <tr>
                         <th>Block</th>
                         <th></th>
-                        <th>Financial Target</th>
                         <th>Physical Target</th>
+                        <th>Financial Target</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,7 +122,7 @@
 @section('script')
 <script>
 $(document).ready(function () {
-        $('.select-all').on('click', function () {
+    $('.select-all').on('click', function () {
         var checkAll = this.checked;
         var totalCount = $('input:checkbox').length;
         
@@ -138,29 +138,9 @@ $(document).ready(function () {
             $(amt).val((parseFloat(tf)/parseFloat(totalCount)).toFixed(0));
         });
         $("#area-fund #action:first-child input").val(parseFloat(tf) - ((parseFloat(tf)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
-//        $("#area-fund #action:first-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
-        
-//        if($("#area-fund #action:first-child input").val() <=0){
-//           var errors = 'Financial Target Of This District Exceeded the limit';
-//            errorHtml='<div class="alert alert-danger"><ul>';
-//                            errorHtml += '<li>' + errors + '</li>';
-//                            errorHtml += '</ul></div>';
-//                          $( '#formerrors' ).html( errorHtml );
-//        }else if($("#area-fund #action:first-child(2) input").val() <=0){
-//            var errors = 'Physical Target Of This District Exceeded the limit';
-//            errorHtml='<div class="alert alert-danger"><ul>';
-//                            errorHtml += '<li>' + errors + '</li>';
-//                            errorHtml += '</ul></div>';
-//                          $( '#formerrors' ).html( errorHtml );
-//        }else{
-//            var errors = '';
-//            errorHtml ='';
-//            $( '#formerrors' ).html( errorHtml );
-//        }
     });
 
         $('select[name="idSchemeActivation"]').on('change', function () {
-
             var schemeActivationID = $(this).val();
             if (schemeActivationID) {
                 $.ajax({
@@ -223,6 +203,13 @@ function getArea($key){
     var amt = '#amtdistrict' + $key;
     var hiddenarea = '#hiddenarea' + $key;
     var hiddenamount = '#hiddenamount' + $key;
+    if($(area).val()<=0){
+         $(area).css('border-color', 'red');
+         $(area).tooltip({tooltipClass: "passwordTooltip"});
+         $(area).attr('title', 'Negative Value Not Allowed !!');
+        return;
+        
+    }
     
     var amount = $("#area-fund #action:last-child input").val() * $(area).val();
                  $(amt).val(amount);

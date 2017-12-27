@@ -1,27 +1,16 @@
 <!DOCTYPE html>
 <html>
     @include('layouts.partials.head')
-    <body class="login">
-        <div class="l-panel" style="z-index: 10 !important;">
-            <div class="sp-container">
-                <div class="sp-content">
-                    <h2 class="frame-1">Welcome To   </h2>
-                    <h2 class="frame-2">Agriculture  Department</h2>
-                    <h2 class="frame-3">Haryana </h2>
-                    <h2 class="frame-4">Now!</h2>   
-                </div>
+    <body class="hold-transition login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="100" width="160"></a>
             </div>
-        </div>
-        <div class="r-panel" style="z-index: 1000 !important;">
-            <div class="log-block">
-                <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="90"></a>
-                <div style="font-family: Verdana; font-size: 20px; color: #fff; margin: 10px 0px; text-transform: uppercase;">Agriculture Department</div>
-                <div class="log-panel">
-                    <div class="hd">Login / लॉगिन</div>
+            <!-- /.login-logo -->
             <div class="login-box-body">
-                <!--<p class="login-box-msg">Login / लॉगिन</p>-->
+                <p class="login-box-msg">Login / लॉगिन</p>
 
-                <form class="form-horizontal" method="POST" action="{{ route('farmer.login.submit') }}">
+                <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}
                     <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
                         <label>Login Id is your Aadhaar Number / लॉगिन आईडी आपका आधार नंबर है</label>
@@ -50,9 +39,9 @@
                         </span>
                         @endif
                     </div>
-                    <div class="form-group">
-                        <center><a href="{{url('farmer/register')}}"><h4 style="color:maroon;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
-                    </div>
+                    <!--                    <div class="form-group">
+                                            <center><a href="{{url('register')}}"><h4 style="color:maroon;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
+                                        </div>-->
                     <div class="form-group">
                         <div class="col-md-4 col-md-offset-1">
                             <div class="checkbox">
@@ -76,10 +65,10 @@
                     <p></p>
                     <center><b>Helpline / Farmers Assistance Number : 0172-2571553</b></center>
                     <center><b>हेल्पलाइन / किसान सहायता नं: 0172-2571553</b></center>
-                     <p></p>
+                    <p></p>
                     <p style="border-bottom:1px solid #dbdbdb;"></p>
                     <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>
-                   
+
                 </form>
             </div>
             <!-- /.login-box-body -->

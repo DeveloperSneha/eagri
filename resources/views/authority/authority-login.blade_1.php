@@ -2,6 +2,7 @@
 <html>
     @include('layouts.partials.head')
     <body class="login">
+        
         <div class="l-panel" style="z-index: 10 !important;">
             <div class="sp-container">
                 <div class="sp-content">
@@ -14,21 +15,23 @@
         </div>
         <div class="r-panel" style="z-index: 1000 !important;">
             <div class="log-block">
-                <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="90"></a>
+        <!--<div class="login-box">-->
+            <div class="login-logo">
+                <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="100" width="160"></a>
                 <div style="font-family: Verdana; font-size: 20px; color: #fff; margin: 10px 0px; text-transform: uppercase;">Agriculture Department</div>
-                <div class="log-panel">
-                    <div class="hd">Login / लॉगिन</div>
+            </div>
+        
+            <!-- /.login-logo -->
             <div class="login-box-body">
-                <!--<p class="login-box-msg">Login / लॉगिन</p>-->
+                <p class="login-box-msg">Login / लॉगिन</p>
 
-                <form class="form-horizontal" method="POST" action="{{ route('farmer.login.submit') }}">
+                <form class="form-horizontal" method="POST" action="{{ route('authority.login.submit') }}">
                     {{ csrf_field() }}
                     <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
-                        <label>Login Id is your Aadhaar Number / लॉगिन आईडी आपका आधार नंबर है</label>
+                        <label>UserName</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="text" name="aadhaar" value="{{ old('aadhaar') }}" readonly="" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control" value="" maxlength="12" pattern="[0-9]+" required="">
-<!--                            <input type="text" class="form-control" name="aadhaar" value="{{ old('aadhaar') }}" required autofocus>-->
+                            <input type="text" name="userName" value="{{ old('userName') }}" readonly="" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control" value="" required=""  >
 
                         </div>
                         @if ($errors->has('aadhaar'))
@@ -38,7 +41,7 @@
                         @endif
                     </div>
                     <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label>Password is your Mobile Number  / पासवर्ड आपका मोबाइल नंबर है</label>
+                        <label>Password</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                             <input type="password" name="password" readonly="" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control" required="">
@@ -51,9 +54,6 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <center><a href="{{url('farmer/register')}}"><h4 style="color:maroon;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
-                    </div>
-                    <div class="form-group">
                         <div class="col-md-4 col-md-offset-1">
                             <div class="checkbox">
                                 <label>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                            <a class="btn btn-link" href="#">
                                 Forgot Your Password?
                             </a>
                         </div>
@@ -86,5 +86,29 @@
         </div>
         <!-- /.login-box -->
         @include('layouts.partials.script')
+        <script>
+             $(document).ready(function() {
+                $('select[name="userName"]').blur( function() {
+                    var userID = $(this).val();
+                    console.log(userID);
+                    if(userID) {
+                        $.ajax({
+                            url: "{{url('/user') }}"+'/' +userID + "/designations",
+                            type: "GET",
+                            dataType: "json",
+                            success:function(data) {
+                                $('select[id="idDesignation"]').empty();
+                                $.each(data, function(key, value) {
+                                    $('select[id="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                                });
+
+                            }
+                        });
+                    }else{
+                        $('select[id="idDesignation"]').empty();
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

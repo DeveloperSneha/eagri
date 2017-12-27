@@ -33,6 +33,7 @@ class SchDistrictDistRequest extends FormRequest {
             if (isset($dis['idDistrict'])) {
                 return $dis;
             }
+            
         });
 
         if ((count($this->_details)) == 0) {
@@ -43,8 +44,8 @@ class SchDistrictDistRequest extends FormRequest {
         foreach ($this->districts as $dis) {
             if (isset($dis['idDistrict'])) {
                 $rules['districts.' . $dis['idDistrict'] . '.idDistrict'] = 'unique:schemedistributiondistrict,idDistrict,NULL,idDistrict,idSchemeActivation,' . $this->idSchemeActivation;
-                $rules['districts.' . $dis['idDistrict'] . '.amountDistrict'] = 'required|numeric';
-                $rules['districts.' . $dis['idDistrict'] . '.areaDistrict'] = 'required|numeric';
+                $rules['districts.' . $dis['idDistrict'] . '.amountDistrict'] = 'required|integer|min:0';
+                $rules['districts.' . $dis['idDistrict'] . '.areaDistrict'] = 'required|integer|min:0';
             }
             $totalFunds += $dis['amountDistrict'];
             $totalArea += $dis['areaDistrict'];
@@ -54,12 +55,17 @@ class SchDistrictDistRequest extends FormRequest {
             //dd($totalFunds);
             if ($totalFunds > $scheme->totalFundsAllocated) {
                //  dd('here');
-                $rules += ['totalFunds' => 'required'];
+                $rules += ['totalFunds' => 'required|integer|min:0'];
             }
             if ($totalArea > $scheme->totalAreaAllocated) {
-                $rules += ['totalArea' => 'required'];
+                $rules += ['totalArea' => 'required|integer|min:0'];
             }
         }
+        foreach ($this->districts as $dis) {
+            if (isset($dis['districtName'])) {
+                $rules +=['districtName'=>'unique'];
+            }
+            }
         return $rules;
     }
 
@@ -67,11 +73,18 @@ class SchDistrictDistRequest extends FormRequest {
         $messages = [];
 
         $messages += [
-           // 'amountDistrict.required' => 'District Amount must be Given',
+//            'amountDistrict.required' => 'District Amount must be Given',
+            
+            'districtName.unique'=>' Already Taken :attribute',
+                    
             'idSchemeActivation.required' => 'Select Any One Of the Scheme',
             'district.required' => 'Atleast One District Should Be Selected',
-            'totalFunds.required' => 'Financial Target is Exceeded the limit of This Scheme',
-            'totalArea.required'=>'Physical Target is Exceeded the limit of This Scheme'
+            'totalFunds.required' => 'Financial Target is Exceeded the Limit of This Scheme',
+            'totalFunds.integer'=>'Physical Target Must have Numeric Value Only',
+            'totalFunds.min'=>'Physical Target Must Not Be Negative',
+            'totalArea.required'=>'Physical Target is Exceeded the limit of This Scheme',
+            'totalArea.integer'=>'Physical Target Must have Numeric Value Only',
+            'totalArea.min'=>'Physical Target Must Not Be Negative'
         ];
 
         return $messages;

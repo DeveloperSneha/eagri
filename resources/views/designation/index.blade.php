@@ -63,7 +63,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Designations</strong></div>
     <div class="panel-body">
-        <table class="table table-bordered" id='table1'>
+        <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
                     <th>ID</th>

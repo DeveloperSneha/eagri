@@ -6,16 +6,21 @@ $(document).ready(function () {
         
         var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
-        
+        var assistance = parseFloat($("#area-fund #aaaaa:last-child input").val());
         $('input[type=checkbox]').each(function () {
             
             this.checked = checkAll;
             var area ='#areadistrict'+ this.value;
             var amt = '#amtdistrict'+ this.value;
+            var hiddenarea = '#hiddenarea'+this.value;
+            var hiddenamount = '#hiddenamount'+this.value;
+
             $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(amt).val((parseFloat(tf)/parseFloat(totalCount)).toFixed(0));
+            $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+            $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+            $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
         });
-        $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - ((parseFloat(tf)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
+        $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
         $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
         
         if($("#area-fund #aaaaa:first-child input").val() <=0){
@@ -94,95 +99,134 @@ $(document).ready(function () {
     });
 });
 function getArea($key){
-    var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
-    
-    var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
-    
-    var area ='#areadistrict'+ $key;
-    var amt = '#amtdistrict'+ $key;
-    var hiddenarea = '#hiddenarea'+$key
-    var hiddenamount = '#hiddenamount'+$key
-    
-    var amount = $("#area-fund #aaaaa:last-child input").val() * $(area).val();
-                 $(amt).val(amount);
-   
-    var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
+        var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
+        var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
+        var area ='#areadistrict'+ $key;
+        var amt = '#amtdistrict'+ $key;
+        var hiddenarea = '#hiddenarea'+$key
+        var hiddenamount = '#hiddenamount'+$key
 
-    if($(hiddenamount).val()==""){
-       
-        var total_fund = tf +  $(hiddenamount).val();
-            total_fund = parseFloat(total_fund) - amount;
-        $("#area-fund #aaaaa:first-child input").val(total_fund);
-        var hiddenamount =  $(hiddenamount).val(amount);
-        if(total_fund <=0){
-            var errors = 'Financial Target Of This District Exceeded the limit';
-            errorHtml='<div class="alert alert-danger"><ul>';
-                            errorHtml += '<li>' + errors + '</li>';
-                            errorHtml += '</ul></div>';
-                          $( '#formerrors' ).html( errorHtml );
-                          
-        }else{
-            var errors = '';
-            errorHtml ='';
-            $( '#formerrors' ).html( errorHtml );
+  if( $('#selectall').prop('checked')){
+      if($(area).val()<=0){
+             $(area).css('border-color', 'red');
+              $(area).tooltip();
+              $(area).attr('title', 'Negative Value Not Allowed !!');
+            // alert('Negative Value Not Allowed !!');
+            return;
         }
-   }else{
+        
+        var amount = $("#area-fund #aaaaa:last-child input").val() * $(area).val();
+                     $(amt).val(amount);
+        
+        var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var total_fund = parseFloat(tf) + parseFloat($(hiddenamount).val()) ;
-        total_fund = parseFloat(total_fund) - amount;
-           
-        $("#area-fund #aaaaa:first-child input").val(total_fund);
-        var hiddenamount =  $(hiddenamount).val(amount);
-        if(total_fund <=0){
-           var errors = 'Financial Target Of This District Exceeded the limit';
-            errorHtml='<div class="alert alert-danger"><ul>';
-                            errorHtml += '<li>' + errors + '</li>';
-                            errorHtml += '</ul></div>';
-                          $( '#formerrors' ).html( errorHtml );
-        }else{
-            var errors = '';
-            errorHtml ='';
-            $( '#formerrors' ).html( errorHtml );
+            total_fund = parseFloat(total_fund) - amount;
+
+            $("#area-fund #aaaaa:first-child input").val(total_fund);
+            var hiddenamount =  $(hiddenamount).val(amount);
+            if(total_fund <=0){
+               var errors = 'Financial Target Of This District Exceeded the limit';
+                errorHtml='<div class="alert alert-danger"><ul>';
+                                errorHtml += '<li>' + errors + '</li>';
+                                errorHtml += '</ul></div>';
+                              $( '#formerrors' ).html( errorHtml );
+            }else{
+                var errors = '';
+                errorHtml ='';
+                $( '#formerrors' ).html( errorHtml );
+            }
+  
+  }else{
+      if($(area).val()<=0){
+             $(area).css('border-color', 'red');
+              $(area).tooltip();
+              $(area).attr('title', 'Negative Value Not Allowed !!');
+            // alert('Negative Value Not Allowed !!');
+            return;
         }
-   }
-   
-   
-   
-   
-   if($(hiddenarea).val()==""){
-       
-        var total_area = ta +  $(hiddenarea).val();
+        var amount = $("#area-fund #aaaaa:last-child input").val() * $(area).val();
+                     $(amt).val(amount);
+
+        var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
+
+        if($(hiddenamount).val()==""){
+
+            var total_fund = tf +  $(hiddenamount).val();
+                total_fund = parseFloat(total_fund) - amount;
+            $("#area-fund #aaaaa:first-child input").val(total_fund);
+            var hiddenamount =  $(hiddenamount).val(amount);
+            if(total_fund <=0){
+                $(area).css('border-color', 'red');
+                $("#area-fund #aaaaa:first-child input").css('border-color', 'red');
+                var errors = 'Financial Target Of This District Exceeded the limit';
+                errorHtml='<div class="alert alert-danger"><ul>';
+                                errorHtml += '<li>' + errors + '</li>';
+                                errorHtml += '</ul></div>';
+                              $( '#formerrors' ).html( errorHtml );
+
+
+            }else{
+                var errors = '';
+                errorHtml ='';
+                $( '#formerrors' ).html( errorHtml );
+            }
+       }else{
+            var total_fund = parseFloat(tf) + parseFloat($(hiddenamount).val()) ;
+            total_fund = parseFloat(total_fund) - amount;
+
+            $("#area-fund #aaaaa:first-child input").val(total_fund);
+            var hiddenamount =  $(hiddenamount).val(amount);
+            if(total_fund <=0){
+               var errors = 'Financial Target Of This District Exceeded the limit';
+                errorHtml='<div class="alert alert-danger"><ul>';
+                                errorHtml += '<li>' + errors + '</li>';
+                                errorHtml += '</ul></div>';
+                              $( '#formerrors' ).html( errorHtml );
+            }else{
+                var errors = '';
+                errorHtml ='';
+                $( '#formerrors' ).html( errorHtml );
+            }
+       }
+
+
+
+
+       if($(hiddenarea).val()==""){
+
+            var total_area = ta +  $(hiddenarea).val();
+                total_area = parseFloat(total_area) - $(area).val();
+            $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
+            var hiddenarea =  $(hiddenarea).val($(area).val());
+            if(total_area <=0){
+                var errors = 'Physical Target OF This District Exceeded the limit';
+                errorHtml='<div class="alert alert-danger"><ul>';
+                                errorHtml += '<li>' + errors + '</li>';
+                                errorHtml += '</ul></div>';
+                              $( '#formerrors' ).html( errorHtml );
+            }else{
+                var errors = '';
+                errorHtml ='';
+                $( '#formerrors' ).html( errorHtml );
+            }
+       }else{
+            var total_area = parseFloat(ta) + parseFloat($(hiddenarea).val()) ;
             total_area = parseFloat(total_area) - $(area).val();
-        $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
-        var hiddenarea =  $(hiddenarea).val($(area).val());
-        if(total_area <=0){
-            var errors = 'Physical Target OF This District Exceeded the limit';
-            errorHtml='<div class="alert alert-danger"><ul>';
-                            errorHtml += '<li>' + errors + '</li>';
-                            errorHtml += '</ul></div>';
-                          $( '#formerrors' ).html( errorHtml );
-        }else{
-            var errors = '';
-            errorHtml ='';
-            $( '#formerrors' ).html( errorHtml );
-        }
-   }else{
-        var total_area = parseFloat(ta) + parseFloat($(hiddenarea).val()) ;
-        total_area = parseFloat(total_area) - $(area).val();
-           
-        $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
-      var hiddenarea =  $(hiddenarea).val($(area).val());
-      if(total_area <=0){
-            var errors = 'Physical Target OF This District Exceeded the limit';
-            errorHtml='<div class="alert alert-danger"><ul>';
-                            errorHtml += '<li>' + errors + '</li>';
-                            errorHtml += '</ul></div>';
-                          $( '#formerrors' ).html( errorHtml );
-        }else{
-            var errors = '';
-            errorHtml ='';
-            $( '#formerrors' ).html( errorHtml );
-        }
+
+            $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
+          var hiddenarea =  $(hiddenarea).val($(area).val());
+          if(total_area <=0){
+                var errors = 'Physical Target OF This District Exceeded the limit';
+                errorHtml='<div class="alert alert-danger"><ul>';
+                                errorHtml += '<li>' + errors + '</li>';
+                                errorHtml += '</ul></div>';
+                              $( '#formerrors' ).html( errorHtml );
+            }else{
+                var errors = '';
+                errorHtml ='';
+                $( '#formerrors' ).html( errorHtml );
+            }
+       }
    }
-   
 }
 </script>

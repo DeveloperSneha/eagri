@@ -47,8 +47,8 @@ class SchBlockDistRequest extends FormRequest {
                 $totalFunds += $dis['amountBlock'];
                 $totalArea += $dis['areaBlock'];
                 if (isset($dis['idBlock'])) {
-                    $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required';
-                    $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required';
+                    $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required|integer|min:0';
+                    $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required|integer|min:0';
                 }
             }
         }
@@ -58,10 +58,10 @@ class SchBlockDistRequest extends FormRequest {
             //dd($totalFunds);
             if ($totalFunds > $scheme->amountDistrict) {
                 //  dd('here');
-                $rules += ['totalFunds' => 'required'];
+                $rules += ['totalFunds' => 'required|integer|min:0'];
             }
             if ($totalArea > $scheme->areaDistrict) {
-                $rules += ['totalArea' => 'required'];
+                $rules += ['totalArea' => 'required|integer|min:0'];
             }
         }
         return $rules;

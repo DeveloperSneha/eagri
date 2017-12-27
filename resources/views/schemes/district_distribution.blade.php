@@ -27,7 +27,7 @@
         <div class="form-group">
             {!! Form::label('Apply to All District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-2 checkbox-inline">
-                <input type="checkbox" class="select-all"/>
+                <input type="checkbox" class="select-all" id="selectall"/>
             </div>
             <span class="help-block">
                     <strong>
@@ -58,7 +58,7 @@
                             <input type="checkbox" value="{{ $key}}" name="districts[{{$key}}][idDistrict]" id='district' >
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})">
+                            <input type="text" class="form-control" data-toggle="tooltip" data-placement="right" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})" >
                             <span class="help-block">
                                 <strong>
                                     @if($errors->has('districts.*.areaDistrict'))
@@ -69,7 +69,7 @@
                             <input type="hidden" id="hiddenarea{{$key}}">
                         </td>
                         <td>
-                            <input type="text" class="form-control " name="districts[{{$key}}][amountDistrict]" id="amtdistrict{{$key}}">
+                            <input type="text" class="form-control"  name="districts[{{$key}}][amountDistrict]" id="amtdistrict{{$key}}">
                             <span class="help-block">
                                 <strong>
                                     @if($errors->has('districts.*.amountDistrict'))
@@ -94,14 +94,14 @@
 <div class="panel panel-default">
     <div class="panel-heading"><strong>District wise Distribution Listing</strong></div>
     <div class="panel-body">
-        <table class="table table-bordered"  id='table1'>
+        <table class="table table-bordered table-hover table-striped dataTable"  id='table1'>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Scheme</th>
                     <th>Districts</th>
-                    <th>Amount Allocated to District</th>
-                    <th>Area District</th>
+                    <th>FinancialTarget</th>
+                    <th>PhysicalTarget</th>
                     <th>Action</th>
                 </tr>
             </thead>
