@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-
+use App\Traits;
 class LoginController extends Controller {
     /*
       |--------------------------------------------------------------------------
@@ -19,7 +19,8 @@ class LoginController extends Controller {
       |
      */
 
-use AuthenticatesUsers;
+    use Traits\CaptchaTrait;
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -66,9 +67,15 @@ use AuthenticatesUsers;
     }
 
     protected function validateLogin(Request $request) {
+        $request['captcha'] = $this->captchaCheck();
         $this->validate($request, [
             $this->username() => 'required|string',
+            'g-recaptcha-response' => 'required',
+            'captcha'               => 'required|min:1',
             'password' => 'required|string',
+                ], [
+            'g-recaptcha-response.required' => 'Captcha authentication is required.',
+             'captcha.min'           => 'Wrong captcha, please try again.'
         ]);
     }
 

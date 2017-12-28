@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Authority;
 use Illuminate\Http\Request;
 use App\Http\Requests\SchBlockDistRequest;
 use Auth;
+use DB;
 
 class BlockwiseSchemeDistributionController extends AuthorityController {
 
@@ -16,7 +17,7 @@ class BlockwiseSchemeDistributionController extends AuthorityController {
     public function index() {
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $authority_dist = $authority->userdesig->district->idDistrict;
-        $schblockdist = \App\SchBlockDistribution::where('schemeDistributionDistrict','=',$authority_dist)->with('district')->get();
+        $schblockdist = \App\SchBlockDistribution::where('schemeDistributionDistrict', '=', $authority_dist)->with('district')->get();
         $schact = ['' => 'Select Scheme'] + \App\SchDistrictDistribution::where('idDistrict', '=', $authority_dist)
                         ->with('schactivation', 'schactivation.scheme')
                         ->get()->pluck('schactivation.scheme.schemeName', 'idSchemeActivation')
@@ -122,9 +123,14 @@ class BlockwiseSchemeDistributionController extends AuthorityController {
     public function getSchemeDist($id) {
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $authority_dist = $authority->userdesig->district->idDistrict;
-        $schact = \App\SchDistrictDistribution::where('idSchemeActivation', '=', $id)
-                        ->where('idDistrict', '=', $authority_dist)
-                        ->select('amountDistrict', 'areaDistrict')->first()->toArray();
+        $schact = DB::table('schemedistributiondistrict')
+                        ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                        ->where('schemedistributiondistrict.idSchemeActivation', '=', $id)
+                        ->where('schemedistributiondistrict.idDistrict', '=', $authority_dist)
+                        ->select('amountDistrict', 'areaDistrict', 'assistance')->first();
+                       // ->toArray();
+        //  ->select('amountDistrict', 'areaDistrict', 'assistance')->first()->toArray();
+
         return json_encode($schact);
     }
 

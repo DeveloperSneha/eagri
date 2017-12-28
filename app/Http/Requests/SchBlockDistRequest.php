@@ -44,6 +44,7 @@ class SchBlockDistRequest extends FormRequest {
             $totalFunds += $dis['amountBlock'];
             $totalArea += $dis['areaBlock'];
             if (isset($dis['idBlock'])) {
+                $rules['blocks.' . $dis['idBlock'] . '.idBlock'] = 'unique:schemedistributionblock,idBlock,NULL,idBlock,idSchemeActivation,' . $this->idSchemeActivation;
                 $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required';
                 $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required';
             }
@@ -71,7 +72,10 @@ class SchBlockDistRequest extends FormRequest {
             //   'schemeDistributionDistrict.required' => 'Scheme Distribution(District) Must be Selected',
             'block.required' => 'Atleast One Block Should Be Selected',
             'totalFunds.required' => 'Financial Target is Exceeded for this District',
-            'totalArea.required' => 'Physical Target is Exceeded for this District'
+            'totalArea.required' => 'Physical Target is Exceeded for this District',
+            'blocks.*idBlock.unique' => 'This Scheme is Already Distributed To This Block',
+            'blocks.*amountBlock.required' => 'Financial Target Must Not Be Empty',
+            'blocks.*areaBlock.required' => 'Physical Target Must Not Be Empty',
         ];
 
         return $messages;

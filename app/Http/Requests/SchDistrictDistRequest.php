@@ -61,22 +61,23 @@ class SchDistrictDistRequest extends FormRequest {
                 $rules += ['totalArea' => 'required|integer|min:0'];
             }
         }
-        foreach ($this->districts as $dis) {
-            if (isset($dis['districtName'])) {
-                $rules +=['districtName'=>'unique'];
-            }
-            }
+//        foreach ($this->districts as $dis) {
+//            if (isset($dis['districtName'])) {
+//                $rules +=['districtName'=>'unique'];
+//            }
+//            }
         return $rules;
     }
 
     public function messages() {
         $messages = [];
 
+//        foreach ($this->districts as $dis) {
+//            if (isset($dis['idDistrict'])) {
+//                
+//            }
+//        }
         $messages += [
-//            'amountDistrict.required' => 'District Amount must be Given',
-            
-            'districtName.unique'=>' Already Taken :attribute',
-                    
             'idSchemeActivation.required' => 'Select Any One Of the Scheme',
             'district.required' => 'Atleast One District Should Be Selected',
             'totalFunds.required' => 'Financial Target is Exceeded the Limit of This Scheme',
@@ -84,7 +85,10 @@ class SchDistrictDistRequest extends FormRequest {
             'totalFunds.min'=>'Physical Target Must Not Be Negative',
             'totalArea.required'=>'Physical Target is Exceeded the limit of This Scheme',
             'totalArea.integer'=>'Physical Target Must have Numeric Value Only',
-            'totalArea.min'=>'Physical Target Must Not Be Negative'
+            'totalArea.min'=>'Physical Target Must Not Be Negative',
+            'districts.*idDistrict.unique' => 'This Scheme is Already Distributed in This District',
+            'districts.*amountDistrict.required' => 'Financial Target Must Not Be Empty',
+            'districts.*areaDistrict.required' => 'Physical Target Must Not Be Empty',
         ];
 
         return $messages;

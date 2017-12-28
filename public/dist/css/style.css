@@ -10,7 +10,10 @@ and open the template in the editor.
 
 .login {
     /*    background: #ffffff;*/
-    background: #310404 url(../img/LOG-BG.jpg) repeat top left;
+    background: #310904 url(../img/AH.jpg);
+    /*repeat:repeat-x;*/
+    /*background-position:cover;*/
+    background-size:  1350px 750px;
     font-family: 'Electrolize';
 }
 .register-page {
@@ -58,7 +61,8 @@ legend{
     padding: 0;
 }
 .help-block{
-    color: #c51515;
+    color:#e80f0f;
+    /*color: #c51515;*/
     /*    margin-top: 5px;*/
     margin-bottom: 0px;
 }
@@ -710,4 +714,7 @@ li.treeview.menu-open {
   .arrow.top:after {
     bottom: -20px;
     top: auto;
+  }
+  #erroramt ,#errorarea, #errordist, #errorblock{
+      color:red;
   }

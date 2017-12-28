@@ -4,8 +4,8 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Agri</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Agriculture Department <br>Haryana</b></span>
-        <!--<img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200">-->
+        
+        <img src="{{asset('dist/img/logo.png') }}" alt="User Image" height="45" width="200">
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -17,28 +17,8 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- User Account: style can be found in dropdown.less -->
-                <li class="dropdown notifications-menu">
-                    <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_first" class="digital" style="font-size:Small;">Permits</span><br>
-                        <span id="spnpermits" class="digital f-b">675</span>
-                    </div>
-
-                </li>
-                <li class="dropdown notifications-menu">
-                    <div class="parallelogram bg-3 txt-cnt fl">
-
-                        <span id="Master_lbl_second" class="digital" style="font-size:Small;">Transit Forms</span><br>
-                        <span id="spntransitforms" class="digital f-b">53908</span>
-                    </div>
-                </li>
-                <li class="dropdown notifications-menu">
-                    <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">Stationery</span><br>
-                        <span id="spnstationery" class="digital f-b">113616</span>
-
-                    </div>
-                </li>
-<!--                <li class="dropdown user user-menu">
+                
+                <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ asset('dist/img/user.jpg') }}" class="user-image" alt="User Image">
                         @auth<span class="hidden-xs">{{ Auth::user()->userName }}</span>@endauth
@@ -68,12 +48,11 @@
                             </div>
                         </li>
                     </ul>
-                </li>-->
+                </li>
 
             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    <i class="fa fa-user"></i>&nbsp;&nbsp;{{ Auth::user()->userName }} <span class="caret"></span>
-                                    <!--@auth <p>{{ Auth::user()->userName }}</p> @endauth-->
+                                    <i class="fa fa-user"></i>&nbsp;&nbsp;{{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu">
@@ -98,9 +77,9 @@
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-        <center><div id="google_translate_element"  class="sidebar-form"></div></center>
+        <!--<center><div id="google_translate_element"  class="sidebar-form"></div></center>-->
         <!-- Sidebar user panel -->
-<!--        <div class="user-panel">
+        <div class="user-panel">
             <div class="pull-left image">
                 <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
             </div>
@@ -108,9 +87,9 @@
                 @auth <p>{{ Auth::user()->name }}</p> @endauth
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
-        </div>-->
-        <!-- search form -->
-<!--        <form action="#" method="get" class="sidebar-form">
+        </div>
+         <!--search form--> 
+        <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
@@ -118,7 +97,7 @@
                     </button>
                 </span>
             </div>
-        </form>-->
+        </form>
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">

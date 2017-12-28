@@ -53,30 +53,20 @@
                 <tbody>
                     @foreach($districts as $key=>$value)
                     <tr>
-                        <td><strong>{{ $value }} </strong></td>
+                        <td><strong>{{ $value }} </strong>
+                            <span id='errordist{{$key}}'></span>
+                        </td>
                         <td>
                             <input type="checkbox" value="{{ $key}}" name="districts[{{$key}}][idDistrict]" id='district' >
                         </td>
                         <td>
-                            <input type="text" class="form-control" data-toggle="tooltip" data-placement="right" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})" >
-                            <span class="help-block">
-                                <strong>
-                                    @if($errors->has('districts.*.areaDistrict'))
-                                    <p>{{ $errors->first('districts.'.$key.'.areaDistrict')}}</p>
-                                    @endif
-                                </strong>
-                            </span>
+                            <input type="text"  class="form-control" data-toggle="tooltip" data-placement="right" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})" >
+                            <span id='errorarea{{$key}}'></span>
                             <input type="hidden" id="hiddenarea{{$key}}">
                         </td>
                         <td>
-                            <input type="text" class="form-control"  name="districts[{{$key}}][amountDistrict]" id="amtdistrict{{$key}}">
-                            <span class="help-block">
-                                <strong>
-                                    @if($errors->has('districts.*.amountDistrict'))
-                                    <p>{{ $errors->first('districts.'.$key.'.amountDistrict')}}</p>
-                                    @endif
-                                </strong>
-                            </span>
+                            <input type="text"  class="form-control" name="districts[{{$key}}][amountDistrict]" id="amtdistrict{{$key}}">
+                            <span id='erroramt{{$key}}'></span>
                             <input type="hidden" id="hiddenamount{{$key}}">
                         </td>
                     </tr>
@@ -127,5 +117,5 @@
 </div>
 @stop
 @section('script')
-@include('view_Script.district_distribution');
+@include('view_Script.district_distjs');
 @stop

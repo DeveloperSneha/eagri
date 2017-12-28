@@ -19,12 +19,13 @@
                 <div class="log-panel">
                     <div class="hd">Government of Haryana</div>
                     <div class="login-box-body">
+                        
                         <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                             {{ csrf_field() }}
                             <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
                                 <label>USERNAME</label>
                                 <span class="clearfix"></span>
-                                <input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" required="">
+                                <input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" >
                                 @if ($errors->has('aadhaar'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('aadhaar') }}</strong>
@@ -34,7 +35,7 @@
                             <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label>PASSWORD</label>
                                 <span class="clearfix"></span>
-                                <input type="password" name="password"  id="password" autocomplete="off" class="form-control input-b-b" required="">
+                                <input type="password" name="password"  id="password" autocomplete="off" class="form-control input-b-b" >
 
                                 @if ($errors->has('password'))
                                 <span class="help-block">
@@ -42,9 +43,12 @@
                                 </span>
                                 @endif
                             </div>
-                            <div class="g-recaptcha" 
-                                 data-sitekey="{{env('GOOGLE_RECAPTCHA_KEY')}}">
-                            </div>
+                            <div class="g-recaptcha" data-sitekey="6LebkD4UAAAAAExBzYddN9Lh3HIfQUiIz-LRyFCS"></div>
+                            @if ($errors->has('g-recaptcha-response'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                </span>
+                            @endif
                             <div class="form-group">
                                 <div class="">
                                     <button type="submit" style="background-color:yellowgreen;color:#fff;border-color:#fff;" onclick="encrypt();" class="btn btn-block btn-primary" name="btn-login">Login / लॉगिन</button>

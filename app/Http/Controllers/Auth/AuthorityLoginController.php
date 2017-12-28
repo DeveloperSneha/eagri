@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Traits;
 
 class AuthorityLoginController extends Controller {
 
-   
+ use Traits\CaptchaTrait;
+ 
     protected $redirectTo = '/authority';
 
     public function __construct() {
@@ -21,10 +23,24 @@ class AuthorityLoginController extends Controller {
 
     public function login(Request $request) {
         // Validate the form data
-        $this->validate($request, [
+//        $this->validate($request, [
+//            'userName' => 'required',
+//            'password' => 'required'
+//        ]);
+        $request['captcha'] = $this->captchaCheck();
+        $rules = [
             'userName' => 'required',
-            'password' => 'required'
-        ]);
+            'password' => 'required',
+            'g-recaptcha-response' => 'required',
+            'captcha'               => 'required|min:1',
+        ];
+        $messages = [
+            'userName.required'=>'Enter Your Username ',
+            'password.required'=>'Enter Your Password',
+            'g-recaptcha-response.required' => 'Captcha authentication is required.',
+            'captcha.min'           => 'Wrong captcha, please try again.'
+        ];
+        $this->validate($request, $rules, $messages);
         // Attempt to log the user in
         
         if (Auth::guard('authority')->attempt(['userName' => $request->userName, 'password' => $request->password], $request->remember)) {

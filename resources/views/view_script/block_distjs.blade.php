@@ -10,8 +10,8 @@ $(document).ready(function () {
         $('input[type=checkbox]').each(function () {
             
             this.checked = checkAll;
-            var area ='#areadistrict'+ this.value;
-            var amt = '#amtdistrict'+ this.value;
+            var area ='#areablock'+ this.value;
+            var amt = '#amtblock'+ this.value;
             var hiddenarea = '#hiddenarea'+this.value;
             var hiddenamount = '#hiddenamount'+this.value;
 
@@ -24,13 +24,13 @@ $(document).ready(function () {
         $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
         
         if($("#area-fund #aaaaa:first-child input").val() <=0){
-           var errors = 'Financial Target Of This District Exceeded the limit';
+           var errors = 'Financial Target Of This Block Exceeded the limit';
             errorHtml='<div class="alert alert-danger"><ul>';
                             errorHtml += '<li>' + errors + '</li>';
                             errorHtml += '</ul></div>';
                           $( '#formerrors' ).html( errorHtml );
         }else if($("#area-fund #aaaaa:nth-child(2) input").val() <=0){
-            var errors = 'Physical Target Of This District Exceeded the limit';
+            var errors = 'Physical Target Of This Block Exceeded the limit';
             errorHtml='<div class="alert alert-danger"><ul>';
                             errorHtml += '<li>' + errors + '</li>';
                             errorHtml += '</ul></div>';
@@ -41,12 +41,12 @@ $(document).ready(function () {
             $( '#formerrors' ).html( errorHtml );
         }
     });
-    
-    $('select[name="idSchemeActivation"]').on('change', function() {
+
+    $('select[name="idSchemeActivation"]').on('change', function () {
         var schemeActivationID = $(this).val();
-        if(schemeActivationID) {
+        if (schemeActivationID) {
             $.ajax({
-                url: "{{url('/schemeactivations') }}"+'/' +schemeActivationID,
+                url: "{{url('/authority/schemedistrict') }}" + '/' + schemeActivationID,
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
@@ -56,55 +56,72 @@ $(document).ready(function () {
                     });
                 }
             });
-        }else{
-            $('#area-fund').empty();
-        }
-    });
-    $('#districtdistribution').on('submit',function(e){
-        $.ajaxSetup({
-        header:$('meta[name="_token"]').attr('content')
-    });
-        
-    var formData = $(this).serialize();
-        $.ajax({
-            type:"POST",
-            url: "{{url('/districtdistribution/') }}",
-            data:formData,
-            dataType: 'json',
-            success:function(data){
-                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
-                window.location = "{{url('districtdistribution')}}";
-                }
-                else {					//False Case: With error msg
-                $("#msg").html(data);	//$msg is the id of empty msg
-                }
-
-            },
-            error: function(data){
-                       // e.preventDefault(e);
-                        if( data.status === 422 ) {
-                           
-                          var errors = data.responseJSON.errors;
-                          errorHtml='<div class="alert alert-danger"><ul>';
-                          $.each( errors, function( key, value ) {
-                               errorHtml += '<li>' + value + '</li>';
-                         });
-                          errorHtml += '</ul></div>';
-                          $( '#formerrors' ).html( errorHtml );
-
-                    }
+        } else {
+                $('#area-fund').empty();
                 }
         });
-        return false;
+
+    $('#blockdistribution').on('submit', function (e) {
+    $.ajaxSetup({
+    header: $('meta[name="_token"]').attr('content')
+    })
+
+    var formData = $(this).serialize();
+        $.ajax({
+        type: "POST",
+                url: "{{url('/authority/blockwisescheme/') }}",
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                if (data[Object.keys(data)[0]] === 'SUCCESS') {//True Case i.e. passed validation
+                window.location = "{{url('authority/blockwisescheme')}}";
+                } else {					//False Case: With error msg
+                        $("#msg").html(data); //$msg is the id of empty msg
+                    }
+                },
+                error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            errorHtml='<div class="alert alert-danger">';
+                            $.each( errors, function( key, value ) {
+                             
+                                 console.log(key);
+                                 if (key.split(".")[1] + '.amountBlock'==key.split(".")[1] + '.' +key.split(".")[2])
+                                 {
+                                    erroramt = '<p>' + value + '</p>';
+                                    $( '#erroramt'+key.split(".")[1] ).html( erroramt );
+                                 }
+                                 else if(key.split(".")[1] + '.areaBlock'==key.split(".")[1] + '.' +key.split(".")[2])
+                                 {
+                                     erroraa = '<p>' + value + '</p>';
+                                     $( '#errorarea'+key.split(".")[1] ).html( erroraa );
+                                 }else if(key.split(".")[1] + '.idBlock'==key.split(".")[1] + '.' +key.split(".")[2])
+                                 {
+                                     errordist = '<p>' + value + '</p>';
+                                     $( '#errorblock'+key.split(".")[1] ).html( errordist );
+                                 }
+                                 else{
+                                     errorHtml += '<p>' + value + '</p>';
+                                     errorHtml += '</div>';
+                                     $( '#formerrors' ).html( errorHtml );
+                                 }
+                            });
+                     }
+                }
+        });
+    return false;
+    //e.preventDefault(e);
     });
 });
+
 function getArea($key){
         var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
-        var area ='#areadistrict'+ $key;
-        var amt = '#amtdistrict'+ $key;
-        var hiddenarea = '#hiddenarea'+$key
-        var hiddenamount = '#hiddenamount'+$key
+        var area ='#areablock'+ $key;
+        var amt = '#amtblock'+ $key;
+        var hiddenarea = '#hiddenarea'+$key;
+        var hiddenamount = '#hiddenamount'+$key;
 
   if( $('#selectall').prop('checked')){
       if($(area).val()<=0){
@@ -125,7 +142,24 @@ function getArea($key){
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
             if(total_fund <=0){
-               var errors = 'Financial Target Of This District Exceeded the limit';
+               var errors = 'Financial Target Of This Block Exceeded the limit';
+                errorHtml='<div class="alert alert-danger"><ul>';
+                                errorHtml += '<li>' + errors + '</li>';
+                                errorHtml += '</ul></div>';
+                              $( '#formerrors' ).html( errorHtml );
+            }else{
+                var errors = '';
+                errorHtml ='';
+                $( '#formerrors' ).html( errorHtml );
+            }
+        var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
+        var total_area = parseFloat(ta) + parseFloat($(hiddenarea).val()) ;
+            total_area = parseFloat(total_area) - $(area).val();
+
+            $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
+          var hiddenarea =  $(hiddenarea).val($(area).val());
+          if(total_area <=0){
+                var errors = 'Physical Target OF This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
                                 errorHtml += '</ul></div>';
@@ -158,7 +192,7 @@ function getArea($key){
             if(total_fund <=0){
                 $(area).css('border-color', 'red');
                 $("#area-fund #aaaaa:first-child input").css('border-color', 'red');
-                var errors = 'Financial Target Of This District Exceeded the limit';
+                var errors = 'Financial Target Of This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
                                 errorHtml += '</ul></div>';
@@ -177,7 +211,7 @@ function getArea($key){
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
             if(total_fund <=0){
-               var errors = 'Financial Target Of This District Exceeded the limit';
+               var errors = 'Financial Target Of This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
                                 errorHtml += '</ul></div>';
@@ -199,7 +233,7 @@ function getArea($key){
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
             var hiddenarea =  $(hiddenarea).val($(area).val());
             if(total_area <=0){
-                var errors = 'Physical Target OF This District Exceeded the limit';
+                var errors = 'Physical Target OF This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
                                 errorHtml += '</ul></div>';
@@ -216,7 +250,7 @@ function getArea($key){
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
           var hiddenarea =  $(hiddenarea).val($(area).val());
           if(total_area <=0){
-                var errors = 'Physical Target OF This District Exceeded the limit';
+                var errors = 'Physical Target OF This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
                                 errorHtml += '</ul></div>';

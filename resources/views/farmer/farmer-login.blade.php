@@ -18,73 +18,67 @@
                 <div style="font-family: Verdana; font-size: 20px; color: #fff; margin: 10px 0px; text-transform: uppercase;">Agriculture Department</div>
                 <div class="log-panel">
                     <div class="hd">Login / लॉगिन</div>
-            <div class="login-box-body">
-                <!--<p class="login-box-msg">Login / लॉगिन</p>-->
-
-                <form class="form-horizontal" method="POST" action="{{ route('farmer.login.submit') }}">
-                    {{ csrf_field() }}
-                    <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
-                        <label>Login Id is your Aadhaar Number / लॉगिन आईडी आपका आधार नंबर है</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="text" name="aadhaar" value="{{ old('aadhaar') }}" readonly="" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control" value="" maxlength="12" pattern="[0-9]+" required="">
-<!--                            <input type="text" class="form-control" name="aadhaar" value="{{ old('aadhaar') }}" required autofocus>-->
-
-                        </div>
-                        @if ($errors->has('aadhaar'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('aadhaar') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-                    <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label>Password is your Mobile Number  / पासवर्ड आपका मोबाइल नंबर है</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" name="password" readonly="" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control" required="">
-<!--                            <input id="password" type="password" class="form-control" name="password" required>-->
-                        </div>
-                        @if ($errors->has('password'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <center><a href="{{url('farmer/register')}}"><h4 style="color:maroon;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-4 col-md-offset-1">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                </label>
+                    <div class="login-box-body">
+                        <form class="form-horizontal" method="POST" action="{{ route('farmer.login.submit') }}">
+                            {{ csrf_field() }}
+                            <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
+                                <label style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login Id is your Aadhaar Number<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    लॉगिन आईडी आपका आधार नंबर है</label>
+                                <span class="clearfix"></span>
+                                <input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" >
+                                @if ($errors->has('aadhaar'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('aadhaar') }}</strong>
+                                </span>
+                                @endif
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                Forgot Your Password?
-                            </a>
-                        </div>
+                            <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
+                                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password is your Mobile Number<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    पासवर्ड आपका मोबाइल नंबर है</label>
+                                <span class="clearfix"></span>
+                                <input type="password" name="password"  id="password" autocomplete="off" class="form-control input-b-b" >
+
+                                @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <div class="">
+                                    <button type="submit" style="background-color:yellowgreen;color:#fff;border-color:#fff;" onclick="encrypt();" class="btn btn-block btn-primary" name="btn-login">Login / लॉगिन</button>
+                                </div>
+                            </div>
+<!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
+                            <p></p>
+                            <center><b>Helpline / Farmers Assistance Number : 0172-2571553</b></center>
+                            <center><b>हेल्पलाइन / किसान सहायता नं: 0172-2571553</b></center>
+                            <p></p>-->
+<!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
+                            <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>-->
+                            <div class="form-group">
+                        <center><a href="{{url('farmer/register')}}"><h4 style="color:green;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-8 col-md-offset-2">
-                            <button type="submit" style="background-color:maroon;color:#fff;border-color:maroon;" onclick="encrypt();" class="btn btn-block btn-primary" name="btn-login">Login / लॉगिन</button>
-                        </div>
+                            <div class="form-group ">
+                                <a class="btn btn-link" href="#">
+                                    Forgot Your Password?
+                                </a>
+                            </div>
+                        </form>
                     </div>
-                    <p style="border-bottom:1px solid #dbdbdb;"></p>
-                    <p></p>
-                    <center><b>Helpline / Farmers Assistance Number : 0172-2571553</b></center>
-                    <center><b>हेल्पलाइन / किसान सहायता नं: 0172-2571553</b></center>
+                </div><br>
+                <center><span style="color:white;" >Helpline / Farmers Assistance Number :<b> 0172-2571553</b></span</center>
+                <center><span style="color:white;">हेल्पलाइन / किसान सहायता नं:<b> 0172-2571553</b></span></center>
                      <p></p>
                     <p style="border-bottom:1px solid #dbdbdb;"></p>
-                    <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>
-                   
-                </form>
+                    <center><span style="color:white;">Powered by</span> <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>
+                <!-- /.login-box-body -->
             </div>
-            <!-- /.login-box-body -->
         </div>
+        
+        
         <!-- /.login-box -->
+
         @include('layouts.partials.script')
     </body>
 </html>

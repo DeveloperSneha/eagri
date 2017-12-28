@@ -22,10 +22,19 @@ class FarmerLoginController extends Controller {
 
     public function login(Request $request) {
         // Validate the form data
-        $this->validate($request, [
+//        $this->validate($request, [
+//            'aadhaar' => 'required',
+//            'password' => 'required'
+//        ]);
+        $rules = [
             'aadhaar' => 'required',
             'password' => 'required'
-        ]);
+        ];
+        $messages = [
+            'aadhaar.required'=>'Enter Your Aadhaar No. ',
+            'password.required'=>'Enter Your Mobile No.'
+        ];
+        $this->validate($request, $rules, $messages);
         // Attempt to log the user in
         if (Auth::guard('farmer')->attempt(['aadhaar' => $request->aadhaar, 'password' => $request->password], $request->remember)) {
             // if successful, then redirect to their intended location

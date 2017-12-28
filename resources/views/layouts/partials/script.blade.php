@@ -7,7 +7,7 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button);
 </script>
-
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- DataTables -->
@@ -34,7 +34,7 @@
 <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js ')}}"></script>
 <!-- datepicker -->
 <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js ')}}"></script>
-<script src='https://www.google.com/recaptcha/api.js'></script>
+
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js ')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
