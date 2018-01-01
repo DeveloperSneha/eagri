@@ -15,9 +15,13 @@ class AuthorityProfileController extends AuthorityController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-       // dd($profile);
-        return view('authority.profile', compact('profile'));
+       
+       //dd(Auth::User());
+        
+        $user = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+       // $user_desig = $user->load('userdesig')->where('idDesignation','=',);
+     //   dd($user_desig);
+        return view('authority.profile', compact('user','user_desig'));
     }
 
     /**

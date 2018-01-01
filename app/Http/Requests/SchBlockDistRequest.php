@@ -45,8 +45,8 @@ class SchBlockDistRequest extends FormRequest {
             $totalArea += $dis['areaBlock'];
             if (isset($dis['idBlock'])) {
                 $rules['blocks.' . $dis['idBlock'] . '.idBlock'] = 'unique:schemedistributionblock,idBlock,NULL,idBlock,idSchemeActivation,' . $this->idSchemeActivation;
-                $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required';
-                $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required';
+                $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required|numeric|min:0';
+                $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required|numeric|min:0';
             }
         }
 
@@ -76,6 +76,10 @@ class SchBlockDistRequest extends FormRequest {
             'blocks.*idBlock.unique' => 'This Scheme is Already Distributed To This Block',
             'blocks.*amountBlock.required' => 'Financial Target Must Not Be Empty',
             'blocks.*areaBlock.required' => 'Physical Target Must Not Be Empty',
+            'blocks.*amountBlock.numeric' => 'Financial Target Must Have Numeric Value ',
+            'blocks.*areaBlock.numeric' => 'Physical Target Must Have Numeric Value',
+            'blocks.*amountBlock.min' => 'Financial Target Must Have Positive Value',
+            'blocks.*areaBlock.min' => 'Physical Target Must Have Positive Value',
         ];
 
         return $messages;

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use DB;
+use Session;
 
 class AuthoritySchemeController extends AuthorityController {
 
@@ -16,8 +17,10 @@ class AuthoritySchemeController extends AuthorityController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+       // dd(Session::get('idDesignation'));
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-        $authority_dist = $authority->userdesig->district->idDistrict;
+        $user_desig = $authority->userdesig()->where('idDesignation',Session::get('idDesignation'))->first();
+        $authority_dist = $user_desig->district->idDistrict;
 //         dd($authority_dist);
         //$schemes = \App\FarmerAppliedScheme::orderBy('idAppliedScheme')->get();
         $schemes = DB::table('farmerapplied_scheme')
@@ -114,7 +117,8 @@ class AuthoritySchemeController extends AuthorityController {
 
     public function approvedScheme() {
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-        $authority_dist = $authority->userdesig->district->idDistrict;
+        $user_desig = $authority->userdesig()->where('idDesignation',Session::get('idDesignation'))->first();
+        $authority_dist = $user_desig->district->idDistrict;
         $schemes = DB::table('schemeappreject')
                 ->join('farmerapplied_scheme','schemeappreject.idAppliedScheme','=','farmerapplied_scheme.idAppliedScheme')
                 ->join('scheme','farmerapplied_scheme.idScheme','=','scheme.idScheme')
@@ -133,7 +137,8 @@ class AuthoritySchemeController extends AuthorityController {
 
     public function rejectedScheme() {
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-        $authority_dist = $authority->userdesig->district->idDistrict;
+        $user_desig = $authority->userdesig()->where('idDesignation',Session::get('idDesignation'))->first();
+        $authority_dist = $user_desig->district->idDistrict;
         $schemes = DB::table('schemeappreject')
                 ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
                 ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')

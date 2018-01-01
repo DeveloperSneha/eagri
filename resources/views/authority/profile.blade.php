@@ -6,19 +6,19 @@
             <div class="box-body box-profile">
                 <img class="profile-user-img img-responsive img-circle" alt="User profile picture" src="{{ asset('dist/img/user.jpg')}}">
 
-                <h3 class="profile-username text-center">{{ $profile->name }}</h3>
+                <h3 class="profile-username text-center">{{ $user->name }}</h3>
 
-                <p class="text-muted text-center"><strong>{{ $profile->userdesig->designation->designationName }}<strong></p>
+                <p class="text-muted text-center"><strong><strong></p>
 
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <b>District  <a class="pull-right">{{ $profile->userdesig->district->districtName }}</a></b>
+                        <b>District  <a class="pull-right">{{ $userdesig->district->districtName or ''}}</a></b>
                     </li>
                     <li class="list-group-item">
-                        <b>Section  <a class="pull-right">{{ $profile->userdesig->designation->section->sectionName }}</a></b>
+                        <b>Section  <a class="pull-right">{{ $userdesig->designation->section->sectionName or ''}}</a></b>
                     </li>
                     <li class="list-group-item">
-                        <b>Designation  <a class="pull-right">{{ $profile->userdesig->designation->designationName }}</a></b>
+                        <b>Designation  <a class="pull-right">{{ $userdesig->designation->designationName or ''}}</a></b>
                     </li>
                 </ul>
 
@@ -26,14 +26,14 @@
             </div>
         </div>
     </div>
-    @if($profile->isComplete == 'N')
+    @if($user->isComplete == 'N')
     <div class="col-sm-7">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>Complete Your Profile</strong>
             </div>
             <div class="panel-body">
-                {!! Form::open(['method' => 'PATCH', 'action' => ['Authority\AuthorityProfileController@update', $profile->idUser,],'class'=>'form-horizontal']) !!}
+                {!! Form::open(['method' => 'PATCH', 'action' => ['Authority\AuthorityProfileController@update', $user->idUser,],'class'=>'form-horizontal']) !!}
 
                 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                     {!! Form::label('Name :', null, ['class' => 'col-sm-4 control-label']) !!}
@@ -92,7 +92,7 @@
         </div>
     </div>
     @endif
-    @if($profile->isComplete == 'Y')
+    @if($user->isComplete == 'Y')
     <div class="col-sm-7">
         <div class="panel panel-success">
             <div class="panel-heading">Other Details</div>
@@ -100,35 +100,35 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Name</th>
-                        <td>{{ $profile->name }}</td>
+                        <td>{{ $user->name }}</td>
                     </tr>
                     <tr>
                         <th>Father Name</th>
-                        <td>{{ $profile->fatherName }}</td>
+                        <td>{{ $user->fatherName }}</td>
                     </tr>
                     <tr>
                         <th>Mother Name</th>
-                        <td>{{ $profile->motherName }}</td>
+                        <td>{{ $user->motherName }}</td>
                     </tr>
                     <tr>
                         <th>Date Of Birth</th>
-                        <td>{{ $profile->dob }}</td>
+                        <td>{{ $user->dob }}</td>
                     </tr>
                     <tr>
                         <th>Aadhaar</th>
-                        <td>{{ $profile->aadhaar }}</td>
+                        <td>{{ $user->aadhaar }}</td>
                     </tr>
                     <tr>
                         <th>Mobile</th>
-                        <td>{{ $profile->mobile }}</td>
+                        <td>{{ $user->mobile }}</td>
                     </tr>
                     <tr>
                         <th>Office Address</th>
-                        <td>{{ $profile->ofc_address }}</td>
+                        <td>{{ $user->ofc_address }}</td>
                     </tr>
                     <tr>
                         <th>Address</th>
-                        <td>{{ $profile->address }}</td>
+                        <td>{{ $user->address }}</td>
                     </tr>
                 </table>
             </div>

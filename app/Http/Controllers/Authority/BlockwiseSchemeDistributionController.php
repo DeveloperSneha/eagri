@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SchBlockDistRequest;
 use Auth;
 use DB;
-
+use Session;
 class BlockwiseSchemeDistributionController extends AuthorityController {
 
     /**
@@ -16,7 +16,8 @@ class BlockwiseSchemeDistributionController extends AuthorityController {
      */
     public function index() {
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-        $authority_dist = $authority->userdesig->district->idDistrict;
+        $user_desig = $authority->userdesig()->where('idDesignation',Session::get('idDesignation'))->first();
+        $authority_dist = $user_desig->district->idDistrict;
         $schblockdist = \App\SchBlockDistribution::where('schemeDistributionDistrict', '=', $authority_dist)->with('district')->get();
         $schact = ['' => 'Select Scheme'] + \App\SchDistrictDistribution::where('idDistrict', '=', $authority_dist)
                         ->with('schactivation', 'schactivation.scheme')

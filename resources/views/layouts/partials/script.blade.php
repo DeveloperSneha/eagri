@@ -42,6 +42,24 @@
  AdminLTE for demo purposes 
 <script src="dist/js/demo.js"></script>-->
 <script>
+    $(function() {
+	$("#feedback-tab").click(function() {
+		$("#feedback-form").toggle();
+	});
+
+	$("#feedback-form form").on('submit', function(event) {
+		var $form = $(this);
+		$.ajax({
+			type: $form.attr('method'),
+			url: $form.attr('action'),
+			data: $form.serialize(),
+			success: function() {
+				$("#feedback-form").toggle().find("textarea").val('');
+			}
+		});
+		event.preventDefault();
+	});
+    });
     $('.datepicker').datepicker({
       autoclose: true,
       format: 'dd-mm-yyyy',

@@ -25,12 +25,18 @@
                                 <label>USERNAME</label>
                                 <span class="clearfix"></span>
                                 <!--<input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" required="">-->
-                                <input type="text" name="userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control input-b-b" value="" maxlength="12"  >
+                                <input type="text" name="userName" id = "userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control input-b-b" value="" maxlength="12"  >
                                 @if ($errors->has('userName'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('userName') }}</strong>
                                 </span>
                                 @endif
+                            </div>
+                            <div class="form-group">
+                                <label>DESIGNATION</label>
+                                <select name="idDesignation" class="form-control" >
+                                    <option value=""> --- Select Designation ---</option>
+                                </select>
                             </div>
                             <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label>PASSWORD</label>
@@ -45,9 +51,9 @@
                             </div>
                             <div class="g-recaptcha" data-sitekey="6LebkD4UAAAAAExBzYddN9Lh3HIfQUiIz-LRyFCS"></div>
                             @if ($errors->has('g-recaptcha-response'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                </span>
+                            <span class="help-block">
+                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                            </span>
                             @endif
                             <div class="form-group">
                                 <div class="">
@@ -62,9 +68,9 @@
 <!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
                             <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>-->
                             <div class="form-group ">
-                                <a class="btn btn-link" href="#">
-                                    Forgot Your Password?
-                                </a>
+                                <!--                                <a class="btn btn-link" href="#">
+                                                                    Forgot Your Password?
+                                                                </a>-->
                             </div>
                         </form>
                     </div>
@@ -72,8 +78,48 @@
                 <!-- /.login-box-body -->
             </div>
         </div>
-         <!-- /.login-box -->
-         
+        <!-- /.login-box -->
+
         @include('layouts.partials.script')
+        <script>
+            $(document).ready(function() {
+                $('input[name="userName"]').on('change', function() {
+                    var userName = $(this).val();
+                    if(userName) {
+                        $.ajax({
+                            url: "{{url('/authority/user') }}"+'/' +userName + "/designations",
+                            type: "GET",
+                            dataType: "json",
+                            success:function(data) {
+                                $('select[name="idDesignation"]').empty();
+                                $.each(data, function(key, value) {
+                                    $('select[name="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                                });
+
+                            }
+                        });
+                    }else{
+                        $('select[name="idDesignation"]').empty();
+                    }
+                });
+                var cur_user = $('#userName').val();
+                
+                if(cur_user){
+                    $.ajax({
+                            url: "{{url('/authority/user') }}"+'/' +cur_user + "/designations",
+                            type: "GET",
+                            dataType: "json",
+                            success:function(data) {
+                                $('select[name="idDesignation"]').empty();
+                                $.each(data, function(key, value) {
+                                    $('select[name="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                                });
+
+                            }
+                        });
+
+                }
+            });
+        </script>
     </body>
 </html>

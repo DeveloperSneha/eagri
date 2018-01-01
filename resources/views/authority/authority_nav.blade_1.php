@@ -143,7 +143,7 @@
                     <li class="{{ checkActive(['/']) }}"><a href="#">Blacklisted Vendor</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview {{ checkActive(['authority/registeredfarmer','authority/cancelregfarmer','authority/blacklistedfarmer'])}}">
                 <a href="#">
                     <i class="fa fa-folder"></i> <span>Farmer Section</span>
                     <span class="pull-right-container">
@@ -151,9 +151,9 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Registered Farmer</a></li>
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Cancel Farmer Registration</a></li>
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Blacklisted Farmer</a></li>
+                    <li class="{{ checkActive(['authority/registeredfarmer']) }}"><a href="{{ url('/authority/registeredfarmer')}}">Registered Farmer</a></li>
+                    <li class="{{ checkActive(['authority/cancelregfarmer']) }}"><a href="{{ url('/authority/cancelregfarmer')}}">Cancel Farmer Registration</a></li>
+                    <li class="{{ checkActive(['authority/blacklistedfarmer']) }}"><a href="{{ url('/authority/blacklistedfarmer')}}">Blacklisted Farmer</a></li>
                 </ul>
             </li>
             <li class="treeview">

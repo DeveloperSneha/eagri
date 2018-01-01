@@ -15,10 +15,11 @@ class UserRegistrationController extends Controller {
      */
     public function index() {
         $users = \App\User::where('idUser', '>', 2)->get();
-        
+//        dd($users);
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         $designations = ['Select Designation'] + \App\Designation::pluck('designationName', 'idDesignation')->toArray();
+        
         return view('users.user_registration', compact('designations', 'users', 'sections', 'districts'));
     }
 
@@ -71,7 +72,7 @@ class UserRegistrationController extends Controller {
             $user_desig->save();
         }
         DB::commit();
-        return redirect('user-registration');
+        return redirect('authority/adduser');
     }
 
     /**
@@ -95,8 +96,8 @@ class UserRegistrationController extends Controller {
         $user = \App\User::where('idUser', '=', $id)->first();
         $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
         $user_desig = $user->userdesig()->with('designation')->get();
-      //  dd($user_desig);
-      
+//       dd($user_desig);
+//      dd($user_sect/ion);
         $users = \App\User::where('idUser', '>', 2)->get();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();

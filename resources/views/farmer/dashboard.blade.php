@@ -32,16 +32,24 @@
 @endforeach
 <div class="row">
     <div class="col-md-12 marquee_text">
-        <h3>Available Schemes</h3>
-        @if($districts->count() >0 )
-        @foreach ($districts as $value)
-        <a href="{{url('/farmer/scheme/'.$value->idScheme.'/apply')}}">
-            <blink class="blink"> {{  $value->schemeName  }}<br></blink>
-        </a>
-        @endforeach
-        @else
-        <span>No Scheme Is Available For You </span>
-        @endif
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong> Availabe Scheme</strong></div>
+            <div class="panel-body">
+                @if($districts->count() >0 )
+                    @foreach ($districts as $value)
+                        @if($farmer->schemes->contains('idScheme', $value->idScheme))
+                        <strong> {{  $value->schemeName  }} <span class=""> : Applied</span><br></strong>
+                        @else
+                        <a href="{{url('/farmer/scheme/'.$value->idScheme.'/apply')}}">
+                            <blink class="blink"> {{  $value->schemeName  }}<br></blink>
+                        </a>
+                        @endif
+                    @endforeach
+                @else
+                <span>No Scheme Is Available For You </span>
+                @endif
+            </div>
+        </div>
     </div>
 </div>
 @stop

@@ -20,7 +20,6 @@
                     @endif
                 </strong>
             </span>
-            
         </div>
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -41,9 +40,8 @@
             <div class="col-sm-4">
                 <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >
                     @foreach($user_desig as $val)
-                    <option value="{{ $val->designation->idDesignation }}" selected="selected" >{{ $val->designation->designationName }}</option>
-                    
-                    @endforeach
+                    <option value="{{ $val->designation->idDesignation }}" selected="selected" disabled="disabled">{{ $val->designation->designationName }}</option>
+                    @endforeach 
                 </select>
             </div>
             
@@ -52,7 +50,7 @@
         <div class="form-group">
             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                <select name = "designations[]"  id="idDesignation" class="form-control select2" multiple="multiple" >
+                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >
                 </select>
             </div>
             <span class="help-block">
@@ -106,13 +104,10 @@
                 @foreach($users as $var)
                 <tr>
                     <td>{{ $var->idUser }}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $var->userdesig->district->districtName or ''}}</td>
+                    <td>{{ $var->userdesig->designation->section->sectionName or ''}}</td>
                     <td>{{ $var->userName}}</td>
-                    <td>@foreach($var->userdesig as $desig)
-                        {{$desig->designation->designationName or ''}} ,<br>
-                        @endforeach
-                    </td>
+                    <td>{{ $var->userdesig->designation->designationName or ''}} </td>
                     <td>
                         {{ Form::open(['route' => ['user-registration.destroy', $var->idUser], 'method' => 'delete']) }}
                         <a href='{{url('/user-registration/'.$var->idUser.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
@@ -129,10 +124,8 @@
 @section('script')
 <script>
     $(document).ready(function() {
-      
         $('select[name="idSection"]').on('change', function() {
-          
-        var sectionID = $(this).val();
+            var sectionID = $(this).val();
             if(sectionID) {
                 $.ajax({
                     url: "{{url('/section') }}"+'/' +sectionID + "/designations",
@@ -158,30 +151,15 @@
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
-                      @if(isset($user))
-                          var myPlayList = [];
-                        @foreach($user_desig as $val) 
-                    
-                     var h = {{$val->designation->idDesignation}}; 
-                          myPlayList.push(h);
-                        @endforeach
-                           
-                           console.log(myPlayList);
-                            $.each(data, function(key, value) {   
-                                console.log(key);
-                                if(myPlayList!= key){
-                                    
-                                    $('select[id="idDesignation"]').append('<option value="'+ key +'" >'+ value +'</option>');
-                                }
-                                else{
-            
-                             $('select[id="idDesignation"]:disabled').append('<option value="'+ key +'" >'+ value +'</option>');
-                                }                            
-                            });
-                      
-                      @endif
+//                        $(".select2-selection__choice").prop('disabled', true);
+                        console.log($("#idDesignation option:selected"));
+                        $.each(data, function(key, value) {
+                            $('select[id="idDesignation"]').append('<option value="'+ key +'" >'+ value +'</option>');
+                        });
+                        
                     }
-                });                    
+                });
+                    
         }
  });
 

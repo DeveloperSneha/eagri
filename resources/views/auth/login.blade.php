@@ -62,9 +62,9 @@
 <!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
                             <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>-->
                             <div class="form-group ">
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+<!--                                <a class="btn btn-link" href="{{ route('password.request') }}">
                                     Forgot Your Password?
-                                </a>
+                                </a>-->
                             </div>
                         </form>
                     </div>

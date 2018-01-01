@@ -78,6 +78,7 @@ Route::prefix('farmer')->group(function() {
 
 // Designation wise Route
 Route::prefix('authority')->group(function() {
+    Route::get('/user/{user}/designations', 'Auth\AuthorityLoginController@getDesignation');
     Route::get('/login', 'Auth\AuthorityLoginController@showLoginForm')->name('authority.login');
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
@@ -90,4 +91,8 @@ Route::prefix('authority')->group(function() {
     Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');
     Route::get('/schemedistrict/{id}', 'Authority\BlockwiseSchemeDistributionController@getSchemeDist');
     Route::resource('/blockwisescheme', 'Authority\BlockwiseSchemeDistributionController');
+    Route::get('/registeredfarmer', 'Authority\AuthorityFarmerController@registeredFarmer');
+    Route::get('/cancelregfarmer', 'Authority\AuthorityFarmerController@cancelReg');
+    Route::get('/blacklistedfarmer', 'Authority\AuthorityFarmerController@blacklistedFarmer');
+    
 });

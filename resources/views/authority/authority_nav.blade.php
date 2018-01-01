@@ -1,4 +1,4 @@
-<header class="main-header">
+<header class="main-header navbar navbar-fixed-top head-top">
     <!-- Logo -->
     <a href="{{ url('/authority')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -38,58 +38,26 @@
 
                     </div>
                 </li>
-<!--                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('dist/img/user.jpg') }}" class="user-image" alt="User Image">
-                        @auth<span class="hidden-xs">{{ Auth::user()->userName }}</span>@endauth
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                        <i class="fa fa-user"></i>&nbsp;&nbsp;{{ Auth::user()->userName }} <span class="caret"></span>
+                        <!--@auth <p>{{ Auth::user()->userName }}</p> @endauth-->
                     </a>
+
                     <ul class="dropdown-menu">
-                         User image 
-                        <li class="user-header">
-                            <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
+                        <li>
+                            <a href="{{ route('authority.logout') }}"
+                               onclick="event.preventDefault();
+                                       document.getElementById('logout-form').submit();">
+                                <i class="fa fa-fw fa-power-off"></i>&nbsp;&nbsp; Logout
+                            </a>
 
-                            @auth <p>{{ Auth::user()->userName }}</p> @endauth
-                        </li>
-                         Menu Footer
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="{{url('/authority/profile')}}" class="btn btn-default btn-flat">Profile</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="{{ route('authority.logout') }}" class="btn btn-default btn-flat"
-                                   onclick="event.preventDefault();
-                                           document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ route('authority.logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </div>
+                            <form id="logout-form" action="{{ route('authority.logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </li>
                     </ul>
-                </li>-->
-
-            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    <i class="fa fa-user"></i>&nbsp;&nbsp;{{ Auth::user()->userName }} <span class="caret"></span>
-                                    <!--@auth <p>{{ Auth::user()->userName }}</p> @endauth-->
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                           <i class="fa fa-fw fa-power-off"></i>&nbsp;&nbsp; Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
+                </li>
             </ul>
         </div>
     </nav>
@@ -99,47 +67,26 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <center><div id="google_translate_element"  class="sidebar-form"></div></center>
-        <!-- Sidebar user panel -->
-<!--        <div class="user-panel">
-            <div class="pull-left image">
-                <img src="{{ asset('dist/img/user.jpg') }}" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                @auth <p>{{ Auth::user()->name }}</p> @endauth
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
-        </div>-->
-        <!-- search form -->
-<!--        <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                    </button>
-                </span>
-            </div>
-        </form>-->
-        <!-- /.search form -->
-        <!-- sidebar menu: : style can be found in sidebar.less -->
+
         <ul class="sidebar-menu" data-widget="tree">
             <li class="">
                 <a href="{{ url('/authority')}}">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
-            <li class="">
-                <a href="{{ url('/authority/profile')}}">
-                    <i class="fa fa-user-circle"></i> <span>Profile</span>
+            <li class="{{ checkActive(['authority/profile']) }}">
+                    <a href="{{ url('/authority/profile')}}">
+                        <span>Profile</span>
+                    </a>
+            </li>
+            <li class="{{ checkActive(['/authority/adduser']) }}">
+                <a href="{{ url('/authority/adduser')}}">
+                    <span>Add User</span>
                 </a>
             </li>
-<!--            <li class="">
-                <a href="{{ url('/authority/adduser') }}">
-                    <i class="fa fa-user"></i> <span>Add User</span>
-                </a>
-            </li>-->
             <li class="treeview {{ checkActive(['authority/schemes','authority/schemes/*','authority/approvedscheme','authority/rejectedscheme','authority/blockwisescheme'])}}">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Scheme</span>
+                    <span>Scheme</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -148,12 +95,12 @@
                     <li class="{{ checkActive(['authority/schemes']) }}"><a href="{{ url('/authority/schemes')}}">Scheme For Approval</a></li>
                     <li class="{{ checkActive(['authority/approvedscheme']) }}"><a href="{{ url('/authority/approvedscheme')}}">Approved Scheme</a></li>
                     <li class="{{ checkActive(['authority/rejectedscheme']) }}"><a href="{{ url('/authority/rejectedscheme')}}">Rejected Scheme</a></li>
-                    <li class="{{ checkActive(['authority/blockwisescheme']) }}"><a href="{{ url('/authority/blockwisescheme') }}">Scheme Distribution Blockwise</a></li>
+                    <li class="{{ checkActive(['authority/blockwisescheme']) }}"><a href="{{ url('/authority/blockwisescheme') }}">Scheme Distribution Block</a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Vendor management</span>
+                    <span>Vendor management</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -164,31 +111,31 @@
                     <li class="{{ checkActive(['/']) }}"><a href="#">Blacklisted Vendor</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview {{ checkActive(['authority/registeredfarmer','authority/cancelregfarmer','authority/blacklistedfarmer'])}}">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Farmer Section</span>
+                    <span>Farmer Section</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Registered Farmer</a></li>
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Cancel Farmer Registration</a></li>
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Blacklisted Farmer</a></li>
+                    <li class="{{ checkActive(['authority/registeredfarmer']) }}"><a href="{{ url('/authority/registeredfarmer')}}">Registered Farmer</a></li>
+                    <li class="{{ checkActive(['authority/cancelregfarmer']) }}"><a href="{{ url('/authority/cancelregfarmer')}}">Cancel Farmer Registration</a></li>
+                    <li class="{{ checkActive(['authority/blacklistedfarmer']) }}"><a href="{{ url('/authority/blacklistedfarmer')}}">Blacklisted Farmer</a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-folder"></i> <span>Reports</span>
+                    <span>Reports</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                   
+
                 </ul>
             </li>
-         </ul>
+        </ul>
     </section>
     <!-- /.sidebar -->
 </aside>

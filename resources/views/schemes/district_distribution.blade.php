@@ -29,14 +29,6 @@
             <div class="col-sm-2 checkbox-inline">
                 <input type="checkbox" class="select-all" id="selectall"/>
             </div>
-            <span class="help-block">
-                    <strong>
-                        @if($errors->has('district'))
-                        <p>{{ $errors->first('district') }}</p>
-                        @endif
-                    </strong>
-                </span>
-
         </div>
         
         <div class="col-sm-8 col-sm-offset-2 ">

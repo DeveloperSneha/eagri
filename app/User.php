@@ -5,8 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
-class User extends Authenticatable
-{
+
+class User extends Authenticatable {
+
     use Notifiable;
 
     /**
@@ -16,7 +17,7 @@ class User extends Authenticatable
      */
     protected $primaryKey = 'idUser';
     protected $fillable = [
-      'idUser',  'name','userName','fatherName','motherName','dob','address','ofc_address','password','aadhaar','mobile'
+        'idUser', 'name', 'userName', 'fatherName', 'motherName', 'dob', 'address', 'ofc_address', 'password', 'aadhaar', 'mobile'
     ];
 
     /**
@@ -27,10 +28,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
-     public function userdesig() {
-        return $this->hasOne(UserDesignationDistrictMapping::class, 'idUser', 'idUser');
+
+    public function userdesig() {
+        return $this->hasMany(UserDesignationDistrictMapping::class, 'idUser', 'idUser');
     }
+
     public function setDobAttribute($date) {
         if (strlen($date) > 0)
             $this->attributes['dob'] = Carbon::createFromFormat('d-m-Y', $date);
@@ -44,4 +46,13 @@ class User extends Authenticatable
             return Carbon::parse($date)->format('d-m-Y');
         return '';
     }
+
+    public function hasDesignation($desig) {
+        if (is_string($desig)) {
+            return $this->userdesig->contains('name', $desig);
+        }
+
+        return !!$desig->intersect($this->userdesig)->count();
+    }
+
 }

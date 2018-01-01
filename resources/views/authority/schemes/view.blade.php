@@ -1,7 +1,7 @@
 @extends('authority.authority_layout')
 @section('content')
 <div class="panel panel-default">
-    <div class="panel-heading"><strong>Schemes for Apporval</strong></div>
+    <div class="panel-heading"><strong>Schemes for Approval</strong></div>
     <div class="panel-body">
         {!! Form::open(['url' => 'authority/schemes','class'=>'form-horizontal']) !!}
         <input type="hidden" name="idAppliedScheme" value="{{$farmer_scheme->idAppliedScheme}}">

@@ -1,4 +1,4 @@
-<header class="main-header">
+<header class="main-header navbar navbar-fixed-top head-top">
     <!-- Logo -->
     <a href="{{ url('/farmer')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -45,13 +45,13 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="{{ route('logout') }}"
+                                        <a href="{{ route('farmer.logout') }}"
                                            onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
                                            <i class="fa fa-fw fa-power-off"></i>&nbsp;&nbsp; Logout
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ route('farmer.logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
@@ -139,13 +139,13 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="active">
+            <li class="{{ checkActive(['farmer'])}}">
                 <a href="{{ url('/farmer')}}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
             @if(count($farmer->schemes))
-            <li>
+            <li class="{{ checkActive(['farmer/schemes'])}}">
                 <a href="{{ url('/farmer/schemes')}}">
                     <i class="fa fa-cog"></i> <span>Schemes</span>
                 </a>

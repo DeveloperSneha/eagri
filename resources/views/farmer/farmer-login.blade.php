@@ -60,9 +60,9 @@
                         <center><a href="{{url('farmer/register')}}"><h4 style="color:green;"><b>New Registration / नया पंजीकरण</b></h4></a></center>
                     </div>
                             <div class="form-group ">
-                                <a class="btn btn-link" href="#">
+<!--                                <a class="btn btn-link" href="#">
                                     Forgot Your Password?
-                                </a>
+                                </a>-->
                             </div>
                         </form>
                     </div>

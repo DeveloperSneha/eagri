@@ -85,8 +85,6 @@ $(document).ready(function () {
                             var errors = data.responseJSON.errors;
                             errorHtml='<div class="alert alert-danger">';
                             $.each( errors, function( key, value ) {
-                             
-                                 console.log(key);
                                  if (key.split(".")[1] + '.amountBlock'==key.split(".")[1] + '.' +key.split(".")[2])
                                  {
                                     erroramt = '<p>' + value + '</p>';
@@ -102,12 +100,14 @@ $(document).ready(function () {
                                      $( '#errorblock'+key.split(".")[1] ).html( errordist );
                                  }
                                  else{
+                                     errorHtml='<div class="alert alert-danger"><ul>';
                                      errorHtml += '<p>' + value + '</p>';
                                      errorHtml += '</div>';
                                      $( '#formerrors' ).html( errorHtml );
                                  }
                             });
                      }
+                     
                 }
         });
     return false;

@@ -17,7 +17,10 @@ class UserDesignationDistrictMapping extends Model {
 
     public function designation() {
         return $this->belongsTo(Designation::class, 'idDesignation', 'idDesignation');
-        
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class,'idUser','idUser');
     }
 
 }

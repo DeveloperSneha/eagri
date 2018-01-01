@@ -84,8 +84,8 @@ $(document).ready(function () {
                        // e.preventDefault(e);
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
-                            errorHtml='<div class="alert alert-danger"><ul>';
-                            $.each( errors, function( key, value ) {
+                            console.log(errors);
+                            $.each( errors, function( key, value ) {                                
                                if (key.split(".")[1] + '.amountDistrict'==key.split(".")[1] + '.' +key.split(".")[2])
                                  {
                                     erroramt = '<p class="help-block">' + value + '</p>';
@@ -101,6 +101,7 @@ $(document).ready(function () {
                                      $( '#errordist'+key.split(".")[1] ).html( errordist );
                                  }
                                  else{
+                                     errorHtml='<div class="alert alert-danger"><ul>';
                                      errorHtml += '<li>' + value + '</li>';
                                      errorHtml += '</ul></div>';
                                      $( '#formerrors' ).html( errorHtml );

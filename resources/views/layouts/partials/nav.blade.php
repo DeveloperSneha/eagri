@@ -1,4 +1,4 @@
-<header class="main-header">
+<header class="main-header navbar  navbar-fixed-top head-top">
     <!-- Logo -->
     <a href="{{ url('/')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->

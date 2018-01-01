@@ -28,7 +28,7 @@
             <div class="col-sm-5">
                 <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >
                     @foreach($step as $val)
-                    <option value="{{ $val->designation->idDesignation }}" selected="selected" disabled="disabled">{{ $val->designation->designationName }}</option>
+                    <option value="{{ $val->designation->idDesignation }}" selected="selected">{{ $val->designation->designationName }}</option>
                     @endforeach 
                 </select>
             </div>
@@ -103,8 +103,8 @@
                     </td>
                     <td>
                         {{ Form::open(['route' => ['workflow.destroy', $var->idWorkflow], 'method' => 'delete']) }}
-                        <a href='#' class="btn btn-xs btn-warning" disabled>Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit" disabled>Delete</button>
+                        <a href='{{url('/workflow/'.$var->idWorkflow.'/edit')}}' class="btn btn-xs btn-warning" >Edit</a>
+                        <button class="btn btn-xs btn-danger" type="submit" >Delete</button>
                         {{ Form::close() }}
                     </td>
                 </tr>
