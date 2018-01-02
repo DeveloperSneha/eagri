@@ -15,12 +15,20 @@ class UserDesignationDistrictMapping extends Model {
         return $this->belongsTo(District::class, 'idDistrict', 'idDistrict');
     }
 
+    public function block() {
+        return $this->belongsTo(Block::class, 'idBlock', 'idBlock');
+    }
+
+    public function village() {
+        return $this->belongsTo(Village::class, 'idVillage', 'idVillage');
+    }
+    
     public function designation() {
         return $this->belongsTo(Designation::class, 'idDesignation', 'idDesignation');
     }
 
     public function user() {
-        return $this->belongsTo(User::class,'idUser','idUser');
+        return $this->belongsTo(User::class, 'idUser', 'idUser');
     }
 
 }

@@ -14,13 +14,13 @@
             <div class="col-sm-5">
                 {!! Form::select('idSection',$sections,(isset($workflow) ? $section : null),['class' => 'form-control','id'=>'section']) !!}
             </div>
-           <span class="help-block">
+            <span class="help-block">
                     <strong>
                         @if($errors->has('idSection'))
                         <p>{{ $errors->first('idSection') }}</p>
                         @endif
                     </strong>
-                </span> 
+            </span> 
         </div>
         @if(isset($workflow))
         <div class="form-group">
@@ -32,7 +32,6 @@
                     @endforeach 
                 </select>
             </div>
-            
         </div>
         @else
         <div class="form-group">
@@ -62,12 +61,9 @@
                         @endif
                     </strong>
                 </span> 
-        </div>  
-
-
+        </div> 
     </div>
     <div class="panel-footer">
-
         @if(isset($workflow))
         <!--{!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}-->
 	    <button type="submit" class="btn btn-danger">Update</button>
@@ -119,7 +115,6 @@
     $(document).ready(function () {
         $('select[name="idSection"]').on('change', function () {
             var sectionID = $(this).val();
-
             if (sectionID) {
                 $.ajax({
                     url: "{{url('/section') }}" + '/' + sectionID + "/designations",
@@ -130,67 +125,37 @@
                         $.each(data, function (key, value) {
                             $('select[id="idDesignation"]').append('<option value="' + key + '">' + value + '</option>');
                         });
-
                     }
                 });
             } else {
                 $('select[id="idDesignation"]').empty();
             }
         });
-        
         var cur_section = $("#section option:selected").val();
         if (cur_section) {
             $.ajax({
                 url: "{{url('/section') }}" + '/' + cur_section + "/designations",
                 type: "GET",
                 dataType: "json",
-                success: function (data) {
-                    
-                    var selectedOptions = [];
-                        $('#idDesignation option:selected').each(function (index, option) { 
-                            var value = $(this).val();
-                               if($.trim(value)){
-                                   selectedOptions.push(value);
-                               }
-                       }); 
-                    console.log(selectedOptions);
-                    
-                    var values = [];
-                    $.each(data, function (key, value) {
-                      if($.trim(value)){
-                                   values.push(key);
-                               }
-                    });
-                    console.log(values);
-                    var difference = [];
-                        jQuery.grep(values, function(el) {
-                               if (jQuery.inArray(el, selectedOptions) == -1) difference.push(el);
-                       });
-                     console.log(difference); console.log(data); 
-                     $.each(data, function (key, value) {
-                       
-                       var diff = key;
-                      
-                        if (difference.indexOf(diff)) {
-                         
-                           $('select[id="idDesignation"]').append('<option disabled= "disabled" value="' + key + '" >' + value + '</option>');
-                            
-                             }else{
-                                  
-                                 $('select[id="idDesignation"]').append('<option  value="' + key + '" >' + value + '</option>');
-                             }
-                         
-
-                    });
-
+                success:function(data) {
+                    @if(isset($workflow))
+                        var myPlayList = [];
+                        @foreach($step as $val)
+                        var h = {{$val->designation->idDesignation}}; 
+                        myPlayList.push(h.toString());
+                        @endforeach
+                        $.each(data, function(key, value) {
+                            if($.inArray(key,myPlayList) === -1){
+                                $('select[id="idDesignation"]').append('<option value="'+ key +'" >'+ value +'</option>');
+                                }
+                                else{
+                                $('select[id="idDesignation"]:selected').append('<option value="'+ key +'" >'+ value +'</option>');
+                                }                            
+                        });
+                    @endif
                 }
-
             });
-
         }
-        
-
     });
-
 </script>
 @stop

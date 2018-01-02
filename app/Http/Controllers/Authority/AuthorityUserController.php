@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Session;
 use Auth;
 use DB;
+use Gate;
 
 class AuthorityUserController extends AuthorityController {
 
@@ -16,14 +17,14 @@ class AuthorityUserController extends AuthorityController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        if (Gate::denies('add-user'))
+            return deny();
         $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $user_desig = $authority->userdesig()->where('idDesignation', Session::get('idDesignation'))->first();
         $authority_dist = $user_desig->district->idDistrict;
-        //   $users = \App\User::load('userdesig')->where('idDistrict', '=', $authority_dist)->get();
-
         $users = \App\User::whereHas('userdesig', function ($query) use ($authority_dist) {
                     $query->where('idDistrict', $authority_dist);
-                })->get();
+                })->where('idUser', '!=', Auth::User()->idUser)->get();
 
         $sch_blocks = ["" => 'Select Block'] + \App\Block::where('idDistrict', '=', $authority_dist)->get()->pluck('blockName', 'idBlock')->toArray();
         $designations = \App\Designation::where("idSection", $user_desig->designation->idSection)
@@ -82,7 +83,7 @@ class AuthorityUserController extends AuthorityController {
             $user_desig->save();
         }
         DB::commit();
-        return redirect('user-registration');
+        return redirect('authority/adduser');
     }
 
     /**
@@ -102,14 +103,21 @@ class AuthorityUserController extends AuthorityController {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-//        $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-//        $user_desig = $authority->userdesig()->where('idDesignation', Session::get('idDesignation'))->first();
-//        $authority_dist = $user_desig->district->idDistrict;
-//        //   $users = \App\User::load('userdesig')->where('idDistrict', '=', $authority_dist)->get();
-//
-//        $users = \App\User::whereHas('userdesig', function ($query) use ($authority_dist) {
-//                    $query->where('idDistrict', $authority_dist);
-//                })->get();
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+        $authority_desig = $authority->userdesig()->where('idDesignation', Session::get('idDesignation'))->first();
+        $authority_dist = $authority_desig->district->idDistrict;
+        $users = \App\User::whereHas('userdesig', function ($query) use ($authority_dist) {
+                    $query->where('idDistrict', $authority_dist);
+                })->where('idUser', '!=', Auth::User()->idUser)->get();
+        $sch_blocks = ["" => 'Select Block'] + \App\Block::where('idDistrict', '=', $authority_dist)->get()->pluck('blockName', 'idBlock')->toArray();
+        $user_block = $user->userdesig()->with('block')->get()->pluck('block.idBlock')->unique();
+
+        $designations = \App\Designation::where("idSection", $authority_desig->designation->idSection)
+                        ->pluck("designationName", "idDesignation")->toArray();
+        $userdesig = $user->userdesig->pluck("idDesignation")->toArray();
+        // dd($userdesig);
+        return view('authority.adduser', compact('sch_blocks', 'designations', 'users', 'user', 'user_block', 'userdesig'));
     }
 
     /**
@@ -120,7 +128,52 @@ class AuthorityUserController extends AuthorityController {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        //   dd($request->idBlock);
+        $rules = [
+            'idBlock' => 'required',
+            'idDesignation' => 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
+            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+        ];
+        if (count($request->designations) == 0) {
+            $rules += ['designation' => 'required'];
+        }
+        $message = [
+            'idBlock.required' => 'Block Must be selected',
+            'designation.required' => 'Select Atleast OneDesignation.',
+            'idDesignation.unique' => 'User With This Designation has already been registered.',
+            'userName.required' => 'UserName Must Not Be Empty.'
+        ];
+        $this->Validate($request, $rules, $message);
+
+
+        $authority = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+        $authority_desig = $authority->userdesig()->where('idDesignation', Session::get('idDesignation'))->first();
+        $authority_dist = $authority_desig->district->idDistrict;
+
+
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $user->userName = $request->userName;
+        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
+        // dd($old_ids);
+        $user_designations = new \Illuminate\Database\Eloquent\Collection();
+        foreach ($request->designations as $var) {
+            $user_desig = \App\UserDesignationDistrictMapping::firstOrNew(['idDesignation' => $var, 'idDistrict' => $authority_dist, 'idBlock' => $request->idBlock, 'idUser' => $user->idUser]);
+            $user_designations->add($user_desig);
+        }
+        $new_ids = $user_designations->pluck('iddesgignationdistrictmapping')->toArray();
+
+        //  dd($new_ids);
+        $detach = array_diff($old_ids, $new_ids);
+        // dd($detach);
+        DB::beginTransaction();
+        $user->update();
+        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
+
+
+        $user->userdesig()->saveMany($user_designations);
+
+        DB::commit();
+        return redirect('authority/adduser');
     }
 
     /**

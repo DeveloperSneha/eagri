@@ -79,11 +79,14 @@
                         <span>Profile</span>
                     </a>
             </li>
-            <li class="{{ checkActive(['/authority/adduser']) }}">
+            @can('add-user')
+            <li class=" {{ checkActive(['authority/adduser','authority/adduser/*/edit']) }}">
                 <a href="{{ url('/authority/adduser')}}">
                     <span>Add User</span>
                 </a>
             </li>
+            @endcan
+            
             <li class="treeview {{ checkActive(['authority/schemes','authority/schemes/*','authority/approvedscheme','authority/rejectedscheme','authority/blockwisescheme'])}}">
                 <a href="#">
                     <span>Scheme</span>
@@ -120,7 +123,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ checkActive(['authority/registeredfarmer']) }}"><a href="{{ url('/authority/registeredfarmer')}}">Registered Farmer</a></li>
-                    <li class="{{ checkActive(['authority/cancelregfarmer']) }}"><a href="{{ url('/authority/cancelregfarmer')}}">Cancel Farmer Registration</a></li>
+<!--                    <li class="{{ checkActive(['authority/cancelregfarmer']) }}"><a href="{{ url('/authority/cancelregfarmer')}}">Cancel Farmer Registration</a></li>-->
                     <li class="{{ checkActive(['authority/blacklistedfarmer']) }}"><a href="{{ url('/authority/blacklistedfarmer')}}">Blacklisted Farmer</a></li>
                 </ul>
             </li>

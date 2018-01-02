@@ -159,29 +159,22 @@
                     dataType: "json",
                     success:function(data) {
                       @if(isset($user))
-                          var myPlayList = [];
-                        @foreach($user_desig as $val) 
-                    
-                     var h = {{$val->designation->idDesignation}}; 
-                          myPlayList.push(h);
+                        var myPlayList = [];
+                        @foreach($user_desig as $val)
+                        var h = {{$val->designation->idDesignation}}; 
+                        myPlayList.push(h.toString());
                         @endforeach
-                           
-                           console.log(myPlayList);
-                            $.each(data, function(key, value) {   
-                                console.log(key);
-                                if(myPlayList!= key){
-                                    
-                                    $('select[id="idDesignation"]').append('<option value="'+ key +'" >'+ value +'</option>');
+                        $.each(data, function(key, value) {
+                            if($.inArray(key,myPlayList) === -1){
+                                $('select[id="idDesignation"]').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }
                                 else{
-            
-                             $('select[id="idDesignation"]:disabled').append('<option value="'+ key +'" >'+ value +'</option>');
+                                $('select[id="idDesignation"]:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            
                             });
-                      
-                      @endif
+                        @endif
                     }
-                });                    
+            });                    
         }
  });
 

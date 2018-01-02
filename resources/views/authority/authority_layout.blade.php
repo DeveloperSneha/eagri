@@ -20,10 +20,11 @@
                 <!-- Main content -->
                 <section class="content">
                     @if(session()->has('message'))
-                    <div class="alert alert-info">
+                    <ul class="alert alert-warning">
                         {{ session()->get('message') }}
-                    </div>
+                    </ul>
                     @endif
+                    @include('flash::message')
                     @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>

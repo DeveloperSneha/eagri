@@ -33,6 +33,10 @@ class User extends Authenticatable {
         return $this->hasMany(UserDesignationDistrictMapping::class, 'idUser', 'idUser');
     }
 
+    public function designations() {
+        return $this->hasMany(PermissionDesig::class, 'idPermission', 'idPermission');
+    }
+
     public function setDobAttribute($date) {
         if (strlen($date) > 0)
             $this->attributes['dob'] = Carbon::createFromFormat('d-m-Y', $date);
@@ -47,12 +51,18 @@ class User extends Authenticatable {
         return '';
     }
 
-    public function hasDesignation($desig) {
-        if (is_string($desig)) {
-            return $this->userdesig->contains('name', $desig);
+    public function hasDesignation($designation) {
+       // dd($designation->contains('idDesignation', 4));
+        foreach($designation as $desig){
+            return $this->userdesig->contains('idDesignation', $desig->idDesignation);
+          //  dd($designation->contains('idDesignation', 4));
         }
-
-        return !!$desig->intersect($this->userdesig)->count();
+//        dd($designation->contains('idDesignation', 4));
+//        
+//        if (is_string($designation)) {
+//            return $this->userdesig->contains('idDesignation', $designation->idDesigantion);
+//        }
+//
+//        return !!$designation->intersect($this->userdesig)->count();
     }
-
 }

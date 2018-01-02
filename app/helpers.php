@@ -58,3 +58,10 @@ function getSubScheme() {
     $subschemes = ['' => 'Select SubScheme'] + \App\SubScheme::orderBy('name')->pluck('name', 'id')->toArray();
     return $subschemes;
 }
+function deny($redirect = '') {
+  if (strlen($redirect) > 0)
+    return redirect($redirect);
+//  abort(403);
+  flash()->warning("You don't have access to this resource!!");
+  return redirect('/authority');
+}
