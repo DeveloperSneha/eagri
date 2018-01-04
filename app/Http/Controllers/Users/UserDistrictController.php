@@ -15,6 +15,7 @@ class UserDistrictController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+       // $user_list = \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $users = ['Select User']+\App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
