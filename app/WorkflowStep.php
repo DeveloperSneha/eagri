@@ -14,6 +14,9 @@ class WorkflowStep extends Model {
     public function designation() {
         return $this->belongsTo(Designation::class, 'idDesignation', 'idDesignation');
     }
+    public function section() {
+        return $this->belongsTo(Section::class, 'idSection', 'idSection');
+    }
     
 
 }

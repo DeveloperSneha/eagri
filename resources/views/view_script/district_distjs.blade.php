@@ -84,7 +84,6 @@ $(document).ready(function () {
                        // e.preventDefault(e);
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
-                            console.log(errors);
                             $.each( errors, function( key, value ) {                                
                                if (key.split(".")[1] + '.amountDistrict'==key.split(".")[1] + '.' +key.split(".")[2])
                                  {
@@ -107,6 +106,7 @@ $(document).ready(function () {
                                      $( '#formerrors' ).html( errorHtml );
                                  }
                             });
+                           
                      }
                 }
         });

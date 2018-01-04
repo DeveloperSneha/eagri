@@ -26,7 +26,8 @@ class AuthorityUserController extends AuthorityController {
                     $query->where('idDistrict', $authority_dist);
                 })->where('idUser', '!=', Auth::User()->idUser)->get();
 
-        $sch_blocks = ["" => 'Select Block'] + \App\Block::where('idDistrict', '=', $authority_dist)->get()->pluck('blockName', 'idBlock')->toArray();
+        $sch_blocks =  \App\Block::where('idDistrict', '=', $authority_dist)->get()->pluck('blockName', 'idBlock')->toArray();
+        
         $designations = \App\Designation::where("idSection", $user_desig->designation->idSection)
                         ->pluck("designationName", "idDesignation")->toArray();
         return view('authority.adduser', compact('sch_blocks', 'designations', 'users'));
@@ -50,16 +51,19 @@ class AuthorityUserController extends AuthorityController {
     public function store(Request $request) {
         // dd($request->all());
         $rules = [
-            'idBlock' => 'required',
+            'idBlock' => 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
             'idDesignation' => 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
-            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+            'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
         ];
         if (count($request->designations) == 0) {
             $rules += ['designation' => 'required'];
         }
+        if (count($request->sch_blocks) == 0) {
+            $rules += ['block' => 'required'];
+        }
         $message = [
-            'idBlock.required' => 'Block Must be selected',
-            'designation.required' => 'Select Atleast OneDesignation.',
+            'idBlock.required' => 'Select Atleast One Block',
+            'designation.required' => 'Select Atleast One Designation.',
             'idDesignation.unique' => 'User With This Designation has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
@@ -110,7 +114,7 @@ class AuthorityUserController extends AuthorityController {
         $users = \App\User::whereHas('userdesig', function ($query) use ($authority_dist) {
                     $query->where('idDistrict', $authority_dist);
                 })->where('idUser', '!=', Auth::User()->idUser)->get();
-        $sch_blocks = ["" => 'Select Block'] + \App\Block::where('idDistrict', '=', $authority_dist)->get()->pluck('blockName', 'idBlock')->toArray();
+        $sch_blocks = \App\Block::where('idDistrict', '=', $authority_dist)->get()->pluck('blockName', 'idBlock')->toArray();
         $user_block = $user->userdesig()->with('block')->get()->pluck('block.idBlock')->unique();
 
         $designations = \App\Designation::where("idSection", $authority_desig->designation->idSection)
@@ -130,15 +134,18 @@ class AuthorityUserController extends AuthorityController {
     public function update(Request $request, $id) {
         //   dd($request->idBlock);
         $rules = [
-            'idBlock' => 'required',
+            'idBlock' => 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
             'idDesignation' => 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
             'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
         ];
         if (count($request->designations) == 0) {
             $rules += ['designation' => 'required'];
         }
+        if (count($request->sch_blocks) == 0) {
+            $rules += ['block' => 'required'];
+        }
         $message = [
-            'idBlock.required' => 'Block Must be selected',
+            'idBlock.required' => 'Slelct Atleast One Block',
             'designation.required' => 'Select Atleast OneDesignation.',
             'idDesignation.unique' => 'User With This Designation has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
@@ -184,6 +191,14 @@ class AuthorityUserController extends AuthorityController {
      */
     public function destroy($id) {
         //
+    }
+    public function villages($id) {
+        $blocks = (explode(",",$id));
+        dd($blocks);
+        $villages = \App\Village::whereIn("idBlock", $blocks)
+                        ->pluck("villageName", "idVillage")->toArray();
+        return json_encode($villages);
+       
     }
 
 }

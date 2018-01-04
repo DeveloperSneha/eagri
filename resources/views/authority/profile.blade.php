@@ -104,7 +104,7 @@
     @endif
     @if($user->isComplete == 'Y')
     <div class="col-sm-7">
-        <div class="panel panel-success">
+        <div class="panel panel-default">
             <div class="panel-heading">Other Details</div>
             <div class="panel-body">
                 <table class="table table-bordered">

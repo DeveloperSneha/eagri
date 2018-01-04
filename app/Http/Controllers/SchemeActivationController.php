@@ -69,9 +69,19 @@ class SchemeActivationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $schact = \App\SchemeActivation::where('idSchemeActivation', '=', $id)->select('totalFundsAllocated','totalAreaAllocated','assistance')->first()->toArray();
-              //  ->pluck('totalFundsAllocated','totalAreaAllocated')->toArray();
-         return json_encode($schact);
+        $schdist= Db::table('schemedistributiondistrict')
+                ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                ->where('schemedistributiondistrict.idSchemeActivation', '=', $id)
+                ->get();
+        
+        dd($schdist);
+            $schact = \App\SchemeActivation::where('idSchemeActivation', '=', $id)->select('totalFundsAllocated','totalAreaAllocated','assistance')->first()->toArray();
+            $query->withCount(['activity AS paid_sum' => function ($query) {
+            $query->select(DB::raw("SUM(amountDistrict) as paidsum"))->where('idSchemeActivation','=' ,$schact);
+        }
+    ]);
+    dd($query);
+           return json_encode($schact);
     }
 
     /**

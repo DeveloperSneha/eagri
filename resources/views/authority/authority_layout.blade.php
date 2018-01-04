@@ -55,7 +55,7 @@
                 <div class="pull-right hidden-xs">
 
                 </div>
-                <strong>Copyright &copy; 2017 <a href="https://hkcl.co.in">HKCL</a>.</strong> All rights
+                <strong>Copyright &copy; 2018 <a href="https://hkcl.co.in">HKCL</a>.</strong> All rights
                 reserved.
             </footer>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\WorkflowRequest;
+use Session;
 use DB;
 
 class WorkflowController extends Controller {
@@ -51,9 +52,28 @@ class WorkflowController extends Controller {
 
     public function update(WorkflowRequest $request, $id) {
         $workflow = \App\Workflow::where('idWorkflow', '=', $id)->first();
+        $step = $workflow->steps()->where('idDesignation', Session::get('idDesignation'))->first();
+        $section = $step->idSection;
         $workflow->fill($request->all());
+        $old_ids = $workflow->steps->pluck('idworkflowstep')->toArray();
+//        dd($old_ids);
+        $workflow_step = new \Illuminate\Database\Eloquent\Collection();
+        foreach ($request->designations as $var) {
+            $desig = \App\WorkflowStep::firstOrNew(['idDesignation' => $var, 'idSection' => $section, 'idWorkflow' => $workflow->idWorkflow]);
+            $workflow_step->add($desig);
+        }
+        $new_ids = $workflow_step->pluck('idworkflowstep')->toArray();
+
+//          dd($new_ids);
+        $detach = array_diff($old_ids, $new_ids);
+//         dd($detach);
         DB::beginTransaction();
         $workflow->update();
+        \App\WorkflowStep::whereIn('idworkflowstep', $detach)->delete();
+
+
+        $workflow->steps()->saveMany($workflow_step);
+        
         DB::commit();
         return redirect('workflow');
     }

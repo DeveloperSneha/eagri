@@ -41,7 +41,7 @@ class SchDistrictDistributionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(SchDistrictDistRequest $request) {
-        dd($request->all());
+      //  dd($request->all());
 
         foreach ($request->districts as $dis)
         //  dd ($dis['idDistrict']);

@@ -16,8 +16,22 @@ Route::group(['middleware' => ['auth']], function() {
     });
 });
 
-Route::get('section/{id}/designations', 'Users\UserRegistrationController@getDesignations');
-Route::resource('user-registration', 'Users\UserRegistrationController');
+
+Route::get('uservillage/{sectionid}/designations', 'Users\UserVillageController@getDesignations');
+Route::resource('uservillage', 'Users\UserVillageController');
+
+Route::get('userblock/{sectionid}/villages', 'Users\UserBlockController@getVillages');
+Route::get('userblock/{sectionid}/designations', 'Users\UserBlockController@getDesignations');
+Route::resource('userblock', 'Users\UserBlockController');
+
+Route::get('usersubdivision/{subdivisionid}/blocks', 'Users\UserSubdivisionController@getBlocks');
+Route::get('usersubdivision/{sectionid}/designations', 'Users\UserSubdivisionController@getDesignations');
+Route::resource('usersubdivision', 'Users\UserSubdivisionController');
+
+Route::get('district/{id}/subdivisions', 'Users\UserDistrictController@getSubdivisions');
+Route::get('userdistrict/{id}/designations', 'Users\UserDistrictController@getDesignations');
+Route::resource('userdistrict', 'Users\UserDistrictController');
+
 Route::resource('designations', 'DesignationController');
 Route::get('workflow/{id}/designations', 'WorkflowController@designations');
 Route::resource('workflow', 'WorkflowController');
@@ -83,7 +97,8 @@ Route::prefix('authority')->group(function() {
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
     Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
-
+    
+    Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
     Route::resource('/adduser', 'Authority\AuthorityUserController');
     Route::resource('/profile', 'Authority\AuthorityProfileController');
     Route::resource('/schemes', 'Authority\AuthoritySchemeController');

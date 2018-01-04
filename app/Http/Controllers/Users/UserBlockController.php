@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 
-class UserRegistrationController extends Controller {
+class UserBlockController extends Controller {
 
     /**
      * Display a listing of the resource.
@@ -14,13 +14,10 @@ class UserRegistrationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $users = \App\User::where('idUser', '>', 2)->get();
-//        dd($users);
+        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $designations = ['Select Designation'] + \App\Designation::pluck('designationName', 'idDesignation')->toArray();
-        
-        return view('users.user_registration', compact('designations', 'users', 'sections', 'districts'));
+        return view('users.user_block', compact('users', 'sections', 'districts'));
     }
 
     /**
@@ -39,40 +36,43 @@ class UserRegistrationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //    dd( bcrypt('abc@123'));
+//        dd(count($request->idBlocks));
         $rules = [
+            'idSubdivision' => 'required',
             'idDistrict' => 'required',
             'idSection' => 'required',
-            'idDesignation' => 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $request->idDistrict,
+            'idDesignation' => 'required',
             'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
         ];
-        if (count($request->designations) == 0) {
-            $rules += ['designation' => 'required'];
+        if (count($request->idBlocks) == 0) {
+            $rules += ['idBlock' => 'required'];
         }
-        $message = [
+        $messages = [
             'idDistrict.required' => 'District must be selected.',
+            'idSubdivision.required' => 'Subdivision must be selected.',
+            'idBlock.required' => 'Block must be selected.',
             'idSection.required' => 'Select Section First.',
-            'designation.required' => 'Select Atleast OneDesignation.',
+            'idDesignation.required' => 'Select Designation.',
             'idDesignation.unique' => 'User With This Designation has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
-        $this->Validate($request, $rules, $message);
-
+        $this->validate($request, $rules, $messages);
+        dd($request->all());
         $user = new \App\User();
         $user->fill($request->all());
         $password = 'abc@123';
         $user->password = bcrypt($password);
         DB::beginTransaction();
         $user->save();
-        foreach ($request->designations as $var) {
+        foreach ($request->idBlocks as $var) {
             $user_desig = new \App\UserDesignationDistrictMapping();
             $user_desig->fill($request->all());
-            $user_desig->idDesignation = $var;
+            $user_desig->idBlock = $var;
             $user_desig->idUser = $user->idUser;
             $user_desig->save();
         }
         DB::commit();
-        return redirect('authority/adduser');
+        return redirect('userblock');
     }
 
     /**
@@ -83,7 +83,6 @@ class UserRegistrationController extends Controller {
      */
     public function show($id) {
         //
-       
     }
 
     /**
@@ -93,15 +92,7 @@ class UserRegistrationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $user = \App\User::where('idUser', '=', $id)->first();
-        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
-        $user_desig = $user->userdesig()->with('designation')->get();
-//       dd($user_desig);
-//      dd($user_sect/ion);
-        $users = \App\User::where('idUser', '>', 2)->get();
-        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
-        return view('users.user_registration', compact('user', 'users', 'sections','designations', 'districts','user_section','user_desig'));
+        //
     }
 
     /**
@@ -112,7 +103,7 @@ class UserRegistrationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $user = \App\User::where('idUser', '=', $id)->first();
+        //
     }
 
     /**
@@ -127,8 +118,15 @@ class UserRegistrationController extends Controller {
 
     public function getDesignations($id) {
         $designations = \App\Designation::where("idSection", $id)
+                        ->where('level', 3)->get()
                         ->pluck("designationName", "idDesignation")->toArray();
         return json_encode($designations);
+    }
+
+    public function getVillages($id) {
+        $villages = \App\village::where("idBlock", $id)
+                        ->pluck("villageName", "idVillage")->toArray();
+        return json_encode($villages);
     }
 
 }

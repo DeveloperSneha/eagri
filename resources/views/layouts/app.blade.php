@@ -48,9 +48,12 @@
 
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-    <center>
-        <strong>Copyright &copy; 2017 <a href="https://hkcl.co.in">HKCL</a>.</strong> All rightsreserved.
-    </center>
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0
+        </div>
+<!--    <center>-->
+        <strong>Copyright &copy; 2018 <a href="https://hkcl.co.in">HKCL</a>.</strong> All Rights Reserved.
+<!--    </center>-->
     </footer>
 
 </div>

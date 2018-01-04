@@ -37,7 +37,7 @@ class DesignationController extends Controller {
     public function store(Request $request) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|regex:/^[\pL\s\-)]+$/u|max:50',
+            'designationName' => 'required|max:50',
             'level' => 'required|integer|between:1,9'
         ];
         $message = [
@@ -88,7 +88,7 @@ class DesignationController extends Controller {
     public function update(Request $request, $id) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|regex:/^[\pL\s\-()]+$/u|max:50',
+            'designationName' => 'required|max:50',
             'level' => 'required|integer'
         ];
         $message = [

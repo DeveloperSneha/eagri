@@ -41,7 +41,7 @@
                 <h4 class="modal-title">Cancel Registration</h4>
             </div>
             <div class="modal-body" style="padding-top: 50px;">
-                <p>Are You Sure You Want to do this..</p>
+                <p>Are You Sure You Want Cancel This Registration.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

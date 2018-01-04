@@ -27,7 +27,7 @@
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::select('idSection',$sections, null, ['class' => 'form-control']) !!}
+                {!! Form::select('idSection',$sections, null, ['class' => 'form-control','id'=>'section']) !!}
             </div>
              <span class="help-block">
                     <strong>
@@ -276,7 +276,8 @@
 @stop
 @section('script')
 <script>
-    $(document).ready(function() {
+    $(document).ready(function() 
+    {
         $('select[name="idSection"]').on('change', function() {
             var sectionID = $(this).val();
             if(sectionID) {
@@ -296,6 +297,21 @@
                 $('select[name="idScheme"]').empty();
             }
         });
+        var cur_section = $( "#section option:selected" ).val();
+        if(cur_section){
+            $.ajax({
+                    url: "{{url('/section') }}"+'/' +cur_section + "/schemes",
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="idScheme"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="idScheme"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+
+                    }
+                });                    
+        }
         $('select[name="idWorkflow"]').on('change', function() {
             var workflowID = $(this).val();
             if(workflowID) {
