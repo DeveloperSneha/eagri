@@ -154,11 +154,11 @@ legend{
 
 }
 .skin-green-light .sidebar-menu .treeview-menu>li>a{
-    color:#000;
+    color: #fff;
     margin-left: 25px;
 }
 .skin-green-light .sidebar-menu .treeview-menu>li.active>a, .skin-green-light .sidebar-menu .treeview-menu>li>a:hover {
-    color: #ecf0f5;
+    color: #9acd32;
 }
 .info-box{
     min-height: 107px;

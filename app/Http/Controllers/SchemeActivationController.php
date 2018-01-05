@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Http\Requests\SchemeActivationRequest;
+use DB;
 
 class SchemeActivationController extends Controller {
 
@@ -70,7 +71,25 @@ class SchemeActivationController extends Controller {
      */
     public function show($id) {
             $schact = \App\SchemeActivation::where('idSchemeActivation', '=', $id)->select('totalFundsAllocated','totalAreaAllocated','assistance')->first()->toArray();
-            $balance = DB::table('schemedistributiondistrict')->where('idSchemeActivation', '=', $id)->sum('amountDistrict');
+            $result = DB::table('schemedistributiondistrict')
+                ->select(DB::raw('SUM(amountDistrict) as total_amountDistrict'))
+                    ->where('idSchemeActivation', '=', $id)
+                ->get();
+//            dd($result);
+            $res = DB::table('schemedistributiondistrict')
+                ->select(DB::raw('SUM(areaDistrict) as total_areaDistrict'))
+                    ->where('idSchemeActivation', '=', $id)
+                ->get();
+//            dd($res);
+            $act = DB::table('schemeactivation')
+                   ->select(DB::raw('totalFundsAllocated')) 
+                   ->where('idSchemeActivation', '=', $id)
+                    ->get();
+            $activ = DB::table('schemeactivation')
+                   ->select(DB::raw('totalAreaAllocated')) 
+                   ->where('idSchemeActivation', '=', $id)
+                    ->get();
+//            dd($activ);
                return json_encode($schact);
     }
 

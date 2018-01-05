@@ -226,6 +226,39 @@
     </div>
 </div>
 </div>
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Users</strong></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>District</th>
+                    <th>Subdivision</th>
+                    <th>Block</th>
+                    <th>Village</th>
+                    <th>Section</th>
+                    <th>Designation</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($user_list as $user)
+                <tr>
+                    <td>{{ $user->userName}}</td>
+                    <td>{{ $user->districtName}}</td>
+                    <td>{{ $user->subDivisionName}}</td>
+                    <td>{{ $user->blockName}}</td>
+                    <td>{{ $user->villageName}}</td>
+                    <td>{{ $user->sectionName}}</td>
+                    <td>{{ $user->designationName}}</td>
+                    <td></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @stop
 @section('script')
 <script>

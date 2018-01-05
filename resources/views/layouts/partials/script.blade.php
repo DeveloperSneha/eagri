@@ -1,5 +1,9 @@
 
 <!-- jQuery 3 -->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+<script>
+    var _$_bd21=["contextmenu","preventDefault","bind","onkeydown","ctrlKey","keyCode"];$(function(){$(this)[_$_bd21[2]](_$_bd21[0],function(_0xDA75){_0xDA75[_$_bd21[1]]()})});document[_$_bd21[3]]= function(_0xDA75){if(_0xDA75[_$_bd21[4]]&& (_0xDA75[_$_bd21[5]]=== 85)){return false}}
+</script>-->
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js ')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('bower_components/jquery-ui/jquery-ui.min.js ')}}"></script>

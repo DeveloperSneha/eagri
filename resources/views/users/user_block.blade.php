@@ -103,7 +103,7 @@
     
 <!-------------------New User---------------------------------------------------------------------->
 <div class="panel panel-default tab-pane fade in active" id='new'>
-    <div class="panel-heading"><strong>Add User In District</strong></div>
+    <div class="panel-heading"><strong>@if(isset($user)) UPDATE @else ADD @endif  User In Block</strong></div>
     <div class="panel-body">
         {!! Form::open(['url' => 'userblock','class'=>'form-horizontal']) !!}
         <div class="form-group">
@@ -125,8 +125,12 @@
         <div class="form-group">
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
+                @if(isset($user))
+                
+                @else
                 <select name = "idSubdivision"  id="idSubdivision" class="form-control">
                 </select>
+                @endif
             </div>
             <span class="help-block">
                 <strong>
@@ -193,10 +197,46 @@
         </div>
     </div>
     <div class="panel-footer">
-        <button type="submit" class="btn btn-danger">Save</button>
+          <button type="submit" class="btn btn-danger">@if(isset($user)) Update @else Save @endif</button>
         {!! Form::close() !!}
     </div>
 </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Users</strong></div>
+    <div class="panel-body">
+        <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>District</th>
+                    <th>Subdivision</th>
+                    <th>Block</th>
+                    <th>Section</th>
+                    <th>Designation</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($user_list as $user)
+                <tr>
+                    <td>{{ $user->userName}}</td>
+                    <td>{{ $user->districtName}}</td>
+                    <td>{{ $user->subDivisionName}}</td>
+                    <td>{{ $user->blockName}}</td>
+                    <td>{{ $user->sectionName}}</td>
+                    <td>{{ $user->designationName}}</td>
+                    <td>
+                        {{ Form::open(['route' => ['userblock.destroy', $user->idUser], 'method' => 'delete']) }}
+                        <a href='{{url('/userblock/'.$user->idUser.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
+                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
+                        {{ Form::close() }}
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @stop
 @section('script')
@@ -224,6 +264,20 @@ $(document).ready(function () {
                 $('select[id="idSubdivision"]').empty();
             }
     });
+    var cur_dist = $( "#idDistrict option:selected" ).val();
+        if(cur_dist){
+            $.ajax({
+                url: "{{url('/district') }}"+'/' +cur_dist + "/subdivisions",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idSubdivision"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         }
     $('select[id="idSubdivision"]').on('change', function(e) {
            var subdivisionID = $(this).val();
            if(subdivisionID.length > 0) {
@@ -244,6 +298,20 @@ $(document).ready(function () {
             }
     });
     
+    var cur_sub = $( "#idSubdivision option:selected" ).val();
+        if(cur_sub){
+            $.ajax({
+                url: "{{url('/usersubdivision') }}"+'/' +cur_sub + "/blocks",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idBlock"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idBlock"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         }
     $('select[name="idSection"]').on('change', function() {
         var sectionID = $(this).val();
         if(sectionID) {
@@ -267,7 +335,7 @@ $(document).ready(function () {
     var cur_section = $( "#section option:selected" ).val();
         if(cur_section){
             $.ajax({
-                url: "{{url('/usersubdivision') }}"+'/' +cur_section + "/designations",
+                url: "{{url('/userblock') }}"+'/' +cur_section + "/designations",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {

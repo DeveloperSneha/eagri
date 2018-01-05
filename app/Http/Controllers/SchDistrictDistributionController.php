@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Requests\SchDistrictDistRequest;
 use Illuminate\Http\Request;
 use Input;
+use DB;
 
 class SchDistrictDistributionController extends Controller {
 
@@ -15,6 +16,7 @@ class SchDistrictDistributionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        
         $schdistrict = \App\SchDistrictDistribution::get();
         $schact = ['' => 'Select Scheme'] + \App\SchemeActivation::whereNotNull('idScheme')
                         ->with('scheme')->get()->pluck('scheme.schemeName', 'idSchemeActivation')->toArray();
@@ -42,7 +44,6 @@ class SchDistrictDistributionController extends Controller {
      */
     public function store(SchDistrictDistRequest $request) {
       //  dd($request->all());
-
         foreach ($request->districts as $dis)
         //  dd ($dis['idDistrict']);
             if (isset($dis['idDistrict'])) {
@@ -66,7 +67,8 @@ class SchDistrictDistributionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+    
+    
     }
 
     /**

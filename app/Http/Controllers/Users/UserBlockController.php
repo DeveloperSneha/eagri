@@ -14,10 +14,21 @@ class UserBlockController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $user_list = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                ->join('section', 'designation.idSection', '=', 'section.idSection')
+                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+                ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+                ->whereNull('user_designation_district_mapping.idVillage')
+                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
+                ->get();
+        //dd($user_list);
         $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.user_block', compact('users', 'sections', 'districts'));
+        return view('users.user_block', compact('users', 'sections', 'districts', 'user_list'));
     }
 
     /**
@@ -57,7 +68,7 @@ class UserBlockController extends Controller {
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
-        dd($request->all());
+        //  dd($request->all());
         $user = new \App\User();
         $user->fill($request->all());
         $password = 'abc@123';
@@ -92,7 +103,24 @@ class UserBlockController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+        $user_list = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                ->join('section', 'designation.idSection', '=', 'section.idSection')
+                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+                ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+                ->whereNull('user_designation_district_mapping.idVillage')
+                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
+                ->get();
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
+        $user_desig = $user->userdesig()->with('designation')->get();
+        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        
+        return view('users.user_block', compact('users','user', 'sections', 'districts', 'user_list','user_section','user_desig'));
     }
 
     /**

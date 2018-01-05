@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     @include('layouts.partials.head')
-    <body class="login">
+    <body class="login" >
         <div class="l-panel" style="z-index: 10 !important;">
             <div class="sp-container">
                 <div class="sp-content">
