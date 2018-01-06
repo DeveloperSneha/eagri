@@ -7,7 +7,10 @@ and open the template in the editor.
     Created on : Nov 30, 2017, 11:34:36 AM
     Author     : HKCL
 */
-
+.btn-success {
+    background-color: #9acd32;
+    border-color: #9acd32;
+}
 .login {
     /*    background: #ffffff;*/
     background: #310904 url(../img/AH.jpg);

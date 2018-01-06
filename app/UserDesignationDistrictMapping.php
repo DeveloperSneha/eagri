@@ -14,7 +14,9 @@ class UserDesignationDistrictMapping extends Model {
     public function district() {
         return $this->belongsTo(District::class, 'idDistrict', 'idDistrict');
     }
-
+    public function subdivision() {
+        return $this->belongsTo(Subdivision::class, 'idSubdivision', 'idSubdivision');
+    }
     public function block() {
         return $this->belongsTo(Block::class, 'idBlock', 'idBlock');
     }

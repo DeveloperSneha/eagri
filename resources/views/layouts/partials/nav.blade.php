@@ -119,7 +119,7 @@
                     <span>HOME</span>
                 </a>
             </li>
-            <li class="treeview {{ checkActive(['userdistrict','usersubdivision','userblock','uservillage']) }}">
+            <li class="treeview {{ checkActive(['userdistrict','userdistrict/create','userdistrict/*/edit','usersubdivision','usersubdivision/create','usersubdivision/*/edit','userblock','userblock/create','userblock/*/edit','uservillage','uservillage/create','uservillage/*/edit']) }}">
                 <a href="#">
                     <span>Add User</span>
                     <span class="pull-right-container">
@@ -127,10 +127,10 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['userdistrict']) }}"><a href="{{ url('/userdistrict') }}">ADD User in District</a></li>
-                    <li class="{{ checkActive(['usersubdivision']) }}"><a href="{{ url('/usersubdivision') }}">ADD User in Subdivision</a></li>
-                    <li class="{{ checkActive(['userblock']) }}"><a href="{{ url('/userblock') }}">ADD User in Block</a></li>
-                    <li class="{{ checkActive(['uservillage']) }}"><a href="{{ url('/uservillage') }}">ADD User in Village</a></li>
+                    <li class="{{ checkActive(['userdistrict','userdistrict/create','userdistrict/*/edit']) }}"><a href="{{ url('/userdistrict') }}">ADD User in District</a></li>
+                    <li class="{{ checkActive(['usersubdivision','usersubdivision/create','usersubdivision/*/edit']) }}"><a href="{{ url('/usersubdivision') }}">ADD User in Subdivision</a></li>
+                    <li class="{{ checkActive(['userblock','userblock/create','userblock/*/edit']) }}"><a href="{{ url('/userblock') }}">ADD User in Block</a></li>
+                    <li class="{{ checkActive(['uservillage','uservillage/create','uservillage/*/edit']) }}"><a href="{{ url('/uservillage') }}">ADD User in Village</a></li>
                 </ul>
             </li>
             <!--            <li class="{{ checkActive(['roles'])}}">

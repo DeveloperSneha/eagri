@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserSubdivisionRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
@@ -24,11 +25,10 @@ class UserSubdivisionController extends Controller {
                 ->whereNull('user_designation_district_mapping.idVillage')
                 ->select('users.idUser', 'userName', 'districtName', 'sectionName', 'designationName', DB::raw('group_concat(subDivisionName)AS subDivisionName'))
                 ->get();
-        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
-        $districts = ['Select District'] +\App\District::pluck('districtName', 'idDistrict')->toArray();
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $subdivisions = \App\Subdivision::pluck('subDivisionName', 'idSubdivision')->toArray();
-        return view('users.user_subdivision', compact('users', 'sections','subdivisions', 'districts', 'user_list'));
+        return view('users.user_subdivision', compact('users', 'sections', 'districts', 'user_list'));
     }
 
     /**
@@ -37,7 +37,11 @@ class UserSubdivisionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
+
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        return view('users.existing_usersubdivision', compact('users', 'sections', 'districts', 'user_list'));
     }
 
     /**
@@ -46,41 +50,32 @@ class UserSubdivisionController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-//        dd(count($request->idSubdivisions));
-        $rules = [
-            'idDistrict' => 'required',
-            'idSection' => 'required',
-            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $request->idSubdivision,
-            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
-        ];
-        if (count($request->idSubdivisions) == 0) {
-            $rules += ['idSubdivision' => 'required'];
-        }
-        $messages = [
-            'idSubdivision.required' => 'Subdivision must be selected.',
-            'idDistrict.required' => 'District must be selected.',
-            'idSection.required' => 'Select Section First.',
-            'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
-            'userName.required' => 'UserName Must Not Be Empty.'
-        ];
-        $this->validate($request, $rules, $messages);
+    public function store(UserSubdivisionRequest $request) {
         // dd($request->all());
-        $user = new \App\User();
-        $user->fill($request->all());
-        $password = 'abc@123';
-        $user->password = bcrypt($password);
-        DB::beginTransaction();
-        $user->save();
-        foreach ($request->idSubdivisions as $var) {
-            $user_desig = new \App\UserDesignationDistrictMapping();
-            $user_desig->fill($request->all());
-            $user_desig->idSubdivision = $var;
-            $user_desig->idUser = $user->idUser;
-            $user_desig->save();
+        if ($request->has('existing')) {
+            foreach ($request->idSubdivisions as $var) {
+                $user_desig = new \App\UserDesignationDistrictMapping();
+                $user_desig->fill($request->all());
+                $user_desig->idSubdivision = $var;
+                $user_desig->idUser = $request->idUser;
+                $user_desig->save();
+            }
+        } else {
+            $user = new \App\User();
+            $user->fill($request->all());
+            $password = 'abc@123';
+            $user->password = bcrypt($password);
+            DB::beginTransaction();
+            $user->save();
+            foreach ($request->idSubdivisions as $var) {
+                $user_desig = new \App\UserDesignationDistrictMapping();
+                $user_desig->fill($request->all());
+                $user_desig->idSubdivision = $var;
+                $user_desig->idUser = $user->idUser;
+                $user_desig->save();
+            }
+            DB::commit();
         }
-        DB::commit();
         return redirect('usersubdivision');
     }
 
@@ -114,15 +109,15 @@ class UserSubdivisionController extends Controller {
         $user = \App\User::where('idUser', '=', $id)->first();
         $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
         $user_desig = $user->userdesig()->with('designation')->get();
-        $user_dist = $user->userdesig()->with('district')->get()->pluck('district.districtName')->first();
-//        dd($user_dist);
+        $user_dist = $user->userdesig()->with('district')->get()->pluck('district.idDistrict')->toArray();
+        //dd($user_dist);
         $users = \App\User::where('idUser', '>', 2)->get();
-        $districts = ['Select District'] +\App\District::pluck('districtName', 'idDistrict')->toArray();
-//        $subdivisions = $dist->subdivision()->pluck('subDivisionName','idSubdivision')->toArray();
-//        dd($subdivisions);
+        $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $user_subdivision = $user->userdesig()->with('subdivision')
+                        ->whereNull('idBlock')->whereNull('idVillage')->get();
+       // dd($user_subdivision);
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.user_subdivision', compact('user_list','user', 'users', 'user_dist','sections', 'designations', 'districts', 'user_section', 'user_desig'));
-        
+        return view('users.user_subdivision', compact('user_list', 'user_subdivision', 'user', 'users', 'user_dist', 'sections', 'designations', 'districts', 'user_section', 'user_desig'));
     }
 
     /**
@@ -144,7 +139,6 @@ class UserSubdivisionController extends Controller {
 //            $rules += ['idSubdivision' => 'required'];
         }
         $messages = [
-//            'idSubdivision.required'=>'Subdivision Must Be Selected',
             'idDistrict.required' => 'District must be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
@@ -158,15 +152,15 @@ class UserSubdivisionController extends Controller {
         //dd($old_ids);
         $user_subdivision = new \Illuminate\Database\Eloquent\Collection();
         foreach ($request->idSubdivisions as $var) {
-            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idSubdivision' => $var,'idDistrict'=>$request->idDistrict, 'idDesignation' => $request->idDesignation,'idUser' => $user->idUser]);
+            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idSubdivision' => $var, 'idDistrict' => $request->idDistrict, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
             $user_subdivision->add($user_sub);
         }
         $new_ids = $user_subdivision->pluck('iddesgignationdistrictmapping')->toArray();
 //        dd($new_ids);
         $detach = array_diff($old_ids, $new_ids);
-      //  dd($detach);
+        //  dd($detach);
         DB::beginTransaction();
-        
+
         $user->update();
         \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
         $user->userdesig()->saveMany($user_subdivision);

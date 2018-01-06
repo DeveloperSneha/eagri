@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserBlockRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
@@ -37,7 +38,10 @@ class UserBlockController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        return view('users.existing_userblock', compact('users', 'sections', 'districts', 'user_list'));
     }
 
     /**
@@ -46,8 +50,89 @@ class UserBlockController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(UserBlockRequest $request) {
 //        dd(count($request->idBlocks));
+        //  dd($request->all());
+        if ($request->has('existing')) {
+            foreach ($request->idBlocks as $var) {
+                $user_desig = new \App\UserDesignationDistrictMapping();
+                $user_desig->fill($request->all());
+                $user_desig->idBlock = $var;
+                $user_desig->idUser = $request->idUser;
+                $user_desig->save();
+            }
+        } else {
+            $user = new \App\User();
+            $user->fill($request->all());
+            $password = 'abc@123';
+            $user->password = bcrypt($password);
+            DB::beginTransaction();
+            $user->save();
+            foreach ($request->idBlocks as $var) {
+                $user_desig = new \App\UserDesignationDistrictMapping();
+                $user_desig->fill($request->all());
+                $user_desig->idBlock = $var;
+                $user_desig->idUser = $user->idUser;
+                $user_desig->save();
+            }
+            DB::commit();
+            return redirect('userblock');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+//dd('here');
+        $user_list = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                ->join('section', 'designation.idSection', '=', 'section.idSection')
+                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+                ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+                ->whereNull('user_designation_district_mapping.idVillage')
+                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
+                ->get();
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
+        $user_desig = $user->userdesig()->with('designation')->get();
+        $user_subdiv = $user->userdesig()->with('subdivision')
+                ->whereNotNull('idSubdivision')
+                ->get()->pluck('subdivision.idSubdivision', 'subdivision.subDivisionName')->unique();
+       // dd($user_subdiv);
+        $user_block = $user->userdesig()->with('block')
+                        ->whereNotNull('idBlock')->whereNull('idVillage')->get();
+//        dd($user_block);
+        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        // dd($districts);
+        return view('users.user_block', compact('users', 'user', 'sections', 'user_subdiv', 'user_block', 'districts', 'user_list', 'user_section', 'user_desig'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
         $rules = [
             'idSubdivision' => 'required',
             'idDistrict' => 'required',
@@ -68,70 +153,27 @@ class UserBlockController extends Controller {
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
-        //  dd($request->all());
-        $user = new \App\User();
+        $user = \App\User::where('idUser', '=', $id)->first();
         $user->fill($request->all());
-        $password = 'abc@123';
-        $user->password = bcrypt($password);
-        DB::beginTransaction();
-        $user->save();
+        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
+        //dd($old_ids);
+        $user_blocks = new \Illuminate\Database\Eloquent\Collection();
         foreach ($request->idBlocks as $var) {
-            $user_desig = new \App\UserDesignationDistrictMapping();
-            $user_desig->fill($request->all());
-            $user_desig->idBlock = $var;
-            $user_desig->idUser = $user->idUser;
-            $user_desig->save();
+            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idBlock' => $var, 'idDistrict' => $request->idDistrict, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
+            $user_blocks->add($user_sub);
         }
+        $new_ids = $user_blocks->pluck('iddesgignationdistrictmapping')->toArray();
+//        dd($new_ids);
+        $detach = array_diff($old_ids, $new_ids);
+        //  dd($detach);
+        DB::beginTransaction();
+
+        $user->update();
+        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
+        $user->userdesig()->saveMany($user_blocks);
+
         DB::commit();
         return redirect('userblock');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id) {
-        $user_list = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
-                ->join('section', 'designation.idSection', '=', 'section.idSection')
-                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
-                ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
-                ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
-                ->whereNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
-                ->get();
-        $user = \App\User::where('idUser', '=', $id)->first();
-        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
-        $user_desig = $user->userdesig()->with('designation')->get();
-        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
-        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
-        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        
-        return view('users.user_block', compact('users','user', 'sections', 'districts', 'user_list','user_section','user_desig'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
-        //
     }
 
     /**

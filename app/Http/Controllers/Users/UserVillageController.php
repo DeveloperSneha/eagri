@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserVillageRequest;
 use App\Http\Controllers\Controller;
 use DB;
 
@@ -22,7 +23,7 @@ class UserVillageController extends Controller {
                 ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
                 ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
                 ->join('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
-                ->select('users.idUser','userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
+                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
                 ->get();
         //dd($user_list);
         $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
@@ -37,7 +38,12 @@ class UserVillageController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $subdivisions = ['' => 'Select Sub Division'] + \App\Subdivision::pluck('subDivisionName', 'idSubdivision')->toArray();
+        $blocks = \App\Block::pluck('blockName', 'idBlock')->toArray();
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        return view('users.existing_uservillage', compact('users', 'sections', 'blocks', 'subdivisions', 'districts', 'user_list'));
     }
 
     /**
@@ -46,45 +52,31 @@ class UserVillageController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-//       dd(count($request->idVillages));
-        $rules = [
-            'idDistrict' => 'required',
-            'idSubdivision' => 'required',
-            'idBlock' => 'required',
-            'idSection' => 'required',
-            'idDesignation' => 'required',
-            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
-        ];
-        if (count($request->idVillages) == 0) {
-            $rules += ['idVillage' => 'required'];
+    public function store(UserVillageRequest $request) {
+        if ($request->has('existing')) {
+            foreach ($request->idVillages as $var) {
+                $user_desig = new \App\UserDesignationDistrictMapping();
+                $user_desig->fill($request->all());
+                $user_desig->idVillages = $var;
+                $user_desig->idUser = $request->idUser;
+                $user_desig->save();
+            }
+        } else {
+            $user = new \App\User();
+            $user->fill($request->all());
+            $password = 'abc@123';
+            $user->password = bcrypt($password);
+            DB::beginTransaction();
+            $user->save();
+            foreach ($request->idVillages as $var) {
+                $user_desig = new \App\UserDesignationDistrictMapping();
+                $user_desig->fill($request->all());
+                $user_desig->idVillage = $var;
+                $user_desig->idUser = $user->idUser;
+                $user_desig->save();
+            }
+            DB::commit();
         }
-        $messages = [
-            'idDistrict.required' => 'District must be selected.',
-            'idSubdivision.required' => 'Subdivision must be selected.',
-            'idBlock.required' => 'Block must be selected.',
-            'idVillage.required' => 'Atleast One Village must be selected.',
-            'idSection.required' => 'Select Section First.',
-            'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
-            'userName.required' => 'UserName Must Not Be Empty.'
-        ];
-        $this->validate($request, $rules, $messages);
-        // dd($request->all());
-        $user = new \App\User();
-        $user->fill($request->all());
-        $password = 'abc@123';
-        $user->password = bcrypt($password);
-        DB::beginTransaction();
-        $user->save();
-        foreach ($request->idVillages as $var) {
-            $user_desig = new \App\UserDesignationDistrictMapping();
-            $user_desig->fill($request->all());
-            $user_desig->idVillage = $var;
-            $user_desig->idUser = $user->idUser;
-            $user_desig->save();
-        }
-        DB::commit();
         return redirect('uservillage');
     }
 
@@ -113,8 +105,20 @@ class UserVillageController extends Controller {
                 ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
                 ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
                 ->join('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
-                ->select('users.idUser','userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
+                ->select('users.idUser', 'userName', 'villageName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
                 ->get();
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
+        $user_desig = $user->userdesig()->with('designation')->get();
+        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $user_subdiv = $user->userdesig()->with('subdivision')->get()->pluck('subdivision.idSubdivision','subdivision.subDivisionName')->unique();
+       //dd($user_subdiv);
+        $user_village = $user->userdesig()->with('village')->get();
+        //dd($user_village);
+        $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        // dd($districts);
+        return view('users.user_villages', compact('user_subdiv','users', 'user', 'user_village', 'sections', 'districts', 'user_list', 'user_section', 'user_desig'));
     }
 
     /**
@@ -125,7 +129,49 @@ class UserVillageController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $rules = [
+            'idDistrict' => 'required',
+            'idSubdivision' => 'required',
+            'idBlock' => 'required',
+            'idSection' => 'required',
+            'idDesignation' => 'required',
+            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+        ];
+        if (count($request->idVillages) == 0) {
+            $rules += ['idVillage' => 'required'];
+        }
+        $messages = [
+            'idDistrict.required' => 'District must be selected.',
+            'idSubdivision.required' => 'Subdivision must be selected.',
+            'idBlock.required' => 'Block must be selected.',
+            'idVillage.required' => 'Atleast One Village Must Be selected.',
+            'idSection.required' => 'Select Section First.',
+            'idDesignation.required' => 'Select Designation.',
+            'idDesignation.unique' => 'User With This Designation has already been registered.',
+            'userName.required' => 'UserName Must Not Be Empty.'
+        ];
+        $this->validate($request, $rules, $messages);
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $user->fill($request->all());
+        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
+        //dd($old_ids);
+        $user_villages = new \Illuminate\Database\Eloquent\Collection();
+        foreach ($request->idVillages as $var) {
+            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idVillage' => $var, 'idDistrict' => $request->idDistrict,'idBlock' => $request->idBlock, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
+            $user_villages->add($user_sub);
+        }
+        $new_ids = $user_villages->pluck('iddesgignationdistrictmapping')->toArray();
+//        dd($new_ids);
+        $detach = array_diff($old_ids, $new_ids);
+        //  dd($detach);
+        DB::beginTransaction();
+
+        $user->update();
+        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
+        $user->userdesig()->saveMany($user_villages);
+
+        DB::commit();
+        return redirect('uservillage');
     }
 
     /**
