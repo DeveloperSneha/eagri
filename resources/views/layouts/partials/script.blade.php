@@ -6,7 +6,8 @@
 </script>-->
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js ')}}"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="{{ asset('bower_components/jquery-ui/jquery-ui.min.js ')}}"></script>
+<!--<script src="{{ asset('bower_components/jquery-ui/jquery-ui.min.js ')}}"></script>-->
+<script src="https://code.jquery.com/ui/1.12.0-rc.2/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button);

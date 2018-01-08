@@ -113,7 +113,6 @@ $(document).ready(function () {
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
-                  
                     @if(isset($user))
                         var myPlayList = [];
                         @if(isset($user_village))
@@ -124,7 +123,7 @@ $(document).ready(function () {
                         @endif
                         $.each(data, function(key, value) {
                             if($.inArray(key,myPlayList) === -1){
-                                    $('select[id="idVillage"]').append('<option value="'+ key +'" >'+ value +'</option>');
+//                                    $('select[id="idVillage"]').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }else{
                                    $('select[id="idVillage"] option:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            
@@ -133,7 +132,6 @@ $(document).ready(function () {
                 }
             });
          }
-    
     $('select[name="idSection"]').on('change', function() {
         var sectionID = $(this).val();
         if(sectionID) {
@@ -146,7 +144,6 @@ $(document).ready(function () {
                     $.each(data, function(key, value) {
                         $('select[id="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });
-
                 }
             });
         }else{

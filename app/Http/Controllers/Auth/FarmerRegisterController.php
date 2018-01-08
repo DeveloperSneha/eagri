@@ -87,7 +87,7 @@ use RegistersUsers;
 
     public function register(Request $request) {
         //  $error = [];
-        //   dd($request->all());
+        //  dd($request->all());
 //        $request->validate([
 //            'aadhaar' => [ 'required',new \App\Rules\ValidateAdhaar() ]
 //        ]);
@@ -115,6 +115,18 @@ use RegistersUsers;
         $villages = [0 => '--- Select Village ---'] + \App\Village::where("idBlock", $id)
                         ->pluck("villageName", "idVillage")->toArray();
         return json_encode($villages);
+    }
+
+    public function getBankDetails(Request $request) {
+        //dd($request->name_startsWith);
+        $banks = \App\BankDetail::where("ifsc", 'like', '%' . $request->name_startsWith . '%')
+                        //  ->select("ifsc", "bank", 'branch')
+                        ->limit(20)
+                        ->get();
+        foreach ($banks as $query) {
+            $results[] = [$query->ifsc, $query->bank ,$query->branch];
+        }
+        return json_encode($results);
     }
 
     protected function guard() {

@@ -13,9 +13,15 @@
             </div>
         </div>
         <div class="r-panel" style="z-index: 1000 !important;">
+            
             <div class="log-block">
                 <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="90"></a>
                 <div style="font-family: Verdana; font-size: 20px; color: #fff; margin: 10px 0px; text-transform: uppercase;">Agriculture Department</div>
+                @if ($errors->has('msg'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('msg') }}</strong>
+                </span>
+                @endif
                 <div class="log-panel">
                     <div class="hd">Government of Haryana</div>
                     <div class="login-box-body">
@@ -25,19 +31,19 @@
                                 <label>USERNAME</label>
                                 <span class="clearfix"></span>
                                 <!--<input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" required="">-->
-                                <input type="text" name="userName" id = "userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control input-b-b" value="" maxlength="12"  >
+                                <input type="text" name="userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control input-b-b" value="" maxlength="12"  >
                                 @if ($errors->has('userName'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('userName') }}</strong>
                                 </span>
                                 @endif
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label>DESIGNATION</label>
                                 <select name="idDesignation" class="form-control" >
                                     <option value=""> --- Select Designation ---</option>
                                 </select>
-                            </div>
+                            </div>-->
                             <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label>PASSWORD</label>
                                 <span class="clearfix"></span>

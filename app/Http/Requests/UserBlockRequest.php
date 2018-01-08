@@ -27,10 +27,11 @@ class UserBlockRequest extends FormRequest {
                 'idDistrict' => 'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'idUser' => 'required'
+                'idUser' => 'required',
+                'idBlock' => 'unique:user_designation_district_mapping,idBlock,'.$this->idBlock,
             ];
             if (count($this->idBlocks) == 0) {
-                $rules += ['idBlock' => 'required'];
+                $rules += ['idBlock' => 'required|unique:user_designation_district_mapping,idBlock'.$this->idBlock];
             }
         } else {
             $rules = [
@@ -41,7 +42,7 @@ class UserBlockRequest extends FormRequest {
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idBlocks) == 0) {
-                $rules += ['idBlock' => 'required'];
+                $rules += ['idBlock' => 'required|unique:user_designation_district_mapping,idBlock,NULL,iddesgignationdistrictmapping,idBlock' . $this->idBlock];
             }
         }
         return $rules;
@@ -54,7 +55,7 @@ class UserBlockRequest extends FormRequest {
             'idBlock.required' => 'Block must be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
+            'idBlock.unique' => 'User in This Block has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         return $messages;

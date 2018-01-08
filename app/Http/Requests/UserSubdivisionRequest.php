@@ -26,7 +26,7 @@ class UserSubdivisionRequest extends FormRequest {
             $rules = [
                 'idDistrict'=>'required',
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $this->idDistrict,
+                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idSubdivision,' . $this->idSubdivision,
                 'idUser' => 'required'
             ];
             if (count($this->idSubdivisions) == 0) {
@@ -36,7 +36,7 @@ class UserSubdivisionRequest extends FormRequest {
             $rules = [
                 'idDistrict'=>'required',
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $this->idDistrict,
+                'idDesignation' => 'required|unique:user_designation_district_mapping' . $this->idSubdivision,
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idSubdivisions) == 0) {

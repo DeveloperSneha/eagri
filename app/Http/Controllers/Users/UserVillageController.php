@@ -24,6 +24,7 @@ class UserVillageController extends Controller {
                 ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
                 ->join('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
                 ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
+                ->groupBy('idUser')
                 ->get();
         //dd($user_list);
         $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
@@ -106,6 +107,7 @@ class UserVillageController extends Controller {
                 ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
                 ->join('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
                 ->select('users.idUser', 'userName', 'villageName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
+                ->groupBy('idUser')
                 ->get();
         $user = \App\User::where('idUser', '=', $id)->first();
         $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();

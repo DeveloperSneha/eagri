@@ -25,7 +25,7 @@ class UserDistrictRequest extends FormRequest {
         if ($this->has('existing')) {
             $rules = [
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $this->idDistrict,
+                'idDesignation' => 'required|unique:user_designation_district_mapping' . $this->idDistrict,
                 'idUser' => 'required'
             ];
             if (count($this->idDistricts) == 0) {

@@ -10,66 +10,66 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
+Route::get('user/{id}/{desig}/details','Users\UserDistrictController@getDetails');
+Auth::routes();
+
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/', function () {
         return view('layouts.dashboard');
     });
+
+    Route::get('uservillage/{sectionid}/designations', 'Users\UserVillageController@getDesignations');
+    Route::resource('uservillage', 'Users\UserVillageController');
+
+    Route::get('userblock/{sectionid}/villages', 'Users\UserBlockController@getVillages');
+    Route::get('userblock/{sectionid}/designations', 'Users\UserBlockController@getDesignations');
+    Route::resource('userblock', 'Users\UserBlockController');
+
+    Route::get('usersubdivision/{subdivisionid}/blocks', 'Users\UserSubdivisionController@getBlocks');
+    Route::get('usersubdivision/{sectionid}/designations', 'Users\UserSubdivisionController@getDesignations');
+    Route::resource('usersubdivision', 'Users\UserSubdivisionController');
+
+    Route::get('district/{id}/subdivisions', 'Users\UserDistrictController@getSubdivisions');
+    Route::get('userdistrict/{id}/designations', 'Users\UserDistrictController@getDesignations');
+    Route::resource('userdistrict', 'Users\UserDistrictController');
+
+    Route::resource('designations', 'DesignationController');
+    Route::get('workflow/{id}/designations', 'WorkflowController@designations');
+    Route::resource('workflow', 'WorkflowController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('units', 'UnitController');
+
+    Route::get('section/{id}/schemes', 'SectionController@getScheme');
+    Route::resource('sections', 'SectionController');
+    Route::resource('schemes', 'SchemeController');
+    Route::resource('compcerts', 'CompcertController');
+    //Route::resource('schemecerts', 'SchemecertController');
+    Route::resource('components', 'ComponentController');
+    Route::resource('certificates', 'CertificateController');
+    Route::resource('categories', 'CategoryController');
+    Route::resource('programs', 'ProgramController');
+    Route::resource('fys', 'FinancialYearController');
+    Route::resource('compsizes', 'CompsizeController');
+    Route::resource('comprates', 'ComprateController');
+
+    Route::resource('schemeactivations/nv', 'NonVendorSchemeActivationController');
+    Route::resource('schemeactivations', 'SchemeActivationController');
+    Route::resource('districtdistribution', 'SchDistrictDistributionController');
+
+    Route::get('schdistrict/{schdistid}/blocks', 'SchBlockDistributionController@getBlocks');
+    Route::get('schblock/{schdistid}/villages', 'SchBlockDistributionController@getVillages');
+    Route::get('schact/{id}/districts', 'SchBlockDistributionController@getDistrict');
+    Route::get('schact/{id}/blocks', 'SchVillageDistributionController@getBlock');
+    Route::resource('blockdistribution', 'SchBlockDistributionController');
+    Route::resource('villagedistribution', 'SchVillageDistributionController');
 });
-
-
-Route::get('uservillage/{sectionid}/designations', 'Users\UserVillageController@getDesignations');
-Route::resource('uservillage', 'Users\UserVillageController');
-
-Route::get('userblock/{sectionid}/villages', 'Users\UserBlockController@getVillages');
-Route::get('userblock/{sectionid}/designations', 'Users\UserBlockController@getDesignations');
-Route::resource('userblock', 'Users\UserBlockController');
-
-Route::get('usersubdivision/{subdivisionid}/blocks', 'Users\UserSubdivisionController@getBlocks');
-Route::get('usersubdivision/{sectionid}/designations', 'Users\UserSubdivisionController@getDesignations');
-Route::resource('usersubdivision', 'Users\UserSubdivisionController');
-
-Route::get('district/{id}/subdivisions', 'Users\UserDistrictController@getSubdivisions');
-Route::get('userdistrict/{id}/designations', 'Users\UserDistrictController@getDesignations');
-Route::resource('userdistrict', 'Users\UserDistrictController');
-
-Route::resource('designations', 'DesignationController');
-Route::get('workflow/{id}/designations', 'WorkflowController@designations');
-Route::resource('workflow', 'WorkflowController');
-Route::resource('roles', 'RoleController');
-Route::resource('units', 'UnitController');
-
-Route::get('section/{id}/schemes', 'SectionController@getScheme');
-Route::resource('sections', 'SectionController');
-Route::resource('schemes', 'SchemeController');
-Route::resource('compcerts', 'CompcertController');
-//Route::resource('schemecerts', 'SchemecertController');
-Route::resource('components', 'ComponentController');
-Route::resource('certificates', 'CertificateController');
-Route::resource('categories', 'CategoryController');
-Route::resource('programs', 'ProgramController');
-Route::resource('fys', 'FinancialYearController');
-Route::resource('compsizes', 'CompsizeController');
-Route::resource('comprates', 'ComprateController');
-
-Route::resource('schemeactivations/nv', 'NonVendorSchemeActivationController');
-Route::resource('schemeactivations', 'SchemeActivationController');
-Route::resource('districtdistribution', 'SchDistrictDistributionController');
-
-Route::get('schdistrict/{schdistid}/blocks', 'SchBlockDistributionController@getBlocks');
-Route::get('schblock/{schdistid}/villages', 'SchBlockDistributionController@getVillages');
-Route::get('schact/{id}/districts', 'SchBlockDistributionController@getDistrict');
-Route::get('schact/{id}/blocks', 'SchVillageDistributionController@getBlock');
-Route::resource('blockdistribution', 'SchBlockDistributionController');
-Route::resource('villagedistribution', 'SchVillageDistributionController');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 //Farmers Route
 
 
 Route::prefix('farmer')->group(function() {
+    Route::get('/bankdetails', 'Auth\FarmerRegisterController@getBankDetails');
     Route::get('/register', 'Auth\FarmerRegisterController@showRegistrationForm')->name('farmer.register');
     Route::post('/register', 'Auth\FarmerRegisterController@register')->name('farmer.register.submit');
     Route::get('/login', 'Auth\FarmerLoginController@showLoginForm')->name('farmer.login');
@@ -97,7 +97,7 @@ Route::prefix('authority')->group(function() {
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
     Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
-    
+
     Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
     Route::resource('/adduser', 'Authority\AuthorityUserController');
     Route::resource('/profile', 'Authority\AuthorityProfileController');
@@ -109,5 +109,4 @@ Route::prefix('authority')->group(function() {
     Route::get('/registeredfarmer', 'Authority\AuthorityFarmerController@registeredFarmer');
     Route::get('/cancelregfarmer', 'Authority\AuthorityFarmerController@cancelReg');
     Route::get('/blacklistedfarmer', 'Authority\AuthorityFarmerController@blacklistedFarmer');
-    
 });

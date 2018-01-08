@@ -28,7 +28,7 @@
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                <select name = "idSubdivisions"  id="idSubdivision" class="form-control select2">
+                <select name = "idSubdivision"  id="idSubdivision" class="form-control select2">
                     @foreach($user_subdiv as $key=>$value)
                     <option value="{{ $value }}" selected="selected" >{{ $key }}</option>
                     @endforeach
@@ -73,7 +73,7 @@
             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                <select name = "idVillage[]"  id="idVillage" class="form-control select2" multiple="multiple">
+                <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple">
                     @foreach($user_village as $val)
                     <option value="{{ $val->village->villageName }}" selected="selected" >{{ $val->village->villageName }}</option>
                     @endforeach

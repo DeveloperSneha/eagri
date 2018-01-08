@@ -110,19 +110,19 @@
                             <legend>Bank And Land Details</legend>
 <!--                            <strong>Bank Details</strong>-->
                             <div class="form-group">
+                                {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-4">
+                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ','id'=>'ifsccode_1']) !!}
+                                </div>
                                 {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
-                                    {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'Enter Bank Name']) !!}
-                                </div>
-                                {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4">
-                                    {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'Enter Branch Details']) !!}
+                                    {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'Enter Bank Name','id'=>'branchname_1']) !!}
                                 </div>
                             </div>
                             <div class="form-group">
-                                {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
+                                {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
-                                    {!! Form::text('ifsc_code', null, ['class' => 'form-control']) !!}
+                                    {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'Enter Branch Details','id'=>'bankname_1']) !!}
                                 </div>
                                 {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
@@ -205,6 +205,39 @@
             }
         });
     });
+$('#ifsccode_1').autocomplete({
+	source: function( request, response ) {
+		$.ajax({
+			url : "{{url('/farmer/bankdetails/') }}",
+			dataType: "json",
+			method: 'get',
+			
+			data: {
+			   name_startsWith: request.term,
+			   type: 'data',
+			   row_num : 1
+			},
+			 success: function( data ) {
+                                response( $.map( data, function( item ) {
+                                        return {
+						label: item[0],
+						value: item[0],
+						data : item
+					}
+				}));
+			}
+		});
+	},
+	autoFocus: true,	      	
+	minLength: 0,
+	select: function( event, ui ) {
+		//var names = ui.item.data.split("|");						
+		$('#bankname_1').val(ui.item.data[1]);
+		$('#branchname_1').val(ui.item.data[2]);
+	
+	}		      	
+});
+			      
 </script>
  </body>
 </html>

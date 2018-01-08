@@ -15,7 +15,7 @@
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idDistrict',$districts,isset($user) ? $user_dist : null, ['class' => 'form-control select2','id'=>'idDistrict','disabled'=>'disabled']) !!}
+                {!! Form::select('idDistrict',$districts,isset($user) ? $user_dist : null, ['class' => 'form-control select2','id'=>'idDistrict','disabled', 'selected']) !!}
             </div>
             <span class="help-block">
                 <strong>

@@ -28,11 +28,11 @@ class UserVillageRequest extends FormRequest {
                 'idDistrict'=>'required',
                 'idBlock'=>'required',
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $this->idDistrict,
+                'idDesignation' => 'required',
                 'idUser' => 'required'
             ];
             if (count($this->idVillages) == 0) {
-                $rules += ['idVillage' => 'required'];
+                $rules += ['idVillage' => 'required|unique:user_designation_district_mapping'];
             }
         } else {
             $rules = [
@@ -40,11 +40,11 @@ class UserVillageRequest extends FormRequest {
                 'idDistrict'=>'required',
                 'idBlock'=>'required',
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $this->idDistrict,
+                'idDesignation' => 'required',
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idVillages) == 0) {
-                $rules += ['idVillage' => 'required'];
+                $rules += ['idVillage' => 'required|unique:user_designation_district_mapping,idVillage,NULL,iddesgignationdistrictmapping,idVillage,' . $this->idVillage];
             }
         }
        return $rules;
@@ -59,7 +59,7 @@ class UserVillageRequest extends FormRequest {
             'idVillage.required' => 'Atleast One Village Must Be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
+            'idVillage.unique' => 'User in This Village has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         return $messages;

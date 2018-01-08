@@ -2,14 +2,16 @@
 $(document).ready(function () {
     $('select[id="idDistrict"]').on('change', function(e) {
             var districtID = $(this).val();
+            console.log(districtID.length);
             if(districtID.length > 0) {
                 $.ajax({
                     type: "GET",
                     url: "{{url('/district') }}"+'/' +districtID + "/subdivisions",
-                // data: districtID,
+                
                     dataType: 'json',
                     success:function(data) {
                         $('select[id="idSubdivision"]').empty();
+                        $('select[id="idSubdivision"]').append('<option value="">Select Subdivision</option>');
                         $.each(data, function(key, value) {
                             $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
                         });
@@ -26,10 +28,6 @@ $(document).ready(function () {
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
-                  //  $('select[id="idSubdivision"]').empty();
-//                    $.each(data, function(key, value) {
-//                        $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
-//                    });
                     @if(isset($user))
                         var myPlayList = [];
                         @if(isset($user_subdiv))
@@ -48,7 +46,7 @@ $(document).ready(function () {
                     @endif
                 }
             });
-         }  
+         }
     $('select[id="idSubdivision"]').on('change', function(e) {
            var subdivisionID = $(this).val();
            if(subdivisionID.length > 0) {
@@ -58,6 +56,7 @@ $(document).ready(function () {
                     dataType: 'json',
                     success:function(data) {
                         $('select[id="idBlock"]').empty();
+                        $('select[id="idBlock"]').append('<option value="">Select Block</option>');
                         $.each(data, function(key, value) {
                             $('select[id="idBlock"]').append('<option value="'+ key +'">'+ value +'</option>');
                         });
@@ -67,31 +66,17 @@ $(document).ready(function () {
                 $('select[id="idBlock"]').empty();
             }
     });
-    
-    var cur_subdivision = $( "#idSubdivision option:selected" ).val();
-       if(cur_subdivision){
+    var cur_subdiv = $( "#idSubdivision option:selected" ).val();
+        if(cur_subdiv){
             $.ajax({
-                url: "{{url('/usersubdivision') }}"+'/' +cur_subdivision + "/blocks",
+                url: "{{url('/usersubdivision') }}"+'/' +cur_subdiv + "/blocks",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
-                  
-                    @if(isset($user))
-                        var myPlayList = [];
-                        @if(isset($user_block))
-                            @foreach($user_block as $val)
-                                var h = {{$val->block->idBlock}}; 
-                                myPlayList.push(h.toString());
-                            @endforeach
-                        @endif
-                        $.each(data, function(key, value) {
-                            if($.inArray(key,myPlayList) === -1){
-                                    $('select[id="idBlock"]').append('<option value="'+ key +'" >'+ value +'</option>');
-                                }else{
-                                   $('select[id="idBlock"] option:selected').append('<option value="'+ key +'" >'+ value +'</option>');
-                                }                            
-                            });
-                    @endif
+                    $('select[id="idBlock"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idBlock"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
                 }
             });
          }
@@ -99,7 +84,7 @@ $(document).ready(function () {
         var sectionID = $(this).val();
         if(sectionID) {
             $.ajax({
-                url: "{{url('/userblock') }}"+'/' +sectionID + "/designations",
+                url: "{{url('/uservillage') }}"+'/' +sectionID + "/designations",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
@@ -116,10 +101,9 @@ $(document).ready(function () {
     });
         
     var cur_section = $( "#section option:selected" ).val();
-    console.log(cur_section);
         if(cur_section){
             $.ajax({
-                url: "{{url('/userblock') }}"+'/' +cur_section + "/designations",
+                url: "{{url('/uservillage') }}"+'/' +cur_section + "/designations",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
@@ -130,8 +114,7 @@ $(document).ready(function () {
                 }
             });
          }
-
-    $('select[name="idUser"]').on('change', function() {
+         $('select[name="idUser"]').on('change', function() {
             var userID = $(this).val();
             if(userID) {
                 $.ajax({
@@ -147,6 +130,6 @@ $(document).ready(function () {
                     }
                 });
             }
+        });
     });
-});
 </script>
