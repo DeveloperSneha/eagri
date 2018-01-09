@@ -123,7 +123,7 @@ $(document).ready(function () {
                         @endif
                         $.each(data, function(key, value) {
                             if($.inArray(key,myPlayList) === -1){
-//                                    $('select[id="idVillage"]').append('<option value="'+ key +'" >'+ value +'</option>');
+                                   $('select[id="idVillage"]').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }else{
                                    $('select[id="idVillage"] option:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            
@@ -154,7 +154,7 @@ $(document).ready(function () {
     var cur_section = $( "#section option:selected" ).val();
         if(cur_section){
             $.ajax({
-                url: "{{url('/usersubdivision') }}"+'/' +cur_section + "/designations",
+                url: "{{url('/uservillage') }}"+'/' +cur_section + "/designations",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {

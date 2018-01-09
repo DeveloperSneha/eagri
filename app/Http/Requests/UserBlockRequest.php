@@ -28,10 +28,13 @@ class UserBlockRequest extends FormRequest {
                 'idSection' => 'required',
                 'idDesignation' => 'required',
                 'idUser' => 'required',
-                'idBlock' => 'unique:user_designation_district_mapping,idBlock,'.$this->idBlock,
             ];
             if (count($this->idBlocks) == 0) {
-                $rules += ['idBlock' => 'required|unique:user_designation_district_mapping,idBlock'.$this->idBlock];
+                $rules['idBlock'] = 'required';
+            } else {
+                foreach ($this->idBlocks as $var) {
+                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $var;
+                }
             }
         } else {
             $rules = [
@@ -42,7 +45,11 @@ class UserBlockRequest extends FormRequest {
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idBlocks) == 0) {
-                $rules += ['idBlock' => 'required|unique:user_designation_district_mapping,idBlock,NULL,iddesgignationdistrictmapping,idBlock' . $this->idBlock];
+                $rules['idBlock'] = 'required';
+            } else {
+                foreach ($this->idBlocks as $var) {
+                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $var;
+                }
             }
         }
         return $rules;
@@ -55,7 +62,7 @@ class UserBlockRequest extends FormRequest {
             'idBlock.required' => 'Block must be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idBlock.unique' => 'User in This Block has already been registered.',
+            'idDesignation.unique' => 'User With This Designation has already been registered in this Block.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         return $messages;

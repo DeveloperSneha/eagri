@@ -24,14 +24,14 @@ class UserDistrictController extends Controller {
                 ->whereNull('user_designation_district_mapping.idSubdivision')
                 ->whereNull('user_designation_district_mapping.idBlock')
                 ->whereNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName', 'districtName',  'sectionName', 'designationName', DB::raw('group_concat(districtName)AS districtName'))
+                ->select('users.idUser', 'userName', 'districtName', 'sectionName', 'designationName', DB::raw('group_concat(districtName)AS districtName'))
                 ->groupBy('idUser')
                 ->get();
-       // dd($user_list);
+        // dd($user_list);
         $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.user_district', compact('users', 'sections', 'districts','user_list'));
+        return view('users.user_district', compact('users', 'sections', 'districts', 'user_list'));
     }
 
     /**
@@ -40,10 +40,10 @@ class UserDistrictController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $users = [''=>'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.existing_userdistrict', compact('users', 'sections', 'districts','user_list'));
+        return view('users.existing_userdistrict', compact('users', 'sections', 'districts', 'user_list'));
     }
 
     /**
@@ -53,8 +53,8 @@ class UserDistrictController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(UserDistrictRequest $request) {
-       // dd($request->has('existing'));
-        if($request->has('existing')){
+        // dd($request->has('existing'));
+        if ($request->has('existing')) {
             foreach ($request->idDistricts as $var) {
                 $user_desig = new \App\UserDesignationDistrictMapping();
                 $user_desig->fill($request->all());
@@ -62,7 +62,7 @@ class UserDistrictController extends Controller {
                 $user_desig->idUser = $request->idUser;
                 $user_desig->save();
             }
-        }else{
+        } else {
             $user = new \App\User();
             $user->fill($request->all());
             $password = 'abc@123';
@@ -89,17 +89,59 @@ class UserDistrictController extends Controller {
      */
     public function show($id) {
         $user = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
-                ->join('section', 'designation.idSection', '=', 'section.idSection')
-                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
-                ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
-                ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
-                ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
-                ->where('users.idUser','=',$id)
-                ->select('districtName as District','designationName as Designation','sectionName as Section','subDivisionName as Subdivision','blockName as Block',DB::raw('group_concat(villageName)AS villageName'))->first();
-        
+                        ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                        ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                        ->join('section', 'designation.idSection', '=', 'section.idSection')
+                        ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                        ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+                        ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+                        ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
+                        ->where('users.idUser', '=', $id)
+                        ->select('districtName', 'designationName', 'sectionName', 'subDivisionName', 'blockName', 'villageName')->get()->toArray();
+       // dd($user);
+//        foreach ($user as $query) {
+//            $result[] = [$query->idDistrict, $query->districtName,$query->idSubdivision, $query->subDivisionName,$query->idBlock, $query->blockName];
+//        }
         return json_encode($user);
+//
+//        $user = \App\User::where('idUser', '=', $id)->first();
+//
+//        $user_district = $user->userdesig()
+//                        ->whereNotNull('idDistrict')
+//                        ->whereNull('idSubdivision')
+//                        ->whereNull('idBlock')
+//                        ->whereNull('idVillage')
+//                        ->with(array('district' => function($query) {
+//                                $query->select('idDistrict', 'districtName');
+//                            }))
+//                         ->with(array('designation' => function($query) {
+//                                $query->select('idDesignation','designationName');
+//                            }))->get()->toArray();
+//       // dd($user_district);
+//        $user_subdivision = $user->userdesig()
+//                        ->whereNotNull('idSubdivision')
+//                        ->whereNull('idBlock')
+//                        ->whereNull('idVillage')
+//                        ->with(array('subdivision' => function($query) {
+//                                $query->select('idSubdivision', 'subDivisionName');
+//                            }))
+//                        ->get()->toArray();
+//        $user_block = $user->userdesig()
+//                        ->whereNotNull('idBlock')
+//                        ->whereNull('idVillage')
+//                        ->with(array('block' => function($query) {
+//                                $query->select('idBlock', 'blockName');
+//                            }))
+//                        ->get()->toArray();
+//        $user_village = $user->userdesig()
+//                        ->whereNotNull('idVillage')
+//                        ->with(array('village' => function($query) {
+//                                $query->select('idVillage', 'villageName');
+//                            }))
+//                        ->get()->toArray();
+//        $data[] = compact('user_district','user_subdivision','user_block','user_village');
+        // dd($data);
+        return json_encode($data);
     }
 
     /**
@@ -117,18 +159,18 @@ class UserDistrictController extends Controller {
                 ->whereNull('user_designation_district_mapping.idSubdivision')
                 ->whereNull('user_designation_district_mapping.idBlock')
                 ->whereNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName', 'districtName',  'sectionName', 'designationName', DB::raw('group_concat(districtName)AS districtName'))
+                ->select('users.idUser', 'userName', 'districtName', 'sectionName', 'designationName', DB::raw('group_concat(districtName)AS districtName'))
                 ->groupBy('idUser')
                 ->get();
         $user = \App\User::where('idUser', '=', $id)->first();
         $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
         $user_desig = $user->userdesig()->with('designation')->get();
         $user_district = $user->userdesig()->whereNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->pluck('idDistrict')->toArray();
-       // dd($user_district);
+        // dd($user_district);
         $users = \App\User::where('idUser', '>', 2)->get();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
-        return view('users.user_district', compact('user_district','user_list','user', 'users', 'sections', 'designations', 'districts', 'user_section', 'user_desig'));
+        return view('users.user_district', compact('user_district', 'user_list', 'user', 'users', 'sections', 'designations', 'districts', 'user_section', 'user_desig'));
     }
 
     /**
@@ -141,7 +183,7 @@ class UserDistrictController extends Controller {
     public function update(Request $request, $id) {
         $rules = [
             'idSection' => 'required',
-            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $request->idDistrict,
+            'idDesignation' => 'required',
             'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
         ];
         if (count($request->idDistricts) == 0) {
@@ -151,7 +193,6 @@ class UserDistrictController extends Controller {
             'idDistrict.required' => 'District must be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
@@ -161,15 +202,15 @@ class UserDistrictController extends Controller {
         //dd($old_ids);
         $user_districts = new \Illuminate\Database\Eloquent\Collection();
         foreach ($request->idDistricts as $var) {
-            $user_dist = \App\UserDesignationDistrictMapping::firstOrNew(['idDistrict' => $var, 'idDesignation' => $request->idDesignation,'idUser' => $user->idUser]);
+            $user_dist = \App\UserDesignationDistrictMapping::firstOrNew(['idDistrict' => $var, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
             $user_districts->add($user_dist);
         }
         $new_ids = $user_districts->pluck('iddesgignationdistrictmapping')->toArray();
         //dd($new_ids);
         $detach = array_diff($old_ids, $new_ids);
-      //  dd($detach);
+        //  dd($detach);
         DB::beginTransaction();
-        
+
         $user->update();
         \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
         $user->userdesig()->saveMany($user_districts);
@@ -199,19 +240,21 @@ class UserDistrictController extends Controller {
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
         return json_encode($subdivisions);
     }
-    public function getDetails($id,$desig){
-     $user = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
-                ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
-                ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
-                ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
-                ->where('users.idUser','=',$id)
-                ->where('user_designation_district_mapping.idDesignation','=',$desig)
-                ->select('districtName','user_designation_district_mapping.idDistrict','subDivisionName','user_designation_district_mapping.idSubdivision','blockName','user_designation_district_mapping.idBlock')->get()->toArray();
-//        foreach ($user as $query) {
-//            $result[] = [$query->idDistrict, $query->districtName,$query->idSubdivision, $query->subDivisionName,$query->idBlock, $query->blockName];
-//        }
-       return json_encode($user);
+
+    public function getDetails($id, $desig) {
+        $user = DB::table('users')
+                        ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                        ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                        ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+                        ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+                        ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
+                        ->where('users.idUser', '=', $id)
+                        ->where('user_designation_district_mapping.idDesignation', '=', $desig)
+                        ->groupBy('user_designation_district_mapping.idDesignation') 
+                       // ->select(DB::raw('distinct(districtName)AS districtName'),DB::raw('distinct(subDivisionName)AS subDivisionName') ,DB::raw('distinct(blockName)AS blockName'),'user_designation_district_mapping.idDistrict',  'user_designation_district_mapping.idSubdivision',  'user_designation_district_mapping.idBlock')
+                        ->get();
+
+        return json_encode($user);
     }
+
 }

@@ -51,10 +51,23 @@ use RegistersUsers;
     protected function validator(array $data) {
         return Validator::make($data, [
                     'name' => 'required|string|max:255',
+                    'father_name'=>'',
                     'aadhaar' => 'required|max:12|min:12|unique:farmers',
                     'mobile' => 'required|min:10|max:10',
-                        //    'email' => 'required|string|email|max:255|unique:users',
-                        //     'password' => 'required|string|min:6|confirmed',
+                    'idDistrict'=>'required',
+                    'idBlock' =>'required',
+                    'idVillage' =>'required',
+                    'gender' =>'required',
+                    'farmer_category'=>'required',
+                    'marital_status' =>'required',
+                    'caste'=>'required',
+                    'rcno' =>'required|max:15|min:12|unique:farmers',
+                    'ifsc_code'=>'required',
+                    'account_no'=>'required',
+                    'land_location'=>'required',
+                    'land_owner'=>'required',
+                    'total_land'=>'required'
+            
         ]);
     }
 

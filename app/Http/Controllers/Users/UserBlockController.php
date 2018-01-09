@@ -23,7 +23,8 @@ class UserBlockController extends Controller {
                 ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
                 ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
                 ->whereNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
+                ->select('users.idUser', 'userName', 'districtName', 'blockName', 'subDivisionName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
+                ->groupBy('idUser')
                 ->get();
         //dd($user_list);
         $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
@@ -76,8 +77,8 @@ class UserBlockController extends Controller {
                 $user_desig->save();
             }
             DB::commit();
-            return redirect('userblock');
         }
+        return redirect('userblock');
     }
 
     /**
@@ -112,16 +113,14 @@ class UserBlockController extends Controller {
         $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
         $user_desig = $user->userdesig()->with('designation')->get();
         $user_subdiv = $user->userdesig()->with('subdivision')
-                ->whereNotNull('idSubdivision')
-                ->get()->pluck('subdivision.idSubdivision', 'subdivision.subDivisionName')->unique();
-       // dd($user_subdiv);
+                        ->whereNotNull('idSubdivision')
+                        ->get()->pluck('subdivision.idSubdivision', 'subdivision.subDivisionName')->unique();
         $user_block = $user->userdesig()->with('block')
                         ->whereNotNull('idBlock')->whereNull('idVillage')->get();
-//        dd($user_block);
+        //dd($user_block);
         $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        // dd($districts);
         return view('users.user_block', compact('users', 'user', 'sections', 'user_subdiv', 'user_block', 'districts', 'user_list', 'user_section', 'user_desig'));
     }
 
@@ -149,17 +148,18 @@ class UserBlockController extends Controller {
             'idBlock.required' => 'Block must be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
         $user = \App\User::where('idUser', '=', $id)->first();
+        $user_district = $user->userdesig()->pluck('idDistrict')->unique()->first();
+        $user_subdivision = $user->userdesig()->pluck('idSubdivision')->unique()->first();
         $user->fill($request->all());
         $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
         //dd($old_ids);
         $user_blocks = new \Illuminate\Database\Eloquent\Collection();
         foreach ($request->idBlocks as $var) {
-            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idBlock' => $var, 'idDistrict' => $request->idDistrict, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
+            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idBlock' => $var, 'idDistrict' => $user_district, 'idSubdivision' => $user_subdivision, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
             $user_blocks->add($user_sub);
         }
         $new_ids = $user_blocks->pluck('iddesgignationdistrictmapping')->toArray();

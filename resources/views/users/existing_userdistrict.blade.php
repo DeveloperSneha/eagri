@@ -67,6 +67,18 @@
                 <div id="userdet">
 
                 </div>
+<!--                <div id='userdistrict'>
+                    
+                </div>
+                <div id='usersubdivision'>
+                    
+                </div>
+                <div id='userblock'>
+                    
+                </div>
+                <div id='uservillage'>
+                    
+                </div>-->
             </div>
         </div>
     </div>

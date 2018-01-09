@@ -104,16 +104,20 @@ $user_desig = $user->userdesig()->with('designation')
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
+                        $('select[id="idDistrict"]').empty();
+                        $('select[id="idSubdivision"]').empty();
+                        $('select[id="idBlock"]').empty();
                     $.each(data, function(key, value) {
                         $('select[id="idDistrict"]').append('<option value="'+ value['idDistrict'] +'" >'+ value['districtName'] +'</option>');
-                        if((value['idSubdivision'])!== null){
-                           $('select[id="idSubdivision"]').append('<option value="'+ value['idSubdivision'] +'" >'+ value['subDivisionName'] +'</option>');
-                        }else if((value['idBlock'])!== null){
-                            $('select[id="idBlock"]').append('<option value="'+ value['idBlock'] +'" >'+ value['blockName'] +'</option>');
-                        }else{
-                            $('select[id="idSubdivision"]').empty();
-                            $('select[id="idBlock"]').empty();
-                        }
+                        if((value['idBlock'])>0){
+                          $('select[id="idSubdivision"]').append('<option value="'+ value['idSubdivision'] +'" >'+ value['subDivisionName'] +'</option>');
+                          $('select[id="idBlock"]').append('<option value="'+ value['idBlock'] +'" >'+ value['blockName'] +'</option>');
+                        }   else if((value['idSubdivision'])>0){
+                            $('select[id="idSubdivision"]').append('<option value="'+ value['idSubdivision'] +'" >'+ value['subDivisionName'] +'</option>');
+                            }else{
+                                $('select[id="idSubdivision"]').empty();
+                                $('select[id="idBlock"]').empty();
+                            }
                     });
                     
 

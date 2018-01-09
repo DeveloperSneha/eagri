@@ -14,7 +14,11 @@
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                 {!! Form::select('idDistrict',$districts, isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
+                @if(isset($user))
+                {!! Form::select('idDistrict',$districts, isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict','disabled']) !!}
+                @else
+                {!! Form::select('idDistrict',$districts, isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
+                @endif
             </div>
             <span class="help-block">
                 <strong>
@@ -28,7 +32,7 @@
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                <select name = "idSubdivision"  id="idSubdivision" class="form-control select2">
+                <select name = "idSubdivision"  id="idSubdivision" class="form-control select2" disabled="disabled">
                     @foreach($user_subdiv as $key=>$value)
                     <option value="{{ $value }}" selected="selected" >{{ $key }}</option>
                     @endforeach
@@ -51,7 +55,7 @@
             {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                <select name = "idBlock"  id="idBlock" class="form-control">
+                <select name = "idBlock"  id="idBlock" class="form-control" disabled="disabled">
                     @foreach($user_village as $val)
                     <option value="{{ $val->block->idBlock }}" selected="selected" >{{ $val->block->idBlock }}</option>
                     @endforeach

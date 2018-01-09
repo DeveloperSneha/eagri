@@ -21,27 +21,36 @@ class UserDistrictRequest extends FormRequest {
      * @return array
      */
     public function rules() {
-//       dd($this->all());
+        //   dd($this->idDistricts);
         if ($this->has('existing')) {
             $rules = [
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping' . $this->idDistrict,
+                'idDesignation' => 'required',
                 'idUser' => 'required'
             ];
             if (count($this->idDistricts) == 0) {
-                $rules += ['idDistrict' => 'required'];
+                $rules['idDistrict'] = 'required';
+            } else {
+                foreach ($this->idDistricts as $var) {
+                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $var;
+                }
             }
         } else {
             $rules = [
                 'idSection' => 'required',
-                'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $this->idDistrict,
+                'idDesignation' => 'required',
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idDistricts) == 0) {
-                $rules += ['idDistrict' => 'required'];
+                $rules['idDistrict'] = 'required';
+            } else {
+                foreach ($this->idDistricts as $var) {
+                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $var;
+                }
             }
         }
-       return $rules;
+        //  dd($rules);
+        return $rules;
     }
 
     public function messages() {
@@ -50,7 +59,7 @@ class UserDistrictRequest extends FormRequest {
             'idDistrict.required' => 'District must be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idDesignation.unique' => 'User With This Designation has already been registered.',
+            'idDesignation.unique' => 'User With This Designation has already been registered in this District.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         return $messages;

@@ -24,7 +24,7 @@
                 <div class="form-group">
                     {!! Form::label('District', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control','id'=>'idDistrict']) !!}
+                        {!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idDistrict'))

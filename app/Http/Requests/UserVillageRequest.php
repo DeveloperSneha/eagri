@@ -32,7 +32,11 @@ class UserVillageRequest extends FormRequest {
                 'idUser' => 'required'
             ];
             if (count($this->idVillages) == 0) {
-                $rules += ['idVillage' => 'required|unique:user_designation_district_mapping'];
+                $rules['idVillage'] = 'required';
+            }else {
+                foreach ($this->idVillages as $var) {
+                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idVillage,' . $var;
+                }
             }
         } else {
             $rules = [
@@ -44,7 +48,11 @@ class UserVillageRequest extends FormRequest {
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idVillages) == 0) {
-                $rules += ['idVillage' => 'required|unique:user_designation_district_mapping,idVillage,NULL,iddesgignationdistrictmapping,idVillage,' . $this->idVillage];
+                $rules['idVillage'] = 'required';
+            }else {
+                foreach ($this->idVillages as $var) {
+                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idVillage,' . $var;
+                }
             }
         }
        return $rules;
@@ -59,7 +67,7 @@ class UserVillageRequest extends FormRequest {
             'idVillage.required' => 'Atleast One Village Must Be selected.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'idVillage.unique' => 'User in This Village has already been registered.',
+            'idDesignation.unique' => 'User in This Village has already been registered with this designation.',
             'userName.required' => 'UserName Must Not Be Empty.'
         ];
         return $messages;

@@ -58,7 +58,7 @@ class UserVillageController extends Controller {
             foreach ($request->idVillages as $var) {
                 $user_desig = new \App\UserDesignationDistrictMapping();
                 $user_desig->fill($request->all());
-                $user_desig->idVillages = $var;
+                $user_desig->idVillage = $var;
                 $user_desig->idUser = $request->idUser;
                 $user_desig->save();
             }
@@ -154,12 +154,15 @@ class UserVillageController extends Controller {
         ];
         $this->validate($request, $rules, $messages);
         $user = \App\User::where('idUser', '=', $id)->first();
+        $user_district = $user->userdesig()->pluck('idDistrict')->unique()->first();
+        $user_subdivision = $user->userdesig()->pluck('idSubdivision')->unique()->first();
+        $user_block = $user->userdesig()->pluck('idBlock')->unique()->first();
         $user->fill($request->all());
         $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
         //dd($old_ids);
         $user_villages = new \Illuminate\Database\Eloquent\Collection();
         foreach ($request->idVillages as $var) {
-            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idVillage' => $var, 'idDistrict' => $request->idDistrict,'idBlock' => $request->idBlock, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
+            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idVillage' => $var, 'idDistrict' => $user_district,'idSubdivision' => $user_subdivision,'idBlock' => $user_block, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
             $user_villages->add($user_sub);
         }
         $new_ids = $user_villages->pluck('iddesgignationdistrictmapping')->toArray();
