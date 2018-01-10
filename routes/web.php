@@ -11,6 +11,8 @@
   |
  */
 Route::get('user/{id}/{desig}/details','Users\UserDistrictController@getDetails');
+Route::get('user/{id}/{desig}/{dist}/subdivision','Users\UserDistrictController@getSubdivision');
+Route::get('user/{id}/{desig}/{subdivision}/block','Users\UserDistrictController@getBlock');
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function() {
@@ -95,6 +97,8 @@ Route::prefix('authority')->group(function() {
     Route::get('/user/{user}/designations', 'Auth\AuthorityLoginController@getDesignation');
     Route::get('/login', 'Auth\AuthorityLoginController@showLoginForm')->name('authority.login');
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
+    Route::post('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLogin')->name('authority.secondlogin');
+    
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
     Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
 

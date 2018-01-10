@@ -19,9 +19,11 @@ class AuthorityProfileController extends AuthorityController {
        //dd(Auth::User());
         
         $user = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+        $user_district = $user->userdesig()->with('district')->get()->pluck('district.districtName')->unique();
+        $user_designation = $user->userdesig()->with('designation')->get()->pluck('designation.designationName')->unique();
        // $user_desig = $user->load('userdesig')->where('idDesignation','=',);
      //   dd($user_desig);
-        return view('authority.profile', compact('user','user_desig'));
+        return view('authority.profile', compact('user','user_district','user_designation'));
     }
 
     /**

@@ -19,22 +19,22 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_first" class="digital" style="font-size:Small;">Permits</span><br>
-                        <span id="spnpermits" class="digital f-b">675</span>
+                        <span id="Master_lbl_first" class="digital" style="font-size:Small;">Avail. Schemes</span><br>
+                        <span id="spnpermits" class="digital f-b">2</span>
                     </div>
 
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-3 txt-cnt fl">
 
-                        <span id="Master_lbl_second" class="digital" style="font-size:Small;">Transit Forms</span><br>
-                        <span id="spntransitforms" class="digital f-b">53908</span>
+                        <span id="Master_lbl_second" class="digital" style="font-size:Small;">App. Schemes</span><br>
+                        <span id="spntransitforms" class="digital f-b">1</span>
                     </div>
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">Stationery</span><br>
-                        <span id="spnstationery" class="digital f-b">113616</span>
+                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">Rej. Schemes </span><br>
+                        <span id="spnstationery" class="digital f-b">0</span>
 
                     </div>
                 </li>

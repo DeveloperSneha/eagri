@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
     @include('layouts.partials.head')
+    <body style="background-color: #323232;">
     <div class="">
         <div class="register-logo">
-            <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="100" width="160"></a>
+            <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="90" width="90"></a>
         </div>
 
-        <div class="register-box-body">
-            <p class="register-box-msg">New Registration / नया पंजीकरण</p>
+        <div class="register-box-body" style="background-color: #323232;">
+            <p class="register-box-msg" style="color:#fff">New Registration / नया पंजीकरण</p>
+           
             <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>New Registration / नया पंजीकरण</strong>
+                    <a style="color:#fff" href="{{url('farmer/login')}}"><span style="float:right;"><i class="fa fa-home fa-2x"></i></span></a>
                 </div>
                 <div class="panel-body">
                     
@@ -41,7 +44,7 @@
                         <div class="form-group">
                             {!! Form::label('Aadhar No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
-                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhar No','']) !!}
+                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhar No','maxlength' => 12]) !!}
                                 @if ($errors->has('aadhaar'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('aadhaar') }}</strong>
@@ -88,26 +91,6 @@
                                 </span>
                                 @endif
                             </div>
-                            {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('caste') ? ' has-error' : '' }}">
-                                {!! Form::select('caste', getCasteCategory(),null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('caste'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('caste') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
-                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter MobileNo.']) !!}
-                                @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('mobile') }}</strong>
-                                </span>
-                                @endif
-                            </div>
                             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idDistrict') ? ' has-error' : '' }}">
                                 <select name="idDistrict" class="form-control">
@@ -122,8 +105,18 @@
                                 </span>
                                 @endif
                             </div>
+                            
                         </div>
                         <div class="form-group">
+                            {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
+                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter MobileNo.','maxlength' => 10]) !!}
+                                @if ($errors->has('name'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('mobile') }}</strong>
+                                </span>
+                                @endif
+                            </div>
                             {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
                                 <select name="idBlock" class="form-control" >--- Select Block ---</select>
@@ -133,6 +126,19 @@
                                 </span>
                                 @endif
                             </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-4 {{ $errors->has('caste') ? ' has-error' : '' }}">
+                                {!! Form::select('caste', getCasteCategory(),null, ['class' => 'form-control']) !!}
+                                @if ($errors->has('caste'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('caste') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            
                             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idVillage') ? ' has-error' : '' }}">
                                 <select name="idVillage" class="form-control" >--- Select Village ---</select>
@@ -211,11 +217,9 @@
                         </fieldset>
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-4">
-                                <button class="btn btn-block btn-success" name="btn-signup" style="background-color:maroon;border-color:maroon;" type="submit">Register</button>
+                                <button class="btn btn-block btn-success" name="btn-signup"  type="submit">Register</button>
                             </div>
-                            <div class="col-sm-2">
-                                <a style="float:right;" href="{{url('farmer/login')}}"><h4 style="color:maroon;"><b>Login / लॉगिन</b></h4></a>
-                            </div>
+                            
                         </div>
                     </form>
                 </div>

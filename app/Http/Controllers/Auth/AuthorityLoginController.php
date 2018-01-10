@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use DB;
-use Illuminate\Support\Facades\Redirect;
 use App\Traits;
 use Session;
 
@@ -27,37 +26,46 @@ class AuthorityLoginController extends Controller {
 
     public function login(Request $request) {
         // Validate the form data
-
+//        $this->validate($request, [
+//            'userName' => 'required',
+//            'password' => 'required'
+//        ]);
+//        dd($request->all());
         $request['captcha'] = $this->captchaCheck();
         $rules = [
             'userName' => 'required',
             'password' => 'required',
             'g-recaptcha-response' => 'required',
             'captcha' => 'required|min:1',
-//            'idDesignation' => 'required'
+            'idDesignation' => 'required'
         ];
         $messages = [
             'userName.required' => 'Enter Your Username ',
             'password.required' => 'Enter Your Password',
             'g-recaptcha-response.required' => 'Captcha authentication is required.',
             'captcha.min' => 'Wrong captcha, please try again.',
-//            'idDesignation.required' => 'Please Select Your Designation you want to login.'
+            'idDesignation.required' => 'Please Select Your Designation you want to login.'
         ];
         $this->validate($request, $rules, $messages);
         // Attempt to log the user in
-//        if (Auth::guard('authority')->attempt([
-//                    'userName' => $request->userName,
-//                    'password' => $request->password], $request->remember)) {}
-        $user = \App\User::where('userName', $request->userName)->first();
-        if ($user) {
-            if ($user->userdesig()->count() > 1) {
-                return view('authority.secondstep_login', compact('user', 'userdesig'));
-                // return view('authority.secondstep_login')->with($request->session()->get('idDesignation'));
+        if (Auth::guard('authority')->attempt([
+                    'userName' => $request->userName,
+                    'password' => $request->password], $request->remember)) {
+            $user = \App\User::where('userName', $request->userName)->first();
+            $user_desig = $user->userdesig()->where('idDesignation', '=', $request->idDesignation)->first();
+            $idDesignation = $user_desig->idDesignation;
+            Session::put('idDesignation', $idDesignation);
+            //dd(Session::get('idDesignation'));
+            //   dd($user_desig->idDesignation);
+            if ($user_desig) {
+                //  dd(Session::get('idDesignation'));
+               // return view('authority.dashboard')->with($request->session()->get('idDesignation'));
+               return redirect('/authority')->with($request->session()->get('idDesignation'));
             } else {
-                return view('authority.dashboard');
+                return Redirect::back()->withInput($request->only('userName', 'idDesignation'))->withErrors(['UserName Is Not vaild !!']);
             }
         } else {
-            return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg'=>'Your Credential Doesnot Match Our Record.Plz Try Again !!']);
+            return Redirect::back()->withInput($request->only('userName', 'remember'))->withErrors(['UserName Is Not vaild !!']);
         }
     }
 

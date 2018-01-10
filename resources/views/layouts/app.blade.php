@@ -52,7 +52,7 @@
             <b>Version</b> 1.0
         </div>
 <!--    <center>-->
-        <strong>Copyright &copy; 2018 <a href="https://hkcl.co.in">HKCL</a>.</strong> All Rights Reserved.
+        <strong>Copyright &copy; 2018 <a href="https://hkcl.in">HKCL</a>.</strong> All Rights Reserved.
 <!--    </center>-->
     </footer>
 

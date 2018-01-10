@@ -98,7 +98,7 @@ class UserDistrictController extends Controller {
                         ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
                         ->where('users.idUser', '=', $id)
                         ->select('districtName', 'designationName', 'sectionName', 'subDivisionName', 'blockName', 'villageName')->get()->toArray();
-       // dd($user);
+        // dd($user);
 //        foreach ($user as $query) {
 //            $result[] = [$query->idDistrict, $query->districtName,$query->idSubdivision, $query->subDivisionName,$query->idBlock, $query->blockName];
 //        }
@@ -243,16 +243,51 @@ class UserDistrictController extends Controller {
 
     public function getDetails($id, $desig) {
         $user = DB::table('users')
-                        ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                        ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
-                        ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
-                        ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
-                        ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
-                        ->where('users.idUser', '=', $id)
-                        ->where('user_designation_district_mapping.idDesignation', '=', $desig)
-                        ->groupBy('user_designation_district_mapping.idDesignation') 
-                       // ->select(DB::raw('distinct(districtName)AS districtName'),DB::raw('distinct(subDivisionName)AS subDivisionName') ,DB::raw('distinct(blockName)AS blockName'),'user_designation_district_mapping.idDistrict',  'user_designation_district_mapping.idSubdivision',  'user_designation_district_mapping.idBlock')
-                        ->get();
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+//                ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+//                ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+//                ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
+                ->where('users.idUser', '=', $id)
+                ->where('user_designation_district_mapping.idDesignation', '=', $desig)
+                ->select('user_designation_district_mapping.idDesignation', 'districtName', 'user_designation_district_mapping.idDistrict')
+                ->distinct()
+                ->get();
+
+        return json_encode($user);
+    }
+
+    public function getSubdivision($id,$desig ,$district) {
+        $user = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+//                ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+//                ->leftjoin('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
+                ->whereNotNull('user_designation_district_mapping.idSubdivision')
+                ->where('users.idUser', '=', $id)
+                ->where('user_designation_district_mapping.idDesignation', '=', $desig)
+                ->where('user_designation_district_mapping.idDistrict', '=', $district)
+                ->select('user_designation_district_mapping.idDesignation', 'subDivisionName', 'user_designation_district_mapping.idSubdivision')
+                ->distinct()
+                ->get();
+
+        return json_encode($user);
+    }
+
+    public function getBlock($id,$desig ,$subdiv) {
+        $user = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
+                ->leftjoin('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
+                ->leftjoin('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
+                ->whereNotNull('user_designation_district_mapping.idBlock')
+                ->where('users.idUser', '=', $id)
+                ->where('user_designation_district_mapping.idDesignation', '=', $desig)
+                ->where('user_designation_district_mapping.idSubdivision', '=', $subdiv)
+                ->select('user_designation_district_mapping.idDesignation', 'blockName', 'user_designation_district_mapping.idBlock')
+                ->distinct()
+                ->get();
 
         return json_encode($user);
     }

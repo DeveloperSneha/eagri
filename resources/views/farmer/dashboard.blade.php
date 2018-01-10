@@ -23,7 +23,7 @@
                 <p>Demo Text Here..</p>
             </div>
             <div class="icon">
-                <i class="fa fa-cog"></i>
+                <i class="fa fa-leaf"></i>
             </div>
             <span class="small-box-footer">Schemes<i class="fa fa-arrow-circle-right"></i></span>
         </div>

@@ -17,10 +17,11 @@ $user_desig = $user->userdesig()->with('designation')
                     <div class="panel-heading">
                         <strong>Select Your Designation And Related Districts</strong>
                     </div>
-                    {!! Form::open(['url' => '','class'=>'form-horizontal']) !!}
-                    <div class="panel-body">
+                    <form class="form-horizontal" method="POST" action="{{ route('authority.secondlogin') }}">
+                        {{ csrf_field() }}
+                        <div class="panel-body">
                         <input type="hidden" name='userName' value="{{$user->userName}}">
-                        <input type="hidden" name='userName' value="{{$user->password}}">
+                        <input type="hidden" name='password' value="{{$user->password}}">
                         <div class="form-group">
                             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4">
@@ -88,7 +89,7 @@ $user_desig = $user->userdesig()->with('designation')
                             </div>
                         </div>
                     </div>
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>
@@ -107,25 +108,60 @@ $user_desig = $user->userdesig()->with('designation')
                         $('select[id="idDistrict"]').empty();
                         $('select[id="idSubdivision"]').empty();
                         $('select[id="idBlock"]').empty();
+                        $('select[id="idDistrict"]').append('<option value="">--Select--</option>');
                     $.each(data, function(key, value) {
-                        $('select[id="idDistrict"]').append('<option value="'+ value['idDistrict'] +'" >'+ value['districtName'] +'</option>');
-                        if((value['idBlock'])>0){
-                          $('select[id="idSubdivision"]').append('<option value="'+ value['idSubdivision'] +'" >'+ value['subDivisionName'] +'</option>');
-                          $('select[id="idBlock"]').append('<option value="'+ value['idBlock'] +'" >'+ value['blockName'] +'</option>');
-                        }   else if((value['idSubdivision'])>0){
-                            $('select[id="idSubdivision"]').append('<option value="'+ value['idSubdivision'] +'" >'+ value['subDivisionName'] +'</option>');
-                            }else{
-                                $('select[id="idSubdivision"]').empty();
-                                $('select[id="idBlock"]').empty();
-                            }
+                       $('select[id="idDistrict"]').append('<option value="'+ value['idDistrict'] +'" >'+ value['districtName'] +'</option>');
+                    });
+                }
+            });
+        }else{
+            $('select[id="idDistrict"]').empty();
+            $('select[id="idSubdivision"]').empty();
+            $('select[id="idBlock"]').empty();
+        }
+    });
+     $('select[name="idDistrict"]').on('change', function() {
+        var designationID = $( "#idDesignation option:selected" ).val();
+        var districtID = $(this).val();
+        if(districtID) {
+            $.ajax({
+                url: "{{url('/user/'. $user->idUser) }}" + '/'+ designationID +'/' + districtID + "/subdivision",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idSubdivision"]').empty();
+                    $('select[id="idBlock"]').empty();
+                    $('select[id="idSubdivision"]').append('<option value="">--Select--</option>');
+                    $.each(data, function(key, value) {
+                         $('select[id="idSubdivision"]').append('<option value="'+ value['idSubdivision'] +'" >'+ value['subDivisionName'] +'</option>');
                     });
                     
 
                 }
             });
         }else{
-            $('select[id="idDistrict"]').empty();
             $('select[id="idSubdivision"]').empty();
+        }
+    });
+    $('select[name="idSubdivision"]').on('change', function() {
+        var designationID = $( "#idDesignation option:selected" ).val();
+        var subdivisionID = $(this).val();
+        if(subdivisionID) {
+            $.ajax({
+                url: "{{url('/user/'. $user->idUser) }}" + '/' + designationID +'/' + subdivisionID + "/block",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                     $('select[id="idBlock"]').empty();
+                     $('select[id="idBlock"]').append('<option value="">--Select--</option>');
+                     $.each(data, function(key, value) {
+                       $('select[id="idBlock"]').append('<option value="'+ value['idBlock'] +'" >'+ value['blockName'] +'</option>');
+                  });
+                    
+
+                }
+            });
+        }else{
             $('select[id="idBlock"]').empty();
         }
     });

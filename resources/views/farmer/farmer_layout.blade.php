@@ -52,10 +52,11 @@
             </div>
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
-
+                    <b>Version</b> 1.0
                 </div>
-                <strong>Copyright &copy; 2018 <a href="https://hkcl.co.in">HKCL</a>.</strong> All rights
-                reserved.
+        <!--    <center>-->
+                <strong>Copyright &copy; 2018 <a href="https://hkcl.in">HKCL</a>.</strong> All Rights Reserved.
+                <!--    </center>-->
             </footer>
 
         </div>

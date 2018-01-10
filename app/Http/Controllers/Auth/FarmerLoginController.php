@@ -38,7 +38,7 @@ class FarmerLoginController extends Controller {
         // Attempt to log the user in
         if (Auth::guard('farmer')->attempt(['aadhaar' => $request->aadhaar, 'password' => $request->password], $request->remember)) {
             // if successful, then redirect to their intended location
-            return redirect()->intended(route('farmer.dashboard'));
+            return redirect('/farmer');
         }
         // if unsuccessful, then redirect back to the login with the form data
         // return redirect()->back()->withInput($request->only('aadhaar', 'remember'));

@@ -7,20 +7,37 @@ and open the template in the editor.
     Created on : Nov 30, 2017, 11:34:36 AM
     Author     : HKCL
 */
+.small-box>.small-box-footer{
+    background: rgb(236, 134, 34);
+}
+.small-box .icon{
+    font-size:81px;
+}
+
+.btn-danger {
+    background-color: #5f5f5f !important;
+    border-color: #5f5f5f !important;
+}
 .btn-success {
-    background-color: #9acd32;
-    border-color: #9acd32;
+    background-color: #ff9600;
+    border-color: #ff9600;
+}
+.btn-success:hover, .btn-success:active, .btn-success.hover{
+    background-color: #ff9600;
+    border-color: #ff9600;
 }
 .login {
     /*    background: #ffffff;*/
-    background: #310904 url(../img/AH.jpg);
+  
+    background: #310404 url(../img/AH.jpg) repeat top left;
+    background-size: cover;
     /*repeat:repeat-x;*/
     /*background-position:cover;*/
-    background-size:  1350px 750px;
+    /*background-size:  1350px 750px;*/
     font-family: 'Electrolize';
 }
 .register-page {
-    background: #ffffff;
+    background: #dbdbdb;
 }
 .login-box
 {
@@ -161,7 +178,7 @@ legend{
     margin-left: 25px;
 }
 .skin-green-light .sidebar-menu .treeview-menu>li.active>a, .skin-green-light .sidebar-menu .treeview-menu>li>a:hover {
-    color: #9acd32;
+    color: #ff9600;
 }
 .info-box{
     min-height: 107px;
@@ -188,7 +205,7 @@ legend{
     width: 100%;
     float: left;
     padding: 5px 8px;
-    background-color: yellowgreen;
+    background-color: #ff9600;
     color: #fff;
     text-transform: uppercase;
     font-size: 14px;
@@ -203,7 +220,7 @@ legend{
     min-height: 100px;
 }
 .info-box.bg-green{
-    background-color: yellowgreen !important;
+    background-color: #ff9600 !important;
 }
 .parallelogram {
     -webkit-box-sizing: content-box;
@@ -225,11 +242,11 @@ legend{
     text-align: center !important;
 }
 .bg-1 {
-    background-color: rgb(154, 205, 50);
+    background-color: rgba(252,139,28,0.9);
     border-right: 1px solid #333333c7
 }
 .bg-3{
-    background-color: #408640;
+    background-color: rgba(252,139,28,0.7);
     border-right: 1px solid #333333c7
 }
 .parallelogram span {
@@ -248,7 +265,7 @@ legend{
 }
 .panel-default>.panel-heading {
     color: #fff;
-    background-color: #9acd32;
+    background-color: #ff9600;
     border-color: #5f5f5f;
     width: 100%;
     float: left;
@@ -395,7 +412,7 @@ li.treeview.menu-open {
     -webkit-align-items: center;
     right: 0;
     text-align: center;
-    background: #333333c7;
+    background: #323232;
 }
 .log-panel > .hd {
     width: 100%;

@@ -128,7 +128,7 @@ $(document).ready(function () {
                 }
             });
          }
-         $('select[name="idUser"]').on('change', function() {
+ $('select[name="idUser"]').on('change', function() {
             var userID = $(this).val();
             if(userID) {
                 $.ajax({
@@ -136,10 +136,22 @@ $(document).ready(function () {
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
-                       $('#userdet').empty();
-                        $.each(data, function(key, value) {
-                           $('#userdet').append('<label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-10"><p class="form-control-static">'+value+'</p></div>');
+                         $('#userdet').empty();
+                            $.each(data, function(key, value) {
+                            if(value['villageName']===null && value['blockName']===null && value['subDivisionName']===null){
+                                $('#userdet').append('<div class="col-sm-12"><p class="form-control-static"><strong>District - </strong> '+value['districtName']+',  <strong>Section -</strong>'+value['sectionName']+',  <strong>Designation -</strong>'+value['designationName']+'</p></div>');
+                            }else if(value['villageName']===null && value['blockName']===null){
+                                $('#userdet').append('<div class="col-sm-12"><p class="form-control-static"><strong> Subdivision - </strong>'+value['subDivisionName']+',  <strong>Section -</strong>'+value['sectionName']+', <strong>Designation -</strong>'+value['designationName']+'</p></div>');
+                            }else if(value['villageName']===null){
+                                $('#userdet').append('<div class="col-sm-12"><p class="form-control-static"><strong> Block - </strong>'+value['blockName']+' ,  <strong>Section -</strong>'+value['sectionName']+', <strong>Designation -</strong>'+value['designationName']+'</p></div>');
+                            }else{
+                                $('#userdet').append('<div class="col-sm-12"><p class="form-control-static"><strong> Village - </strong>'+value['villageName']+' ,  <strong>Section -</strong>'+value['sectionName']+', <strong>Designation -</strong>'+value['designationName']+'</p></div>');
+                            }
+//                            $.each(value, function(key1, value1) {
+//                                $('#userdet').append('<label class="col-sm-4 control-label">'+ key1 +'</label><div class="col-sm-8"><p class="form-control-static">'+value1+'</p></div>');
+//                            });
                         });
+
 
                     }
                 });

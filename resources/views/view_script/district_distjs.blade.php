@@ -23,13 +23,13 @@ $(document).ready(function () {
         $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
         $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
         
-        if($("#area-fund #aaaaa:first-child input").val() <=0){
+        if($("#area-fund #aaaaa:first-child input").val() < 0){
            var errors = 'Financial Target Of This District Exceeded the limit';
             errorHtml='<div class="alert alert-danger"><ul>';
                             errorHtml += '<li>' + errors + '</li>';
                             errorHtml += '</ul></div>';
                           $( '#formerrors' ).html( errorHtml );
-        }else if($("#area-fund #aaaaa:nth-child(2) input").val() <=0){
+        }else if($("#area-fund #aaaaa:nth-child(2) input").val() < 0){
             var errors = 'Physical Target Of This District Exceeded the limit';
             errorHtml='<div class="alert alert-danger"><ul>';
                             errorHtml += '<li>' + errors + '</li>';
@@ -141,7 +141,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
-            if(total_fund <=0){
+            if(total_fund < 0){
                var errors = 'Financial Target Of This District Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -158,7 +158,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
           var hiddenarea =  $(hiddenarea).val($(area).val());
-          if(total_area <=0){
+          if(total_area < 0){
                 var errors = 'Physical Target OF This District Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -210,7 +210,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
-            if(total_fund <=0){
+            if(total_fund < 0){
                var errors = 'Financial Target Of This District Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -232,7 +232,7 @@ function getArea($key){
                 total_area = parseFloat(total_area) - $(area).val();
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
             var hiddenarea =  $(hiddenarea).val($(area).val());
-            if(total_area <=0){
+            if(total_area < 0){
                 var errors = 'Physical Target OF This District Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -249,7 +249,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
           var hiddenarea =  $(hiddenarea).val($(area).val());
-          if(total_area <=0){
+          if(total_area < 0){
                 var errors = 'Physical Target OF This District Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';

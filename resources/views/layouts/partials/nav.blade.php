@@ -19,22 +19,22 @@
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_first" class="digital" style="font-size:Small;">Permits</span><br>
-                        <span id="spnpermits" class="digital f-b">675</span>
+                        <span id="Master_lbl_first" class="digital" style="font-size:Small;">Reg. Farmers</span><br>
+                        <span id="spnpermits" class="digital f-b">2</span>
                     </div>
 
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-3 txt-cnt fl">
 
-                        <span id="Master_lbl_second" class="digital" style="font-size:Small;">Transit Forms</span><br>
-                        <span id="spntransitforms" class="digital f-b">53908</span>
+                        <span id="Master_lbl_second" class="digital" style="font-size:Small;">Total Schemes</span><br>
+                        <span id="spntransitforms" class="digital f-b">3</span>
                     </div>
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">Stationery</span><br>
-                        <span id="spnstationery" class="digital f-b">113616</span>
+                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">App. Farmers</span><br>
+                        <span id="spnstationery" class="digital f-b">1</span>
 
                     </div>
                 </li>
@@ -192,8 +192,8 @@
             </li>
         </ul>
     </section>
-     <center  style="color:#fff;">
+<!--     <center  style="color:#fff;">
          <strong>Version - 1.0</strong>
-    </center>
+    </center>-->
      <!-- /.sidebar -->
 </aside>

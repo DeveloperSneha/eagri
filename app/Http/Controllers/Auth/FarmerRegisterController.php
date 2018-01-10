@@ -88,7 +88,14 @@ use RegistersUsers;
                     'gender' => $data['gender'],
                     'marital_status' => $data['marital_status'],
                     'caste' => $data['caste'],
-                    // 'email' => $data['email'],
+                    'ifsc_code'=>$data['ifsc_code'],
+                    'account_no'=>$data['account_no'],
+                    'land_location'=>$data['land_location'],
+                    'land_owner'=>$data['land_owner'],
+                    'total_land'=>$data['total_land'],
+                    'idDistrict'=>$data['idDistrict'],
+                    'idBlock' =>$data['idBlock'],
+                    'idVillage' =>$data['idVillage'],
                     'password' => bcrypt($data['mobile']),
         ]);
     }
@@ -100,7 +107,7 @@ use RegistersUsers;
 
     public function register(Request $request) {
         //  $error = [];
-        //  dd($request->all());
+       //   dd($request->all());
 //        $request->validate([
 //            'aadhaar' => [ 'required',new \App\Rules\ValidateAdhaar() ]
 //        ]);
