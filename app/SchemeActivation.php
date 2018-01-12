@@ -11,27 +11,33 @@ class SchemeActivation extends Model {
     protected $guarded = ['id'];
     protected $primaryKey = 'idSchemeActivation';
     protected $table = 'schemeactivation';
-    protected $fillable = ['idScheme', 'idFinancialYear', 'startDate', 'endDate', 'extendDays', 'totalFundsAllocated',
-        'totalAreaAllocated','assistance', 'idUnit', 'vendorDeliveryDayLimit', 'guidelines','notiFile'];
+    protected $fillable = ['idScheme', 'idProgram', 'idFinancialYear', 'startDate', 'endDate', 'extendDays', 'totalFundsAllocated',
+        'totalAreaAllocated', 'assistance', 'idUnit', 'vendorDeliveryDayLimit', 'guidelines', 'notiFile'];
 
     public function scheme() {
-        return $this->hasOne(Scheme::class,'idScheme','idScheme');
+        return $this->hasOne(Scheme::class, 'idScheme', 'idScheme');
     }
 
-    public function workflow() {
-        return $this->hasOne(SchemeWorkflowMapping::class,'idScheme','idScheme');
+    public function program() {
+        return $this->belongsTo(Program::class, 'idProgram', 'idProgram');
     }
-    
-     public function documents() {
-        return $this->hasMany(Schemecert::class,'idScheme','idScheme');
+
+    public function schworkflow() {
+        return $this->hasOne(SchemeWorkflowMapping::class, 'idScheme', 'idScheme');
     }
-    
-     public function fy() {
-        return $this->belongsTo(FinancialYear::class,'idFinancialYear','idFinancialYear');
+
+    public function documents() {
+        return $this->hasMany(Schemecert::class, 'idProgram', 'idProgram');
     }
+
+    public function fy() {
+        return $this->belongsTo(FinancialYear::class, 'idFinancialYear', 'idFinancialYear');
+    }
+
     public function unit() {
-        return $this->belongsTo(Unit::class,'idUnit','idUnit');
+        return $this->belongsTo(Unit::class, 'idUnit', 'idUnit');
     }
+
     public function setStartDateAttribute($date) {
         if (strlen($date) > 0)
             $this->attributes['startDate'] = Carbon::createFromFormat('d-m-Y', $date);

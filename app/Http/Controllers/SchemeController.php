@@ -46,7 +46,7 @@ class SchemeController extends Controller {
             'schemeName.required' => 'Scheme Name Must be Filled',
             'schemeName.unique' => 'Scheme Name Is Already Taken',
             'schemeName.regex' => 'Scheme Name is Not Valid',
-            'remarks.required'=>'Remark must be Provided'
+            'remarks.required' => 'Remark must be Provided'
         ];
         $this->validate($request, $rules, $messages);
 
@@ -102,7 +102,7 @@ class SchemeController extends Controller {
             'schemeName.required' => 'Scheme Name Must be Filled',
             'schemeName.regex' => 'Scheme Name is Not Valid',
         ];
-            $this->validate($request, $rules, $messages);
+        $this->validate($request, $rules, $messages);
 
         $scheme->fill($request->all());
         $scheme->update();
@@ -120,6 +120,12 @@ class SchemeController extends Controller {
         $scheme = \App\Scheme:: where('idScheme', '=', $id)->first();
         $scheme->delete();
         return redirect('schemes');
+    }
+
+    public function getProgram($id) {
+        $programs = \App\Program::where("idProgram", $id)
+                        ->pluck("programName", "idProgram")->toArray();
+        return json_encode($programs);
     }
 
 }

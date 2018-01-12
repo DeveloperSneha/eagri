@@ -1,4 +1,44 @@
 <script>
+    $('select[name="idSection"]').on('change', function() {
+            var sectionID = $(this).val();
+            if(sectionID) {
+                $.ajax({
+                    url: "{{url('/section') }}"+'/' +sectionID + "/schemes",
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="idScheme"]').empty();
+                        $('select[name="idScheme"]').append('<option val>---Select Scheme--</option>');
+                        $.each(data, function(key, value) {
+                            $('select[name="idScheme"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+
+                    }
+                });
+            }else{
+                $('select[name="idScheme"]').empty();
+            }
+    });
+    $('select[name="idScheme"]').on('change', function() {
+        var schemeID = $(this).val();
+        if(schemeID) {
+            $.ajax({
+                url: "{{url('/activated') }}"+'/' +schemeID + "/programs",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idProgram"]').empty();
+                    $('select[id="idProgram"]').append('<option val>---Select Program--</option>');
+                    $.each(data, function(key, value) {
+                        $('select[id="idProgram"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                    
+                }
+            });
+        }else{
+            $('select[name="idProgram"]').empty();
+        }
+    });
 $(document).ready(function () {
     $('.select-all').on('click', function () {
         var checkAll = this.checked;
@@ -46,7 +86,7 @@ $(document).ready(function () {
         var schemeActivationID = $(this).val();
         if(schemeActivationID) {
             $.ajax({
-                url: "{{url('/schemeactivations') }}"+'/' +schemeActivationID,
+                url: "{{url('/schemeactivations/nv') }}"+'/' +schemeActivationID,
                 type: "GET",
                 dataType: "json",
                 success:function(data) {

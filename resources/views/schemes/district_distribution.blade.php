@@ -5,11 +5,36 @@
     <div class="panel-heading"><strong>Scheme Distribution (District)</strong></div>
     <div class="panel-body">
         {!! Form::open(['url' => 'districtdistribution','class'=>'form-horizontal','id'=>'districtdistribution']) !!}
-        
         <div class="form-group">
-            {!! Form::label('Available Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
+            {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::select('idSchemeActivation',$schact, null, ['class' => 'form-control select2']) !!}
+                {!! Form::select('idSection',$sections, null, ['class' => 'form-control','id'=>'section']) !!}
+                <span class="help-block">
+                    <strong>
+                        @if($errors->has('idSection'))
+                        <p>{{ $errors->first('idSection') }}</p>
+                        @endif
+                    </strong>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            {!! Form::label('Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
+            <div class="col-sm-5">
+                <select name="idScheme"  class="form-control select2" id="idScheme">--- Select Scheme ---</select>
+                <span class="help-block">
+                    <strong>
+                        @if($errors->has('idScheme'))
+                        <p>{{ $errors->first('idScheme') }}</p>
+                        @endif
+                    </strong>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            {!! Form::label('Program', null, ['class' => 'col-sm-2 control-label required']) !!}
+            <div class="col-sm-5">
+                <select name="idSchemeActivation"  class="form-control" id='idProgram'>--- Select Program ---</select>
                 <span class="help-block">
                     <strong>
                         @if($errors->has('idSchemeActivation'))
@@ -19,6 +44,7 @@
                 </span>
             </div>
         </div>
+
         <div class="form-group">
             <div id="area-fund" class="col-sm-12">
                 
@@ -81,6 +107,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Scheme</th>
+                    <th>Program</th>
                     <th>Districts</th>
                     <th>FinancialTarget</th>
                     <th>PhysicalTarget</th>
@@ -92,6 +119,7 @@
                 <tr>
                     <td>{{ $var->idSchemDistributionDistrict }}</td>
                     <td>{{ $var->schactivation->scheme->schemeName}}</td>
+                    <td>{{ $var->schactivation->program->programName}}</td>
                     <td>{{ $var->district->districtName }}</td>
                     <td>{{ $var->amountDistrict }}</td>
                     <td>{{ $var->areaDistrict }}</td>

@@ -15,6 +15,7 @@ Route::get('user/{id}/{desig}/{dist}/subdivision','Users\UserDistrictController@
 Route::get('user/{id}/{desig}/{subdivision}/block','Users\UserDistrictController@getBlock');
 Auth::routes();
 
+
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/', function () {
         return view('layouts.dashboard');
@@ -41,6 +42,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', 'RoleController');
     Route::resource('units', 'UnitController');
 
+    Route::get('section/{id}/workflows', 'SectionController@getWorkflow');
+    Route::get('section/{id}/designations', 'SectionController@getDesignations');
     Route::get('section/{id}/schemes', 'SectionController@getScheme');
     Route::resource('sections', 'SectionController');
     Route::resource('schemes', 'SchemeController');
@@ -54,6 +57,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('compsizes', 'CompsizeController');
     Route::resource('comprates', 'ComprateController');
 
+    Route::get('activated/{id}/programs', 'NonVendorSchemeActivationController@getActivatedProgram');
     Route::resource('schemeactivations/nv', 'NonVendorSchemeActivationController');
     Route::resource('schemeactivations', 'SchemeActivationController');
     Route::resource('districtdistribution', 'SchDistrictDistributionController');
@@ -105,7 +109,7 @@ Route::prefix('authority')->group(function() {
     Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
     Route::resource('/adduser', 'Authority\AuthorityUserController');
     Route::resource('/profile', 'Authority\AuthorityProfileController');
-    Route::resource('/schemes', 'Authority\AuthoritySchemeController');
+    Route::resource('/authschemes', 'Authority\AuthoritySchemeController');
     Route::get('/approvedscheme', 'Authority\AuthoritySchemeController@approvedScheme');
     Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');
     Route::get('/schemedistrict/{id}', 'Authority\BlockwiseSchemeDistributionController@getSchemeDist');

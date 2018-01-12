@@ -53,13 +53,12 @@ class WorkflowController extends Controller {
     public function update(WorkflowRequest $request, $id) {
         $workflow = \App\Workflow::where('idWorkflow', '=', $id)->first();
         $step = $workflow->steps()->where('idDesignation', Session::get('idDesignation'))->first();
-        $section = $step->idSection;
         $workflow->fill($request->all());
         $old_ids = $workflow->steps->pluck('idworkflowstep')->toArray();
 //        dd($old_ids);
         $workflow_step = new \Illuminate\Database\Eloquent\Collection();
         foreach ($request->designations as $var) {
-            $desig = \App\WorkflowStep::firstOrNew(['idDesignation' => $var, 'idSection' => $section, 'idWorkflow' => $workflow->idWorkflow]);
+            $desig = \App\WorkflowStep::firstOrNew(['idDesignation' => $var, 'idSection' => $request->idSection, 'idWorkflow' => $workflow->idWorkflow]);
             $workflow_step->add($desig);
         }
         $new_ids = $workflow_step->pluck('idworkflowstep')->toArray();

@@ -146,18 +146,19 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}">Units</a></li>
-                    <li class="{{ checkActive(['fys']) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
-                    <li class="{{ checkActive(['certificates']) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
                     <li class="{{ checkActive(['sections']) }}"><a href="{{ url('/sections') }}">Section</a></li>
                     <li class="{{ checkActive(['schemes']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
                     <li class="{{ checkActive(['programs']) }}"><a href="{{ url('/programs') }}">Program</a></li>
                     <li class="{{ checkActive(['designations']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
                     <li class="{{ checkActive(['workflow']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
+                    <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}">Units</a></li>
+                    <li class="{{ checkActive(['fys']) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
+                    <li class="{{ checkActive(['certificates']) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
+                    
                 </ul>
             </li>
 
-            <li class="treeview {{ checkActive(['schemeactivations/nv','districtdistribution']) }}">
+            <li class="treeview {{ checkActive(['schemeactivations/nv','schemeactivations/nv/*/edit','districtdistribution']) }}">
                 <a href="#">
                     <span>Non Vendor</span>
                     <span class="pull-right-container">
@@ -165,7 +166,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['schemeactivations/nv']) }}"><a href="{{ url('/schemeactivations/nv') }}">Scheme Activation</a></li>
+                    <li class="{{ checkActive(['schemeactivations/nv','schemeactivations/nv/*/edit']) }}"><a href="{{ url('/schemeactivations/nv') }}">Scheme Activation</a></li>
                     <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}">Scheme Distribution District</a></li>
 
                 </ul>

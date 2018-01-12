@@ -26,6 +26,8 @@ class SchDistrictDistRequest extends FormRequest {
         
       //  dd($this->all());
         $rules = [
+            'idSection'=>'required',
+            'idScheme'=>'required',
             'idSchemeActivation' => 'required',
                 //   'idDistrict' => 'unique:schemedistributiondistrict,idDistrict,NULL,idDistrict,idSchemeActivation,' . $this->idSchemeActivation,
         ];
@@ -78,7 +80,9 @@ class SchDistrictDistRequest extends FormRequest {
 //            }
 //        }
         $messages += [
-            'idSchemeActivation.required' => 'Select Any One Of the Scheme',
+            'idScheme.required'=>'Select Scheme First',
+            'idSection.required'=>'Select Section First',
+            'idSchemeActivation.required' => 'Select Any One Of the Program',
             'district.required' => 'Atleast One District Should Be Selected',
             'totalFunds.required' => 'Financial Target is Exceeded the Limit of This Scheme',
             'totalFunds.integer'=>'Physical Target Must have Numeric Value Only',

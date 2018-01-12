@@ -21,12 +21,12 @@ class NonVendorSchemeActivationRequest extends FormRequest {
      * @return array
      */
     public function rules() {
-        
-       // dd(count($this->schemecerts));
         $id = $this->route('nv');
         $rules = [
             'idScheme' => 'required',
+            'idProgram'=>'required',
             'idWorkflow'=>'required',
+            'idProgram' => 'required|unique:schemeactivation,idProgram,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
             'idFinancialYear' => 'required|unique:schemeactivation,idFinancialYear,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
             'startDate' => 'required|date',
             'endDate' => 'required|date|after:startDate',
@@ -34,12 +34,9 @@ class NonVendorSchemeActivationRequest extends FormRequest {
             'assistance' =>'required',
             'totalFundsAllocated' => 'required|numeric',
             'totalAreaAllocated' => 'required|numeric',
-            'guidelines' => 'required_without:notiFile|mimes:pdf|max:1000',
-            'notiFile' => 'required_without:guidelines|mimes:pdf|max:1000',
+            'guidelines' => 'required_without:notiFile|mimes:pdf',
+            'notiFile' => 'required_without:guidelines|mimes:pdf',
         ];
-//        if(count($this->workflows) == 0){
-//            $rules += ['workflow'=>'required'];
-//        }
 //        if(count($this->schemecerts) == 0){
 //            $rules += ['documents'=>'required'];
 //        }
@@ -63,6 +60,7 @@ class NonVendorSchemeActivationRequest extends FormRequest {
     public function messages() {
         $message = [
             'idScheme.required' => 'Scheme Name Must Be Selected.',
+            'idProgram.required' => 'Program Must Be Selected.',
             'idFinancialYear.required' => 'Finanacial Year Must Be Selected.',
             'idFinancialYear.unique' => 'This Scheme is Already Activated for this Financial Year',
             'startDate.required' => 'Start Date Must Be Chosen',

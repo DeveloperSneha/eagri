@@ -16,7 +16,7 @@ class SchDistrictDistributionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        
+        $sections = ['' => '----Select Section----'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         $schdistrict = \App\SchDistrictDistribution::get();
         $schact = ['' => 'Select Scheme'] + \App\SchemeActivation::whereNotNull('idScheme')
                         ->with('scheme')->get()->pluck('scheme.schemeName', 'idSchemeActivation')->toArray();
@@ -24,7 +24,7 @@ class SchDistrictDistributionController extends Controller {
         // dd($schact);
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         //  dd($districts);
-        return view('schemes.district_distribution', compact('districts', 'schdistrict', 'schact'));
+        return view('schemes.district_distribution', compact('districts', 'schdistrict', 'schact','sections'));
     }
 
     /**

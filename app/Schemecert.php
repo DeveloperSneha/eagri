@@ -10,6 +10,6 @@ class Schemecert extends Model {
     public $timestamps = false;
     protected $primaryKey = 'idSchemeCert';
     protected $table = 'schemeCert';
-    protected $fillable = ['idScheme', 'idCertificate'];
+    protected $fillable = ['idScheme', 'idProgram', 'idCertificate'];
 
 }

@@ -112,8 +112,7 @@
 @stop
 @section('script')
 <script>
-    $(document).ready(function () {
-        $('select[name="idSection"]').on('change', function () {
+     $('select[name="idSection"]').on('change', function () {
             var sectionID = $(this).val();
             if (sectionID) {
                 $.ajax({
@@ -156,6 +155,6 @@
                 }
             });
         }
-    });
+
 </script>
 @stop

@@ -117,9 +117,21 @@ class SectionController extends Controller {
     }
 
     public function getScheme($id) {
-        $schemes = [0 => '--- Select Scheme ---'] + \App\Scheme::where("idSection", $id)
+        $schemes = \App\Scheme::where("idSection", $id)
                         ->pluck("schemeName", "idScheme")->toArray();
         return json_encode($schemes);
+    }
+
+    public function getDesignations($id) {
+        $designations = \App\Designation::where("idSection", $id)
+                        ->pluck("designationName", "idDesignation")->toArray();
+        return json_encode($designations);
+    }
+
+    public function getWorkflow($id) {
+        $workflows = \App\WorkflowStep::with('workflow')->where("idSection", $id)->get()
+                        ->pluck("workflow.workflowName", "workflow.idWorkflow")->toArray();
+        return json_encode($workflows);
     }
 
 }
