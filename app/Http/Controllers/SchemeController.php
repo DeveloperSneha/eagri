@@ -14,7 +14,8 @@ class SchemeController extends Controller {
      */
     public function index() {
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $schemes = \App\Scheme::orderBy('schemeName')->get();
+        //$schemes = \App\Scheme::orderBy('schemeName')->get();
+		$schemes = \App\Scheme::orderBy('idScheme')->get();
         return view('schemes.index', compact('schemes', 'sections'));
     }
 
@@ -38,7 +39,7 @@ class SchemeController extends Controller {
         //  dd($request->all());
         $rules = [
             'idSection' => 'required',
-            'schemeName' => 'required|unique:scheme|regex:/^[\pL\s\-()]+$/u',
+            'schemeName' => 'required|unique:scheme|regex:/^[\pL\s\-()]+$/u|between:2,50',
             'remarks' => 'required'
         ];
         $messages = [
@@ -93,7 +94,7 @@ class SchemeController extends Controller {
         $scheme = \App\Scheme::where('idScheme', '=', $id)->first();
         $rules = [
             'idSection' => 'required',
-            'schemeName' => 'required|regex:/^[\pL\s\-()]+$/u', Rule::unique('scheme')->ignore($scheme->idScheme, 'idScheme'),
+            'schemeName' => 'required|regex:/^[\pL\s\-()]+$/u|unique:scheme,schemeName,'.$id.',idScheme',
 //           'schemeName' => array('required', 'regex:/^[A-Za-z]{4}\d{4}$/')
             'remarks' => 'required'
         ];
@@ -107,6 +108,18 @@ class SchemeController extends Controller {
         $scheme->fill($request->all());
         $scheme->update();
         return redirect('schemes');
+    }
+
+    public function deleteScheme($id) {
+        //
+        $schemes = \App\Scheme::where('idScheme', '=', $id)->first();
+        $program = \App\Program::where('idScheme', '=', $id)->get();
+        if($program->count() > 0){
+            return redirect()->back()->with('message', 'You Cant Delete this Scheme Because it  Already Exist in Some Program!');
+        }
+        else{
+            return view('schemes.delete', compact('schemes'));
+        }
     }
 
     /**

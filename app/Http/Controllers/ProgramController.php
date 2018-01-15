@@ -14,7 +14,8 @@ class ProgramController extends Controller {
      */
     public function index() {
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $programs = \App\Program::orderBy('programName')->get();
+        //$programs = \App\Program::orderBy('programName')->get();
+		$programs = \App\Program::orderBy('idProgram')->get();
         return view('program.index', compact('programs','sections'));
     }
 
@@ -88,7 +89,7 @@ class ProgramController extends Controller {
         $program = \App\Program::where('idProgram', '=', $id)->first();
         $rules = [
           //  'idScheme' => 'required',
-            'programName' => 'required|regex:/^[\pL\s\-]+$/u', Rule::unique('program')->ignore($program->idProgram, 'idProgram'),
+            'programName' => 'required|regex:/^[\pL\s\-]+$/u|unique:program,programName,'.$id.',idProgram'
         ];
         $messages = [
          //   'idScheme.required' => 'Scheme Must be Selected',
@@ -101,6 +102,23 @@ class ProgramController extends Controller {
         $program->fill($request->all());
         $program->update();
         return redirect('programs');
+    }
+
+    /**
+     * Check There is Any dependency Exist
+     *
+
+     */
+    public function deleteprogram($id) {
+        //
+        $programs = \App\Program:: where('idProgram', '=', $id)->first();
+        $schact = \App\SchemeActivation::where('idProgram', '=', $id)->get();
+        if($schact->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Delete this Program Because it  Already Exist in Some Scheme Activation!');
+        }
+        else{
+            return view('program.delete', compact('programs'));
+        }
     }
 
     /**

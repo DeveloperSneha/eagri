@@ -1,7 +1,7 @@
 <?php
 $user_desig = $user->userdesig()->with('designation')
                 ->whereNotNull('idDesignation')
-                ->get()->pluck('designation.designationName', 'designation.idDesignation')->unique();
+                ->get()->pluck('designation.designationName', 'designation.idDesignation')->toArray();
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +25,7 @@ $user_desig = $user->userdesig()->with('designation')
                         <div class="form-group">
                             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4">
-                                {!! Form::select('idDesignation',[''=>'Select']+$user_desig->toArray(),null, ['class' => 'form-control select2','id'=>'idDesignation']) !!}
+                                {!! Form::select('idDesignation',[''=>'Select']+$user_desig,null, ['class' => 'form-control select2','id'=>'idDesignation']) !!}
                             </div>
                             <span class="help-block">
                                 <strong>

@@ -151,6 +151,9 @@
                         @if($errors->has('assistance'))
                         <p>{{ $errors->first('assistance') }}</p>
                         @endif
+                        @if($errors->has('assistanceamt'))
+                        <p>{{ $errors->first('assistanceamt') }}</p>
+                        @endif
                     </strong>
                 </span>
             </div>
@@ -159,7 +162,7 @@
             {!! Form::label('Workflow', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-3">
                 @if(isset($sch))
-                <select name = "idWorkflow" class="form-control">
+                <select name = "idWorkflow" class="form-control" id='workflow'>
                     @foreach($sch_workflow as $val=>$key)
                     <option value="{{ $val }}" selected="selected"></option>
                     @endforeach
@@ -285,7 +288,7 @@
                     <td>{{ $var->program->programName}}</td>
                     <td>{{ $var->fy->financialYearName}}</td>
                     <td>{{ $var->startDate }}</td>
-                    <td>{{ $var->startDate }}</td>
+                    <td>{{ $var->endDate }}</td>
                     <td>{{ $var->unit->unitName}}</td>
                     <td>{{ $var->extendDays}}</td>
                     <td>{{ $var->totalFundsAllocated }}</td>

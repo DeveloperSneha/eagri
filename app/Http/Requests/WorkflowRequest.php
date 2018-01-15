@@ -24,7 +24,7 @@ class WorkflowRequest extends FormRequest {
        // dd($this->all());
         $rules = [
             'idSection' => 'required',
-            'workflowName' => 'required|max:255'
+            'workflowName' => 'required|max:25|regex:/^[\pL\s\-()]+$/u'
         ];
         if(count($this->designations) == 0){
             $rules += ['designation'=>'required'];
@@ -36,7 +36,8 @@ class WorkflowRequest extends FormRequest {
         $message = [
             'idSection.required' => 'Select Section.',
             'designation.required' => 'Designation Must Be Selected.',
-            'workflowName.required' => 'workflow Name Must Be Provided.'
+            'workflowName.required' => 'workflow Name Must Be Provided.',
+            'workflow.regex' => 'Workflow Name is Invalid '
         ];
         return $message;
     }

@@ -20,22 +20,27 @@
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
                         <span id="Master_lbl_first" class="digital" style="font-size:Small;">Reg. Farmers</span><br>
-                        <span id="spnpermits" class="digital f-b">2</span>
-                    </div>
+						<!--added count of regFarmers-->
+                        <span id="spnpermits" class="digital f-b">{{$users = DB::table('farmers')->distinct('idFarmer')->get()->count()}}</span>
+                        <!--end count of regFarmers-->
+				   </div>
 
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-3 txt-cnt fl">
 
                         <span id="Master_lbl_second" class="digital" style="font-size:Small;">Total Schemes</span><br>
-                        <span id="spntransitforms" class="digital f-b">3</span>
+						<!--added count of scheme-->
+                        <span id="spntransitforms" class="digital f-b">{{$users = DB::table('scheme')->distinct('idScheme')->get()->count()}}</span>
+						<!--end count of scheme-->
                     </div>
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
-                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">App. Farmers</span><br>
-                        <span id="spnstationery" class="digital f-b">1</span>
-
+                        <span id="Master_lbl_third" class="digital" style="font-size:Small;">Total Program's</span><br>
+						<!--added count of Program-->
+                        <span id="spnstationery" class="digital f-b">{{$users = DB::table('program')->distinct('idProgram')->get()->count()}}</span>
+                        <!--end count of Program-->
                     </div>
                 </li>
                 <!-- User Account: style can be found in dropdown.less -->
@@ -119,7 +124,7 @@
                     <span>HOME</span>
                 </a>
             </li>
-            <li class="treeview {{ checkActive(['userdistrict','userdistrict/create','userdistrict/*/edit','usersubdivision','usersubdivision/create','usersubdivision/*/edit','userblock','userblock/create','userblock/*/edit','uservillage','uservillage/create','uservillage/*/edit']) }}">
+            <li class="treeview {{ checkActive(['userdistrict','uservillage/*/edituser','userdistrict/create','userdistrict/*/edituser','userdistrict/*/edit','usersubdivision','usersubdivision/create','usersubdivision/*/edit','usersubdivision/*/edituser','userblock','userblock/create','userblock/*/edit','userblock/*/edituser','uservillage','uservillage/create','uservillage/*/edit']) }}">
                 <a href="#">
                     <span>Add User</span>
                     <span class="pull-right-container">
@@ -127,10 +132,10 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['userdistrict','userdistrict/create','userdistrict/*/edit']) }}"><a href="{{ url('/userdistrict') }}">ADD User in District</a></li>
-                    <li class="{{ checkActive(['usersubdivision','usersubdivision/create','usersubdivision/*/edit']) }}"><a href="{{ url('/usersubdivision') }}">ADD User in Subdivision</a></li>
-                    <li class="{{ checkActive(['userblock','userblock/create','userblock/*/edit']) }}"><a href="{{ url('/userblock') }}">ADD User in Block</a></li>
-                    <li class="{{ checkActive(['uservillage','uservillage/create','uservillage/*/edit']) }}"><a href="{{ url('/uservillage') }}">ADD User in Village</a></li>
+                    <li class="{{ checkActive(['userdistrict','userdistrict/create','userdistrict/*/edituser','userdistrict/*/edit']) }}"><a href="{{ url('/userdistrict') }}">ADD User in District</a></li>
+                    <li class="{{ checkActive(['usersubdivision','usersubdivision/create','usersubdivision/*/edituser','usersubdivision/*/edit']) }}"><a href="{{ url('/usersubdivision') }}">ADD User in Subdivision</a></li>
+                    <li class="{{ checkActive(['userblock','userblock/create','userblock/*/edituser','userblock/*/edit']) }}"><a href="{{ url('/userblock') }}">ADD User in Block</a></li>
+                    <li class="{{ checkActive(['uservillage','uservillage/create','uservillage/*/edituser','uservillage/*/edit']) }}"><a href="{{ url('/uservillage') }}">ADD User in Village</a></li>
                 </ul>
             </li>
             <!--            <li class="{{ checkActive(['roles'])}}">
@@ -138,7 +143,19 @@
                                <span>Roles</span>
                             </a>
                         </li>-->
-            <li class="treeview {{ checkActive(['units','workflow','fys','certificates','schemes','sections','programs','districtdistribution','designations']) }}">
+            <li class="treeview {{ checkActive([
+            'units',
+            'schemes/*/edit',
+            'schemes/*/deletescheme',
+            'sections/*/edit',
+            'sections/*/deletesection',
+            'workflow','fys','certificates',
+            'schemes',
+            'sections',
+            'programs',
+            'districtdistribution',
+            'designations'
+            ]) }}">
                 <a href="#">
                     <span>Masters</span>
                     <span class="pull-right-container">
@@ -146,9 +163,9 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['sections']) }}"><a href="{{ url('/sections') }}">Section</a></li>
-                    <li class="{{ checkActive(['schemes']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
-                    <li class="{{ checkActive(['programs']) }}"><a href="{{ url('/programs') }}">Program</a></li>
+                    <li class="{{ checkActive(['sections','sections/*/edit','sections/*/deletesection']) }}"><a href="{{ url('/sections') }}">Section</a></li>
+                    <li class="{{ checkActive(['schemes','schemes/*/edit','schemes/*/deletescheme']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
+                    <li class="{{ checkActive(['programs','programs/*/edit','programs/*/deleteprogram']) }}"><a href="{{ url('/programs') }}">Program</a></li>
                     <li class="{{ checkActive(['designations']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
                     <li class="{{ checkActive(['workflow']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
                     <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}">Units</a></li>

@@ -10,7 +10,8 @@ use DB;
 class WorkflowController extends Controller {
 
     public function index() {
-        $workflows = \App\Workflow::orderBy('workflowName')->get();
+        //$workflows = \App\Workflow::orderBy('workflowName')->get();
+		$workflows = \App\Workflow::orderBy('idWorkflow')->get();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         return view('workflow.index', compact('workflows', 'designations', 'sections'));
     }

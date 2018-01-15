@@ -15,25 +15,32 @@ Route::get('user/{id}/{desig}/{dist}/subdivision','Users\UserDistrictController@
 Route::get('user/{id}/{desig}/{subdivision}/block','Users\UserDistrictController@getBlock');
 Auth::routes();
 
+/*Frontpage*/
+Route::get('/index', function () {return view('layouts.frontpage');});
+/*end frontpage*/
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/', function () {
         return view('layouts.dashboard');
     });
 
+    Route::get('uservillage/{id}/edituser', 'Users\UserVillageController@getUserDetails');
     Route::get('uservillage/{sectionid}/designations', 'Users\UserVillageController@getDesignations');
     Route::resource('uservillage', 'Users\UserVillageController');
 
+    Route::get('userblock/{id}/edituser', 'Users\UserBlockController@getUserDetails');
     Route::get('userblock/{sectionid}/villages', 'Users\UserBlockController@getVillages');
     Route::get('userblock/{sectionid}/designations', 'Users\UserBlockController@getDesignations');
     Route::resource('userblock', 'Users\UserBlockController');
 
+    Route::get('usersubdivision/{id}/edituser', 'Users\UserSubdivisionController@getUserDetails');
     Route::get('usersubdivision/{subdivisionid}/blocks', 'Users\UserSubdivisionController@getBlocks');
     Route::get('usersubdivision/{sectionid}/designations', 'Users\UserSubdivisionController@getDesignations');
     Route::resource('usersubdivision', 'Users\UserSubdivisionController');
 
     Route::get('district/{id}/subdivisions', 'Users\UserDistrictController@getSubdivisions');
     Route::get('userdistrict/{id}/designations', 'Users\UserDistrictController@getDesignations');
+    Route::get('userdistrict/{id}/edituser', 'Users\UserDistrictController@getUserDetails');
     Route::resource('userdistrict', 'Users\UserDistrictController');
 
     Route::resource('designations', 'DesignationController');
@@ -45,6 +52,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('section/{id}/workflows', 'SectionController@getWorkflow');
     Route::get('section/{id}/designations', 'SectionController@getDesignations');
     Route::get('section/{id}/schemes', 'SectionController@getScheme');
+    Route::get('sections/{id}/deletesection', 'SectionController@deleteSection');
+    Route::get('schemes/{id}/deletescheme', 'SchemeController@deleteScheme');
     Route::resource('sections', 'SectionController');
     Route::resource('schemes', 'SchemeController');
     Route::resource('compcerts', 'CompcertController');
@@ -52,6 +61,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('components', 'ComponentController');
     Route::resource('certificates', 'CertificateController');
     Route::resource('categories', 'CategoryController');
+    Route::get('programs/{id}/deleteprogram', 'ProgramController@deleteProgram');
     Route::resource('programs', 'ProgramController');
     Route::resource('fys', 'FinancialYearController');
     Route::resource('compsizes', 'CompsizeController');

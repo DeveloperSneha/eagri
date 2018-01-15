@@ -12,7 +12,8 @@ class CertificateController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $certificates = \App\Certificate::orderBy('certificateName')->get();
+        //$certificates = \App\Certificate::orderBy('certificateName')->get();
+		$certificates = \App\Certificate::orderBy('idCertificate')->get();
         return view('certificates.index', compact('certificates'));
     }
 
@@ -33,8 +34,8 @@ class CertificateController extends Controller {
      */
     public function store(Request $request) {
         $rules=[
-            'certificateName' => 'required|unique:certificates|regex:/^[\pL\s\-]+$/u|max:100',
-            'description'=>'required|max:200|regex:/^[\pL\s\-.]+$/u'
+            'certificateName' => 'required|unique:certificates|regex:/^[\pL\s\-]+$/u|between:3,40',
+            'description'=>'required|between:3,100|regex:/^[\pL\s\-.]+$/u'
         ];
         $message=[
             'certificateName.required' => 'Certificate Name Must Be Filled.',
@@ -83,8 +84,8 @@ class CertificateController extends Controller {
     //    dd($id);
         $certificate = \App\Certificate::where('idCertificate', '=', $id)->first();
         $rules=[
-            'certificateName' => 'required|regex:/^[\pL\s\-]+$/u|max:100|',Rule::unique('certificates')->ignore($certificate->idCertificate, 'idCertificate'),
-            'description'=>'required|max:200|regex:/^[\pL\s\-.]+$/u'
+            'certificateName' => 'required|regex:/^[\pL\s\-]+$/u|between:3,40|unique:certificates,certificateName,'.$id.',idCertificate',
+            'description'=>'required|between:3,100|regex:/^[\pL\s\-.]+$/u'
         ];
         $message=[
             'certificateName.required' => 'Certificate Name Must Be Filled.',

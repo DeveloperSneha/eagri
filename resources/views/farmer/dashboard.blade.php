@@ -25,7 +25,15 @@
             <div class="icon">
                 <i class="fa fa-leaf"></i>
             </div>
-            <span class="small-box-footer">Schemes<i class="fa fa-arrow-circle-right"></i></span>
+			<!--Total Count-->
+           <!-- <span class="small-box-footer">Schemes<i class="fa fa-arrow-circle-right"></i></span>-->
+		   <span class="small-box-footer">Total No of Schemes&nbsp;-&nbsp;{{ $schemes = DB::table('schemedistributiondistrict')
+                ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
+                ->where('schemedistributiondistrict.idDistrict', '=', $farmer->idDistrict)
+                ->where('scheme.idSection', '=', $var->idSection)
+                ->get()->count()}}</span>
+		   <!--end here total-->
         </div>
     </a>
 </div>
@@ -41,7 +49,7 @@
                         <strong> {{  $value->schemeName  }} <span class=""> : Applied</span><br></strong>
                         @else
                         <a href="{{url('/farmer/scheme/'.$value->idScheme.'/apply')}}">
-                            <blink class="blink"> {{  $value->schemeName  }}<br></blink>
+                            <blink class="blink"> {{  $value->schemeName  }}&nbsp;&nbsp;<img src="{{ asset('dist/img/new_blink.gif') }}"><br></blink>
                         </a>
                         @endif
                     @endforeach

@@ -148,33 +148,37 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
+                    <th>S.No.</th>
                     <th>User</th>
-                    <th>District</th>
+<!--                    <th>District</th>
                     <th>Subdivision</th>
                     <th>Block</th>
                     <th>Village</th>
                     <th>Section</th>
-                    <th>Designation</th>
+                    <th>Designation</th>-->
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($user_list as $user)
+                <?php $i=1;?>
+                @foreach($user_list as $var)
                 <tr>
-                    <td>{{ $user->userName}}</td>
-                    <td>{{ $user->districtName}}</td>
-                    <td>{{ $user->subDivisionName}}</td>
-                    <td>{{ $user->blockName}}</td>
-                    <td>{{ $user->villageName}}</td>
-                    <td>{{ $user->sectionName}}</td>
-                    <td>{{ $user->designationName}}</td>
-                    <td>
-                        {{ Form::open(['route' => ['uservillage.destroy', $user->idUser], 'method' => 'delete']) }}
-                        <a href="{{url('/uservillage/'.$user->idUser.'/edit')}}" class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                    <td>{{ $i }}</td>
+                    <td>{{ $var->userName}}</td>
+<!--                    <td>{{ $var->districtName}}</td>
+                    <td>{{ $var->subDivisionName}}</td>
+                    <td>{{ $var->blockName}}</td>
+                    <td>{{ $var->villageName}}</td>
+                    <td>{{ $var->sectionName}}</td>
+                    <td>{{ $var->designationName}}</td>-->
+                    <td> <a href="{{url('/uservillage/'.$var->idUser.'/edituser')}}" class="btn btn-xs btn-warning">Edit</a>
+                       
+                        {{-- {{ Form::open(['route' => ['uservillage.destroy', $user->idUser], 'method' => 'delete']) }} --}}
+                        <!--<button class="btn btn-xs btn-danger" type="submit">Delete</button>-->
+                        {{-- {{ Form::close() }} --}}
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>

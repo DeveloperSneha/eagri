@@ -56,7 +56,9 @@
 <!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
                             <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>-->
                             <div class="form-group">
-                        <aside><a href="{{url('farmer/register')}}">New Registration / नया पंजीकरण</a></aside>
+                        <!--<aside><a href="{{url('farmer/register')}}">New Registration / नया पंजीकरण</a></aside>-->
+						<aside><a class="blink" href="{{url('farmer/register')}}">New Farmer Registration <br> नया  किसान पंजीकरण</a></aside><br/>
+						<aside><a  href="{{url('farmer/forgotpassword')}}">Forgot Password ?</a></aside>
                     </div>
                             <div class="form-group ">
 <!--                                <a class="btn btn-link" href="#">

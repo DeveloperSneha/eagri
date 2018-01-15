@@ -52,10 +52,11 @@
                     <td>{{ $var->idSection }}</td>
                     <td>{{ $var->sectionName }}</td>
                     <td>
-                        {{ Form::open(['route' => ['sections.destroy', $var->idSection], 'method' => 'delete']) }}
+                       
                         <a href='{{url('/sections/'.$var->idSection.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                      {{--   {{ Form::open(['route' => ['sections.destroy', $var->idSection], 'method' => 'delete']) }} --}}
+                       <a href='{{url('/sections/'.$var->idSection.'/deletesection')}}' class="btn btn-xs btn-danger">Delete</a>
+                      {{--  {{ Form::close() }} --}}
                     </td>
                 </tr>
                 @endforeach

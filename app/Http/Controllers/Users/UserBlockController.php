@@ -99,29 +99,19 @@ class UserBlockController extends Controller {
      */
     public function edit($id) {
 //dd('here');
-        $user_list = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
-                ->join('section', 'designation.idSection', '=', 'section.idSection')
-                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
-                ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
-                ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
-                ->whereNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(blockName)AS blockName'))
-                ->get();
-        $user = \App\User::where('idUser', '=', $id)->first();
-        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
-        $user_desig = $user->userdesig()->with('designation')->get();
-        $user_subdiv = $user->userdesig()->with('subdivision')
-                        ->whereNotNull('idSubdivision')
-                        ->get()->pluck('subdivision.idSubdivision', 'subdivision.subDivisionName')->unique();
-        $user_block = $user->userdesig()->with('block')
-                        ->whereNotNull('idBlock')->whereNull('idVillage')->get();
-        //dd($user_block);
-        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
+//        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
+//        $user_desig = $user->userdesig()->with('designation')->get();
+//        $user_subdiv = $user->userdesig()->with('subdivision')
+//                        ->whereNotNull('idSubdivision')
+//                        ->get()->pluck('subdivision.idSubdivision', 'subdivision.subDivisionName')->unique();
+//        $user_block = $user->userdesig()->with('block')
+//                        ->whereNotNull('idBlock')->whereNull('idVillage')->get();
+//        //dd($user_block);
+//        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.user_block', compact('users', 'user', 'sections', 'user_subdiv', 'user_block', 'districts', 'user_list', 'user_section', 'user_desig'));
+        return view('users.edituser_block', compact('districts','sections','userdesig'));
     }
 
     /**
@@ -133,47 +123,50 @@ class UserBlockController extends Controller {
      */
     public function update(Request $request, $id) {
         $rules = [
-            'idSubdivision' => 'required',
-            'idDistrict' => 'required',
+            'idBlock'=>'required',
             'idSection' => 'required',
-            'idDesignation' => 'required',
-            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
+            //'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
         ];
-        if (count($request->idBlocks) == 0) {
-            $rules += ['idBlock' => 'required'];
-        }
+//        if (count($request->idBlocks) == 0) {
+//            $rules += ['idBlock' => 'required'];
+//        }
         $messages = [
             'idDistrict.required' => 'District must be selected.',
             'idSubdivision.required' => 'Subdivision must be selected.',
             'idBlock.required' => 'Block must be selected.',
+            'idDesignation.unique' => 'User With This Designation has already been registered in this Block.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-            'userName.required' => 'UserName Must Not Be Empty.'
+           // 'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
-        $user = \App\User::where('idUser', '=', $id)->first();
-        $user_district = $user->userdesig()->pluck('idDistrict')->unique()->first();
-        $user_subdivision = $user->userdesig()->pluck('idSubdivision')->unique()->first();
-        $user->fill($request->all());
-        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
-        //dd($old_ids);
-        $user_blocks = new \Illuminate\Database\Eloquent\Collection();
-        foreach ($request->idBlocks as $var) {
-            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idBlock' => $var, 'idDistrict' => $user_district, 'idSubdivision' => $user_subdivision, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
-            $user_blocks->add($user_sub);
-        }
-        $new_ids = $user_blocks->pluck('iddesgignationdistrictmapping')->toArray();
-//        dd($new_ids);
-        $detach = array_diff($old_ids, $new_ids);
-        //  dd($detach);
-        DB::beginTransaction();
-
-        $user->update();
-        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
-        $user->userdesig()->saveMany($user_blocks);
-
-        DB::commit();
-        return redirect('userblock');
+        $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
+        $userdesig->fill($request->all());
+        $userdesig->update();
+//        $user = \App\User::where('idUser', '=', $id)->first();
+//        $user_district = $user->userdesig()->pluck('idDistrict')->unique()->first();
+//        $user_subdivision = $user->userdesig()->pluck('idSubdivision')->unique()->first();
+//        $user->fill($request->all());
+//        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
+//        //dd($old_ids);
+//        $user_blocks = new \Illuminate\Database\Eloquent\Collection();
+//        foreach ($request->idBlocks as $var) {
+//            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idBlock' => $var, 'idDistrict' => $user_district, 'idSubdivision' => $user_subdivision, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
+//            $user_blocks->add($user_sub);
+//        }
+//        $new_ids = $user_blocks->pluck('iddesgignationdistrictmapping')->toArray();
+////        dd($new_ids);
+//        $detach = array_diff($old_ids, $new_ids);
+//        //  dd($detach);
+//        DB::beginTransaction();
+//
+//        $user->update();
+//        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
+//        $user->userdesig()->saveMany($user_blocks);
+//
+//        DB::commit();
+        return redirect('userblock/'.$userdesig->idUser.'/edituser');
     }
 
     /**
@@ -186,6 +179,12 @@ class UserBlockController extends Controller {
         //
     }
 
+    public function getUserDetails($id) {
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $userdesig = $user->userdesig()->whereNotNull('idBlock')->whereNull('idVillage')->get();
+        return view('users.userdetails_block', compact('user','userdesig'));
+        
+    }
     public function getDesignations($id) {
         $designations = \App\Designation::where("idSection", $id)
                         ->where('level', 3)->get()

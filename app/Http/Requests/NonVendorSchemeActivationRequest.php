@@ -21,6 +21,7 @@ class NonVendorSchemeActivationRequest extends FormRequest {
      * @return array
      */
     public function rules() {
+       
         $id = $this->route('nv');
         $rules = [
             'idScheme' => 'required',
@@ -28,7 +29,7 @@ class NonVendorSchemeActivationRequest extends FormRequest {
             'idWorkflow'=>'required',
             'idProgram' => 'required|unique:schemeactivation,idProgram,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
             'idFinancialYear' => 'required|unique:schemeactivation,idFinancialYear,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
-            'startDate' => 'required|date',
+            'startDate' => 'required|date|after:' . yesterday_date(),
             'endDate' => 'required|date|after:startDate',
             'idUnit' => 'required',
             'assistance' =>'required',
@@ -37,6 +38,9 @@ class NonVendorSchemeActivationRequest extends FormRequest {
             'guidelines' => 'required_without:notiFile|mimes:pdf',
             'notiFile' => 'required_without:guidelines|mimes:pdf',
         ];
+        if(($this->assistance)>($this->totalFundsAllocated)){
+            $rules += ['assistanceamt'=>'required'];
+        }
 //        if(count($this->schemecerts) == 0){
 //            $rules += ['documents'=>'required'];
 //        }
@@ -66,6 +70,7 @@ class NonVendorSchemeActivationRequest extends FormRequest {
             'startDate.required' => 'Start Date Must Be Chosen',
             'endDate.required' => 'End Date Must Be Chosen',
             'idUnit.required' => 'Unit Must Be Selected',
+            'assistanceamt.required' => 'Assistance Must Not be Greater Than Total Funds Allocated.',
             'totalFundsAllocated.required' => 'Total Funds Allocated Must Be Filled.',
             'totalAreaAllocated.required' => 'Total Area Allocated Must Be Filled',
             'guidelines.required' => 'Guidelines Must Be Provided.',

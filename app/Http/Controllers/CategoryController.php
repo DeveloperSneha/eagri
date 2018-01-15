@@ -36,7 +36,7 @@ class CategoryController extends Controller {
     public function store(Request $request) {
         $rules = [
             'idProgram' => 'required',
-            'categoryName' => 'required|unique:category|max:100|regex:/^[\pL\s\-]+$/u',
+            'categoryName' => 'required|unique:category|max:100|regex:/^[\pL\s\-]+$/u|between:2,100',
         ];
         $messages = [
             'idProgram.required' => 'Program Must be Selected',

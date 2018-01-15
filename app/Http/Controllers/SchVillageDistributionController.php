@@ -15,7 +15,8 @@ class SchVillageDistributionController extends Controller {
      */
     public function index() {
         //
-        $schvillage = \App\SchVillageDistribution::get();
+        //$schvillage = \App\SchVillageDistribution::get();
+		$schvillage = \App\SchVillageDistribution::orderBy('idSchemeActivation')->get();
         $schact = \App\SchemeActivation::whereNotNull('idScheme')
                         ->with('scheme')->get()->pluck('scheme.schemeName', 'idSchemeActivation')->toArray();
         return view('schemes.village_distribution', compact('schact', 'schvillage'));

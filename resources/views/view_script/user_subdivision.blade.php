@@ -27,17 +27,16 @@ $(document).ready(function () {
                 dataType: "json",
                 success:function(data) {
                   
-                    @if(isset($user))
+                    @if(isset($userdesig))
                         var myPlayList = [];
-                        @if(isset($user_subdivision))
-                            @foreach($user_subdivision as $val)
-                                var h = {{$val->subdivision->idSubdivision}}; 
+                        var h = {{$userdesig->idSubdivision}}; 
                                 myPlayList.push(h.toString());
-                            @endforeach
-                        @endif
+                        console.log(h); 
+                        console.log(myPlayList); 
                         $.each(data, function(key, value) {
+                            console.log($.inArray(key,myPlayList));
                             if($.inArray(key,myPlayList) === -1){
-                                    $('select[id="idSubdivision"]').append('<option value="'+ key +'" >'+ value +'</option>');
+                                   $('select[id="idSubdivision"]').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }else{
                                    $('select[id="idSubdivision"] option:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            

@@ -83,10 +83,11 @@
                     <td>{{ $var->schemeName }}</td>
                     <td>{{ $var->remarks }}</td>
                     <td>
-                        {{ Form::open(['route' => ['schemes.destroy', $var->idScheme], 'method' => 'delete']) }}
+                        
                         <a href='{{url('/schemes/'.$var->idScheme.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                      {{--   {{ Form::open(['route' => ['schemes.destroy', $var->idScheme], 'method' => 'delete']) }} --}}
+                       <a href='{{url('/schemes/'.$var->idScheme.'/deletescheme')}}' class="btn btn-xs btn-danger">Delete</a>
+                      {{--  {{ Form::close() }} --}}
                     </td>
                 </tr>
                 @endforeach

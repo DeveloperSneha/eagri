@@ -41,9 +41,9 @@ function getFarmerCategory() {
 
 
 function getMaritalStatus() {
-    $status = ['' => '---- Select ----',
+    $status = ['' => '---- वैवाहिक स्थिति ----',
         'Married' => 'Married / विवाहित',
-        'Unmarried' => 'SC - Schedule Caste / अनुसूचित जाति',
+        'Unmarried' => 'Unmarried / अविवाहित',
         'Others' => 'Others / अन्य लोग',
     ];
     return $status;
@@ -64,4 +64,16 @@ function deny($redirect = '') {
 //  abort(403);
   flash()->warning("You don't have access to this resource!!");
   return redirect('/authority');
+}
+
+function today_date() {
+  return Carbon\Carbon::today()->format('d-m-Y');
+}
+
+function yesterday_date() {
+  return Carbon\Carbon::yesterday()->format('d-m-Y');
+}
+
+function tomorrow_date() {
+  return Carbon\Carbon::tomorrow()->format('d-m-Y');
 }

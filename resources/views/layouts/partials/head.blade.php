@@ -41,4 +41,25 @@
     <!-- custom Style -->
     <link rel="stylesheet" href="{{ asset('dist/css/style.css')}} ">
     
+	<!--blink css 15-01-2018-->
+	<style>
+	@-webkit-keyframes blinker {
+  from {opacity: 1.0;}
+  to {opacity: 0.0;}
+}
+
+.blink{
+	text-decoration: blink;
+	-webkit-animation-name: blinker;
+	-webkit-animation-duration: 1.0s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:ease-in-out;
+	-webkit-animation-direction: alternate;
+	font-size:17px;
+	font-weight:bold;
+}
+
+</style>
+	<!-- end blinkcss 15-01-2018-->
+	
 </head>

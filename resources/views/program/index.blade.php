@@ -120,10 +120,11 @@
                     <td>{{ $var->programName }}</td>
                     <td>@if($var->isVendorRequired == 'Y')Yes @else NO @endif</td>
                     <td>
-                        {{ Form::open(['route' => ['programs.destroy', $var->idProgram], 'method' => 'delete']) }}
-                        <a href='{{url('/programs/'.$var->idProgram.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                        
+                        <a href='{{url('/programs/'.$var->idProgram.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                      
+                       <a href='{{url('/programs/'.$var->idProgram.'/deleteprogram')}}' class="btn btn-sm btn-danger">Delete</a>
+                     
                     </td>
                 </tr>
                 @endforeach

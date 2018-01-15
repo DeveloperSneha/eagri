@@ -20,7 +20,13 @@
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
                         <span id="Master_lbl_first" class="digital" style="font-size:Small;">Avail. Schemes</span><br>
-                        <span id="spnpermits" class="digital f-b">2</span>
+                        <!--Count--<span id="spnpermits" class="digital f-b">2</span>-->
+						<span id="spnpermits" class="digital f-b">{{ $schemes = DB::table('schemedistributiondistrict')
+                ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
+                ->where('schemedistributiondistrict.idDistrict', '=', $farmer->idDistrict)
+                ->get()->count()}}</span>
+						<!--end count-->
                     </div>
 
                 </li>
@@ -28,7 +34,12 @@
                     <div class="parallelogram bg-3 txt-cnt fl">
 
                         <span id="Master_lbl_second" class="digital" style="font-size:Small;">App. Schemes</span><br>
-                        <span id="spntransitforms" class="digital f-b">1</span>
+                        <!--count<span id="spntransitforms" class="digital f-b">1</span>-->
+						<span id="spntransitforms" class="digital f-b">{{ $users = DB::table('farmerapplied_scheme')
+                     ->select(DB::raw('count(idAppliedScheme) as Count'))
+                     ->where('idFarmer','=',$farmer->idFarmer)
+                     ->get()->count()}}</span>
+						<!--end Count-->
                     </div>
                 </li>
                 <li class="dropdown notifications-menu">

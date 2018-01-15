@@ -14,7 +14,8 @@ class FinancialYearController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $fys = \App\FinancialYear::get();
+        //$fys = \App\FinancialYear::get();
+		$fys = \App\FinancialYear::orderBy('idFinancialYear')->get();
         return view('financialyear.index', compact('fys'));
     }
 
@@ -37,7 +38,7 @@ class FinancialYearController extends Controller {
         //   dd($request->finanYearStartDate);
         //   dd(Carbon::createFromFormat('d-m-Y H', $request->finanYearStartDate)->format('Y-m-d H'));
         $rules=[
-            'financialYearName' => 'required|unique:financialyear|regex:/^[a-zA-Z0-9]{4,10}$/|max:15',
+            'financialYearName' => 'required|regex:/^[a-zA-Z0-9]{4,10}$/|max:4',
             'finanYearStartDate' => 'required',
             'finanYearEndDate' => 'required'
         ];
@@ -96,7 +97,7 @@ class FinancialYearController extends Controller {
         $fy = \App\FinancialYear::where('idFinancialYear', '=', $id)->first();
         //  dd($fy);
         $rules=[
-            'financialYearName' => 'required|max:15',Rule::unique('financialyear')->ignore($fy->idFinancialYear, 'idFinancialYear'),
+            'financialYearName' => 'required|max:4|unique:financialyear,financialYearName,'.$id.',idFinancialYear',
             'finanYearStartDate' => 'required',
             'finanYearEndDate' => 'required'
         ];

@@ -98,29 +98,19 @@ class UserVillageController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $user_list = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
-                ->join('section', 'designation.idSection', '=', 'section.idSection')
-                ->join('district', 'user_designation_district_mapping.idDistrict', '=', 'district.idDistrict')
-                ->join('subdivision', 'user_designation_district_mapping.idSubdivision', '=', 'subdivision.idSubdivision')
-                ->join('block', 'user_designation_district_mapping.idBlock', '=', 'block.idBlock')
-                ->join('village', 'user_designation_district_mapping.idVillage', '=', 'village.idVillage')
-                ->select('users.idUser', 'userName', 'villageName', 'districtName', 'subDivisionName', 'blockName', 'sectionName', 'designationName', DB::raw('group_concat(villageName)AS villageName'))
-                ->groupBy('idUser')
-                ->get();
-        $user = \App\User::where('idUser', '=', $id)->first();
-        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
-        $user_desig = $user->userdesig()->with('designation')->get();
-        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
-        $user_subdiv = $user->userdesig()->with('subdivision')->get()->pluck('subdivision.idSubdivision','subdivision.subDivisionName')->unique();
-       //dd($user_subdiv);
-        $user_village = $user->userdesig()->with('village')->get();
+        $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
+//        $user = \App\User::where('idUser', '=', $id)->first();
+//        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
+//        $user_desig = $user->userdesig()->with('designation')->get();
+//        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+//        $user_subdiv = $user->userdesig()->with('subdivision')->get()->pluck('subdivision.idSubdivision','subdivision.subDivisionName')->unique();
+//       //dd($user_subdiv);
+//        $user_village = $user->userdesig()->with('village')->get();
         //dd($user_village);
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         // dd($districts);
-        return view('users.user_villages', compact('user_subdiv','users', 'user', 'user_village', 'sections', 'districts', 'user_list', 'user_section', 'user_desig'));
+        return view('users.edituser_villages', compact('userdesig', 'sections', 'districts'));
     }
 
     /**
@@ -137,7 +127,7 @@ class UserVillageController extends Controller {
             'idBlock' => 'required',
             'idSection' => 'required',
             'idDesignation' => 'required',
-            'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+            'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
         ];
         if (count($request->idVillages) == 0) {
             $rules += ['idVillage' => 'required'];
@@ -189,6 +179,12 @@ class UserVillageController extends Controller {
         //
     }
 
+    public function getUserDetails($id) {
+        $user = \App\User::where('idUser', '=', $id)->first();
+        $userdesig = $user->userdesig()->whereNotNull('idVillage')->get();
+        return view('users.userdetails_village', compact('user','userdesig'));
+        
+    }
     public function getDesignations($id) {
         $designations = \App\Designation::where("idSection", $id)
                         ->where('level', 4)->get()

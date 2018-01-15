@@ -14,7 +14,8 @@ class UnitController extends Controller {
      */
     public function index() {
         //
-        $units = \App\Unit::orderBy('unitName')->get();
+        //$units = \App\Unit::orderBy('unitName')->get();
+		$units = \App\Unit::orderBy('idUnit')->get();
         return view('units.index', compact('units'));
     }
 

@@ -29,14 +29,12 @@ $(document).ready(function () {
                 dataType: "json",
                 success:function(data) {
                   
-                    @if(isset($user))
+                    @if(isset($userdesig))
                         var myPlayList = [];
-                        @if(isset($user_subdiv))
-                            @foreach($user_subdiv as $val=>$key)
-                                var h = {{$key}}; 
+                       
+                                var h = {{$userdesig->idSubdivision}}; 
                                 myPlayList.push(h.toString());
-                            @endforeach
-                        @endif
+                         
                         $.each(data, function(key, value) {
                             if($.inArray(key,myPlayList) === -1){
                                     $('select[id="idSubdivision"]').append('<option value="'+ key +'" >'+ value +'</option>');
@@ -75,14 +73,12 @@ $(document).ready(function () {
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
-                    @if(isset($user))
+                    @if(isset($userdesig))
                         var myPlayList = [];
-                        @if(isset($user_block))
-                            @foreach($user_block as $val)
-                                var h = {{$val->idBlock}}; 
+                        
+                                var h = {{$userdesig->idBlock}}; 
                                 myPlayList.push(h.toString());
-                            @endforeach
-                        @endif
+                         
                         $.each(data, function(key, value) {
                             if($.inArray(key,myPlayList) === -1){
                                     $('select[id="idBlock"]').append('<option value="'+ key +'" >'+ value +'</option>');

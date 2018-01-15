@@ -24,17 +24,17 @@ class UnitRequest extends FormRequest {
     public function rules() {
         $id = $this->route('unit');
         $rules = [
-            'unitName' => 'required|unique:units|regex:/^[\pL\s\-]+$/u',
-            'unitType' => 'required|unique:units',
+            'unitName' => 'required|unique:units|between:2,20|regex:/^[A-z]+$/|max:25',
+            'unitType' => 'required|unique:units|regex:/^[A-z]+$/|max:25',
             'idBaseUnit' => 'required|integer',
-            'conversionMultipierToBase' => 'required'
+            'conversionMultipierToBase' => 'required|integer'
         ];
         if ($id)
             $rules = [
-                'unitName' => 'required|regex:/^[\pL\s\-]+$/u', Rule::unique('units')->ignore($id),
-                'unitType' => 'required',
-                'idBaseUnit' => 'required|integer',
-                'conversionMultipierToBase' => 'required|integer'
+                'unitName' => 'required|regex:/^[\pL\s\-]+$/u|unique:units,unitName,'.$id.',idUnit',
+                'unitType' => 'required|regex:/^[A-z]+$/|max:25',
+                'idBaseUnit' => 'required|numeric',
+                'conversionMultipierToBase' => 'required|numeric|regex:[0-9]'
             ];
         return $rules;
     }
@@ -44,10 +44,14 @@ class UnitRequest extends FormRequest {
             'unitName.required' => 'Unit Name Must Not be Empty',
             'unitName.regex' => 'Unit Name Is Not Valid',
             'unitType.required' => 'Unit Type Must Not be Empty',
+            'unitType.regex' => 'Unit Type Is Not Valid',
             'unitType.unique' => 'Unit Type Already Exist',
             'idBaseUnit.required' => 'Base Unit Must Not Be Empty',
-            'idBaseUnit.integer' => 'Base Unit Must Have integer Value',
-            'conversionMultipierToBase.required' => 'Conversion Multipier To Base Must Not be Empty'
+            'idBaseUnit.numeric' => 'Base Unit Must Have Numeric Value',
+            'conversionMultipierToBase.required' => 'Conversion Multipier To Base Must Not be Empty',
+            'conversionMultipierToBase.regex' => 'Conversion Multipier To Base Must Not be Negative',
+            'conversionMultipierToBase.numeric' => 'Conversion Multipier To Base Must Have Numeric Value',
+            'conversionMultipierToBase.after' => 'Conversion Multipier To Base Must Be Greater than Base Unit '
         ];
         return $messages;
     }

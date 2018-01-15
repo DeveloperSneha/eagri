@@ -149,6 +149,22 @@
             $('#desig').empty();
         }
     });
+    var cur_workflow = $( "#workflow option:selected" ).val();
+    if(cur_workflow){
+        $.ajax({
+                url: "{{url('/workflow') }}"+'/' +cur_workflow + "/designations",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('#desig').empty();
+                    $.each(data, function(key, value) {
+                        $('#desig').append('<label >'+ key +'</label>,<br>');
+                    });
+
+                }
+            });
+                       
+    }
 //    
 //    $('#schemeactivation').on('submit',function(e){
 //        $.ajaxSetup({

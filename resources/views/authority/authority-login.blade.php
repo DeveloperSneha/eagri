@@ -5,16 +5,23 @@
         <div class="l-panel" style="z-index: 10 !important;">
             <div class="sp-container">
                 <div class="sp-content">
-                    <h2 class="frame-1">Welcome To</h2>
+                    <h2 class="frame-1">Welcome To   </h2>
                     <h2 class="frame-2">Agriculture  Department</h2>
                     <h2 class="frame-3">Haryana </h2>
+                    <h2 class="frame-4">Now!</h2>   
                 </div>
             </div>
         </div>
         <div class="r-panel" style="z-index: 1000 !important;">
+            
             <div class="log-block">
                 <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="90" width="90"></a>
                 <div style="font-family: Verdana; font-size: 20px; color: #fff; margin: 10px 0px; text-transform: uppercase;">Agriculture Department</div>
+                @if ($errors->has('msg'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('msg') }}</strong>
+                </span>
+                @endif
                 <div class="log-panel">
                     <div class="hd">Government of Haryana</div>
                     <div class="login-box-body">
@@ -24,23 +31,17 @@
                                 <label>USERNAME</label>
                                 <span class="clearfix"></span>
                                 <!--<input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" required="">-->
-                                <input type="text" name="userName" id = "userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="validate fl w-100 input-b-b m-b-20"  value="" maxlength="12"  >
+                                <input type="text" name="userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control input-b-b" value="" maxlength="12"  >
                                 @if ($errors->has('userName'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('userName') }}</strong>
                                 </span>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label>DESIGNATION</label>
-                                <select name="idDesignation" class="form-control" >
-                                    <option value=""> --- Select Designation ---</option>
-                                </select>
-                            </div>
                             <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label>PASSWORD</label>
                                 <span class="clearfix"></span>
-                                <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="validate fl w-100 input-b-b m-b-20" value="" maxlength="12" >
+                                <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control input-b-b" value="" maxlength="12" >
 
                                 @if ($errors->has('password'))
                                 <span class="help-block">
@@ -48,7 +49,7 @@
                                 </span>
                                 @endif
                             </div>
-                            <center><div class="g-recaptcha" data-sitekey="6LebkD4UAAAAAExBzYddN9Lh3HIfQUiIz-LRyFCS"></div></center></br>
+                            <center><div class="g-recaptcha" data-sitekey="6LebkD4UAAAAAExBzYddN9Lh3HIfQUiIz-LRyFCS"></div></center>
                             @if ($errors->has('g-recaptcha-response'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
@@ -80,45 +81,6 @@
         <!-- /.login-box -->
 
         @include('layouts.partials.script')
-        <script>
-            $(document).ready(function() {
-                $('input[name="userName"]').on('change', function() {
-                    var userName = $(this).val();
-                    if(userName) {
-                        $.ajax({
-                            url: "{{url('/authority/user') }}"+'/' +userName + "/designations",
-                            type: "GET",
-                            dataType: "json",
-                            success:function(data) {
-                                $('select[name="idDesignation"]').empty();
-                                $.each(data, function(key, value) {
-                                    $('select[name="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
-                                });
-
-                            }
-                        });
-                    }else{
-                        $('select[name="idDesignation"]').empty();
-                    }
-                });
-                var cur_user = $('#userName').val();
-                
-                if(cur_user){
-                    $.ajax({
-                            url: "{{url('/authority/user') }}"+'/' +cur_user + "/designations",
-                            type: "GET",
-                            dataType: "json",
-                            success:function(data) {
-                                $('select[name="idDesignation"]').empty();
-                                $.each(data, function(key, value) {
-                                    $('select[name="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
-                                });
-
-                            }
-                        });
-
-                }
-            });
-        </script>
+       
     </body>
 </html>

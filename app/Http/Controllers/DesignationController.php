@@ -14,7 +14,8 @@ class DesignationController extends Controller {
      */
     public function index() {
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $designations = \App\Designation::orderBy('designationName')->get();
+        //$designations = \App\Designation::orderBy('designationName')->get();
+		$designations = \App\Designation::orderBy('idDesignation')->get();
 //        $designations =DB::table('designation')->distinct()->get();
         return view('designation.index', compact('designations','sections'));
     }
@@ -37,8 +38,8 @@ class DesignationController extends Controller {
     public function store(Request $request) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|max:50',
-            'level' => 'required|integer|between:1,9'
+            'designationName' => 'required|regex:/^[\pL\s\-()]+$/u|between:2,50|unique:designation,designationName,NULL,idDesignation,idSection,'.$request->idSection,
+            'level' => 'required|integer|between:1,9|unique:designation,level,NULL,idDesignation,idSection,'.$request->idSection
         ];
         $message = [
             'idSection.required' => 'Please Select Section',
@@ -88,8 +89,8 @@ class DesignationController extends Controller {
     public function update(Request $request, $id) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|max:50',
-            'level' => 'required|integer'
+            'designationName' => 'required|between:2,50|unique:designation,designationName,'.$id.',idDesignation,idSection,'.$request->idSection,
+            'level' => 'required|integer|between:1,9'
         ];
         $message = [
             'idSection.required' => 'Select Section',

@@ -33,14 +33,12 @@ $(document).ready(function () {
 //                    $.each(data, function(key, value) {
 //                        $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
 //                    });
-                    @if(isset($user))
+                    @if(isset($userdesig))
                         var myPlayList = [];
-                        @if(isset($user_subdiv))
-                            @foreach($user_subdiv as $key=>$value)
-                                var h = {{$value}}; 
+                       
+                                var h = {{$userdesig->idSubdivision}}; 
                                 myPlayList.push(h.toString());
-                            @endforeach
-                        @endif
+                         
                         $.each(data, function(key, value) {
                             if($.inArray(key,myPlayList) === -1){
                                     $('select[id="idSubdivision"]').append('<option value="'+ key +'" >'+ value +'</option>');
@@ -113,14 +111,12 @@ $(document).ready(function () {
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
-                    @if(isset($user))
+                    @if(isset($userdesig))
                         var myPlayList = [];
-                        @if(isset($user_village))
-                            @foreach($user_village as $val)
-                                var h = {{$val->village->idVillage}}; 
+                        
+                                var h = {{$userdesig->idVillage}}; 
                                 myPlayList.push(h.toString());
-                            @endforeach
-                        @endif
+                          
                         $.each(data, function(key, value) {
                             if($.inArray(key,myPlayList) === -1){
                                    $('select[id="idVillage"]').append('<option value="'+ key +'" >'+ value +'</option>');

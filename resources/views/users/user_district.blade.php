@@ -3,19 +3,13 @@
 <a href="{{url('/userdistrict/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>
 <!-------------------New User---------------------------------------------------------------------->
 <div class="panel panel-default">
-    <div class="panel-heading"><strong>@if(isset($user)) UPDATE @else ADD @endif  User In District</strong></div>
-    @if(isset($user))
-    {{ Form::model( $user, ['route' => ['userdistrict.update', $user->idUser], 'method' => 'patch','class'=>'form-horizontal'] ) }}
-    @else
+    <div class="panel-heading"><strong>ADD User In District</strong></div>
     {!! Form::open(['url' => 'userdistrict','class'=>'form-horizontal']) !!}
-    @endif  
     <div class="panel-body">
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                  {!! Form::select('idDistricts[]',$districts, isset($user) ? $user_district: null, ['class' => 'form-control select2','multiple'=>'multiple','id'=>'idDistrict']) !!}
-               
-                <!--{!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2']) !!}-->
             </div>
             <span class="help-block">
                 <strong>
@@ -24,7 +18,6 @@
                     @endif
                 </strong>
             </span>
-            
         </div>
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -79,27 +72,32 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
+                    <th>S.No.</th>
                     <th>User</th>
-                    <th>District</th>
+<!--                    <th>District</th>
                     <th>Section</th>
-                    <th>Designation</th>
+                    <th>Designation</th>-->
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($user_list as $user)
                 <tr>
+                    <td>{{ $i }}</td>
                     <td>{{ $user->userName}}</td>
-                    <td>{{ $user->districtName}}</td>
+<!--                    <td>{{ $user->districtName}}</td>
                     <td>{{ $user->sectionName}}</td>
-                    <td>{{ $user->designationName}}</td>
+                    <td>{{ $user->designationName}}</td>-->
                     <td>
-                        {{ Form::open(['route' => ['userdistrict.destroy', $user->idUser], 'method' => 'delete']) }}
-                        <a href='{{url('/userdistrict/'.$user->idUser.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                      
+                        <a href='{{url('/userdistrict/'.$user->idUser.'/edituser')}}' class="btn btn-xs btn-warning">Edit</a>
+                        {{--  {{ Form::open(['route' => ['userdistrict.destroy', $user->idUser], 'method' => 'delete']) }} --}}
+                        <!--<button class="btn btn-xs btn-danger" type="submit">Delete</button>-->
+                     {{--   {{ Form::close() }} --}}
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>
