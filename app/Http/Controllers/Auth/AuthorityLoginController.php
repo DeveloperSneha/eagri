@@ -14,7 +14,7 @@ class AuthorityLoginController extends Controller {
 
     use Traits\CaptchaTrait;
 
-    protected $redirectTo = '/authority';
+     // protected $redirectTo = '/authority';
 
     public function __construct() {
         $this->middleware('guest:authority')->except('logout');
@@ -26,69 +26,84 @@ class AuthorityLoginController extends Controller {
     }
 
     public function login(Request $request) {
-        // Validate the form data
-
         $request['captcha'] = $this->captchaCheck();
         $rules = [
             'userName' => 'required',
             'password' => 'required',
             'g-recaptcha-response' => 'required',
             'captcha' => 'required|min:1',
-//            'idDesignation' => 'required'
-        ];
+       ];
         $messages = [
             'userName.required' => 'Enter Your Username ',
             'password.required' => 'Enter Your Password',
             'g-recaptcha-response.required' => 'Captcha authentication is required.',
             'captcha.min' => 'Wrong captcha, please try again.',
-//            'idDesignation.required' => 'Please Select Your Designation you want to login.'
+
         ];
         $this->validate($request, $rules, $messages);
-        // Attempt to log the user in
-//        if (Auth::guard('authority')->attempt([
-//                    'userName' => $request->userName,
-//                    'password' => $request->password], $request->remember)) {}
+      
         $user = \App\User::where('userName', $request->userName)->first();
         if ($user) {
-            if ($user->userdesig()->count() > 1) {
+            if ($user->userdesig()->count() > 0) {
                 return view('authority.secondstep_login', compact('user'));
-                // return view('authority.secondstep_login')->with($request->session()->get('idDesignation'));
-            } else {
-                return view('authority.dashboard');
             }
         } else {
             return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg' => 'Your Credential Doesnot Match Our Record.Plz Try Again !!']);
         }
     }
 
+//    public function secondStepLoginForm() {
+//        if (session()->has('data')) {
+//            $user = Session::get('data');
+//            return view('authority.secondstep_login', compact('user'));
+//        }else{
+//            return redirect('authority/login');
+//        }
+//    }
+
     public function secondStepLogin(Request $request) {
-        //dd($request->all());
+        $user = \App\User::where('userName', $request->userName)->first();
         $rules = [
+            'password' => 'required',
             'idDesignation' => 'required',
             'idDistrict' => 'required'
         ];
+        if ($request->has('idDistrict')) {
+            $user_subdivision = $user->userdesig()
+                    ->where('idDesignation', '=', $request->idDesignation)
+                    ->where('idDistrict', '=', $request->idDistrict)
+                    ->whereNotNull('idSubdivision')
+                    ->get();
+            if ($user_subdivision->count() > 0) {
+                $rules['idSubdivision'] = 'required';
+            }
+        }
+        if ($request->has('idSubdivision')) {
+            $user_block = $user->userdesig()
+                    ->where('idDesignation', '=', $request->idDesignation)
+                    ->where('idDistrict', '=', $request->idDistrict)
+                    ->where('idSubdivision', '=', $request->idSubdivision)
+                    ->whereNotNull('idBlock')
+                    ->get();
+            if ($user_block->count() > 0) {
+                $rules['idBlock'] = 'required';
+            }
+        }
         $messages = [
             'idDesignation.required' => 'Select Your Designation First',
-            'idDistrict.required' => 'Select District'
+            'idDistrict.required' => 'District Must Be Selected',
+            'idSubdivision.required' => 'Subdivision Must Be Selected',
+            'idBlock.required' => 'Block Must Be Selected'
         ];
         $this->validate($request, $rules, $messages);
         if (Auth::guard('authority')->attempt([
                     'userName' => $request->userName,
                     'password' => $request->password], $request->remember)) {
-            $user = \App\User::where('idUser', Auth::user()->idUser)->first();
-            $user_desig = $user->userdesig()->where('idDistrict', '=', $request->idDistrict)->get();
-            dd($user_desig);
-            if (count($user_desig) == 0) {
-                return redirect('authority/secondsteplogin');
-            } else {
-                return redirect()->intended(route('authority.dashboard'));
-            }
-        }else{
-            return redirect('authority/secondsteplogin');
+            //dd(Auth::guard('authority')->User());
+            return $this->redirectToDashboard($request);
+        } else {
+            return redirect('authority/login');
         }
-
-
-//        $user = \App\User::where('userName', $request->userName)->first();
     }
 
     public function logout(Request $request) {
@@ -105,6 +120,42 @@ class AuthorityLoginController extends Controller {
         return Auth::guard('authority');
     }
 
+    public function redirectToDashboard(Request $request) {
+        $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
+        $user_in_district = $loggedinuser->userdesig()
+                ->where('idDesignation', '=', $request->idDesignation)
+                ->where('idDistrict', '=', $request->idDistrict)
+                ->whereNull('idSubdivision')
+                ->whereNull('idBlock')
+                ->whereNull('idVillage')
+                ->first();
+        if ($request->has('idSubdivision')) {
+            $user_in_subdivision = $loggedinuser->userdesig()
+                    ->where('idDesignation', '=', $request->idDesignation)
+                    ->where('idDistrict', '=', $request->idDistrict)
+                    ->where('idSubdivision', '=', $request->idSubdivision)
+                    ->whereNull('idBlock')
+                    ->whereNull('idVillage')
+                    ->first();
+        }
+        if ($request->has('idBlock')) {
+            $user_in_block = $loggedinuser->userdesig()
+                    ->where('idDesignation', '=', $request->idDesignation)
+                    ->where('idDistrict', '=', $request->idDistrict)
+                    ->where('idSubdivision', '=', $request->idSubdivision)
+                    ->where('idBlock', '=', $request->idBlock)
+                    //->whereNull('idVillage')
+                    ->get();
+        }
+        if ($user_in_district) {
+                return response()->json(['success' => "SUCCESS",'userdistrict'=>"DistrictUser"], 200, ['app-status' => 'success']);
+        } else if ($user_in_subdivision) {
+            return response()->json(['success' => "SUCCESS",'usersubdivision'=>"SubdivisionUser"], 200, ['app-status' => 'success']);
+        } else if ($user_in_block) {
+            return response()->json(['success' => "SUCCESS",'userblock'=>"BlockUser"], 200, ['app-status' => 'success']);
+        }
+    }
+
 //    public function getDesignation($userName) {
 //        $user = \App\User::where('userName', $userName)->first();
 //        $user_desig = DB::table('user_designation_district_mapping')
@@ -113,5 +164,4 @@ class AuthorityLoginController extends Controller {
 //                        ->pluck("designationName", "idDesignation")->toArray();
 //        return json_encode($user_desig);
 //    }
-
 }

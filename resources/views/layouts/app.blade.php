@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     @include('layouts.partials.head')
+	
     <body class="hold-transition skin-green-light sidebar-mini" >
         <div class="wrapper">
 

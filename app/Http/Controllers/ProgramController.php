@@ -114,7 +114,7 @@ class ProgramController extends Controller {
         $programs = \App\Program:: where('idProgram', '=', $id)->first();
         $schact = \App\SchemeActivation::where('idProgram', '=', $id)->get();
         if($schact->count() > 0){
-            return redirect()->back()->with('message', 'You Can not Delete this Program Because it  Already Exist in Some Scheme Activation!');
+            return redirect()->back()->with('message', 'You Can not Delete this Program Because it is Already Exist in Some Scheme Activation!');
         }
         else{
             return view('program.delete', compact('programs'));

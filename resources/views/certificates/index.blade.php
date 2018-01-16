@@ -15,7 +15,7 @@
         <div class="form-group">
             {!! Form::label('Name Of Certificate', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('certificateName', null, ['class' => 'form-control','placeholder'=>'Enter Name']) !!}
+                {!! Form::text('certificateName', null, ['class' => 'form-control','placeholder'=>'Enter Name','maxlength'=>'30','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -28,7 +28,7 @@
         <div class="form-group">
             {!! Form::label('description', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::textarea('description', null, ['class' => 'form-control','size'=>'30x3']) !!}
+                {!! Form::textarea('description', null, ['class' => 'form-control','size'=>'30x3','maxlength'=>'150','minlength'=>'2']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -55,23 +55,26 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1' >
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SNO</th>
                     <th>Certificate Name</th>
+					<th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($certificates as $var)
                 <tr>
-                    <td>{{ $var->idCertificate }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $var->certificateName }}</td>
+					<td>{{ $var->description }}</td>
                     <td>
-                        {{ Form::open(['route' => ['certificates.destroy', $var->idCertificate], 'method' => 'delete']) }}
-                        <a href='{{url('/certificates/'.$var->idCertificate.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                        <a href='{{url('/certificates/'.$var->idCertificate.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                      
+                       <a href='{{url('/certificates/'.$var->idCertificate.'/deletecertificate')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>

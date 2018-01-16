@@ -52,7 +52,7 @@
         <div class="form-group">
             {!! Form::label('Workflow Name', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('workflowName', null, ['class' => 'form-control']) !!}
+                {!! Form::text('workflowName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -80,7 +80,7 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SNO</th>
                     <th>Workflow Name</th>
                     <th>Designations</th>
                     <th>Action</th>
@@ -98,10 +98,9 @@
                         @endforeach
                     </td>
                     <td>
-                        {{ Form::open(['route' => ['workflow.destroy', $var->idWorkflow], 'method' => 'delete']) }}
-                        <a href='{{url('/workflow/'.$var->idWorkflow.'/edit')}}' class="btn btn-xs btn-warning" >Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit" >Delete</button>
-                        {{ Form::close() }}
+                        <a href='{{url('/workflow/'.$var->idWorkflow.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                      
+                       <a href='{{url('/workflow/'.$var->idWorkflow.'/deleteworkflow')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
                 @endforeach

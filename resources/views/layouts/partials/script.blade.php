@@ -1,4 +1,6 @@
+<!--add vaildtion--->
 
+<!--end--validation-->
 <!-- jQuery 3 -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
 <script>
@@ -46,6 +48,7 @@
 <!--<script src="dist/js/pages/dashboard.js"></script>
  AdminLTE for demo purposes 
 <script src="dist/js/demo.js"></script>-->
+
 <script>
     $(function() {
 	$("#feedback-tab").click(function() {
@@ -94,3 +97,6 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+

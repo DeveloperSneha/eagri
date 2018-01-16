@@ -82,6 +82,22 @@ class UnitController extends Controller {
         $unit->update();
         return redirect('units');
     }
+    /**
+     * Check There is Any dependency Exist
+     *
+
+     */
+    public function deleteUnit($id) {
+        //
+        $unit = \App\Unit:: where('idUnit', '=', $id)->first();
+        $schact = \App\SchemeActivation::where('idUnit', '=', $id)->get();
+        if ($schact->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Delete this Unit Because it is Already in Use!');
+        }
+        else{
+            return view('units.delete', compact('unit'));
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

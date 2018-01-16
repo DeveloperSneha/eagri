@@ -33,12 +33,12 @@ class DesignationController extends Controller {
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response /****regex:/^[\pL\s\-()]+$/u|
      */
     public function store(Request $request) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|regex:/^[\pL\s\-()]+$/u|between:2,50|unique:designation,designationName,NULL,idDesignation,idSection,'.$request->idSection,
+            'designationName' => 'required|between:2,50|unique:designation,designationName,NULL,idDesignation,idSection,'.$request->idSection,
             'level' => 'required|integer|between:1,9|unique:designation,level,NULL,idDesignation,idSection,'.$request->idSection
         ];
         $message = [
@@ -89,7 +89,7 @@ class DesignationController extends Controller {
     public function update(Request $request, $id) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|between:2,50|unique:designation,designationName,'.$id.',idDesignation,idSection,'.$request->idSection,
+            'designationName' => 'required|regex:/^[\pL\s\-()]+$/|between:2,50|unique:designation,designationName,'.$id.',idDesignation,idSection,'.$request->idSection,
             'level' => 'required|integer|between:1,9'
         ];
         $message = [
@@ -106,13 +106,35 @@ class DesignationController extends Controller {
     }
 
     /**
+     * Check There is Any dependency Exist
+     *
+
+     */
+    public function deleteDesignation($id) {
+        //
+        $designation = \App\Designation:: where('idDesignation', '=', $id)->first();
+        $workflow = \App\WorkflowStep::where('idDesignation', '=', $id)->get();
+        $userdesig = \App\UserDesignationDistrictMapping::where('idDesignation', '=', $id)->get();
+        if($workflow->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Delete this Designation Because it is Already Existing in Some workflow!');
+        }elseif($userdesig->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Delete this Designation Because it is Already In Use');
+        }
+        else{
+            return view('designation.delete', compact('designation'));
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+        $designation = \App\Designation:: where('idDesignation', '=', $id)->first();
+        $designation->delete();
+        return redirect('designations');
     }
 
 }

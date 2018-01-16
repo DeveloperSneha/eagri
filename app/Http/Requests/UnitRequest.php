@@ -26,15 +26,15 @@ class UnitRequest extends FormRequest {
         $rules = [
             'unitName' => 'required|unique:units|between:2,20|regex:/^[A-z]+$/|max:25',
             'unitType' => 'required|unique:units|regex:/^[A-z]+$/|max:25',
-            'idBaseUnit' => 'required|integer',
-            'conversionMultipierToBase' => 'required|integer'
+            'idBaseUnit' => 'required|numeric',
+            'conversionMultipierToBase' => 'required|numeric|'
         ];
         if ($id)
             $rules = [
                 'unitName' => 'required|regex:/^[\pL\s\-]+$/u|unique:units,unitName,'.$id.',idUnit',
                 'unitType' => 'required|regex:/^[A-z]+$/|max:25',
                 'idBaseUnit' => 'required|numeric',
-                'conversionMultipierToBase' => 'required|numeric|regex:[0-9]'
+                'conversionMultipierToBase' => 'required|numeric'
             ];
         return $rules;
     }
@@ -48,6 +48,7 @@ class UnitRequest extends FormRequest {
             'unitType.unique' => 'Unit Type Already Exist',
             'idBaseUnit.required' => 'Base Unit Must Not Be Empty',
             'idBaseUnit.numeric' => 'Base Unit Must Have Numeric Value',
+            'idBaseUnit.regex' => 'Base Unit Must Not be Negative',
             'conversionMultipierToBase.required' => 'Conversion Multipier To Base Must Not be Empty',
             'conversionMultipierToBase.regex' => 'Conversion Multipier To Base Must Not be Negative',
             'conversionMultipierToBase.numeric' => 'Conversion Multipier To Base Must Have Numeric Value',

@@ -3,9 +3,9 @@
     @include('layouts.partials.head')
     <body style="background-color: #323232;">
     <div class="">
-        <div class="register-logo">
+<!--        <div class="register-logo">
             <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="90" width="90"></a>
-        </div>
+        </div>-->
 
         <div class="register-box-body" style="background-color: #323232;">
             <p class="register-box-msg" style="color:#fff">New Registration / नया पंजीकरण</p>
@@ -24,7 +24,7 @@
                         <div class="form-group">
                             {!! Form::label('Name Of Farmer', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4  {{ $errors->has('name') ? ' has-error' : '' }}">
-                                {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'Enter Name']) !!}
+                                {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'किसान का नाम','pattern'=>'^[^-\s][a-zA-Z_\s-]+$']) !!}
                                 @if ($errors->has('name'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -33,7 +33,7 @@
                             </div>
                             {!! Form::label('Father/Husband', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('father_name') ? ' has-error' : '' }}">
-                                {!! Form::text('father_name', null, ['class' => 'form-control','placeholder'=>'Enter Father/Husband Name']) !!}
+                                {!! Form::text('father_name', null, ['class' => 'form-control','placeholder'=>'पिता/पति का नाम']) !!}
                                 @if ($errors->has('father_name'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('father_name') }}</strong>
@@ -42,9 +42,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Aadhar No', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Aadhaar No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
-                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhar No','maxlength' => 12]) !!}
+                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'अपना आधार नंबर डाले','maxlength' => 12,'id'=>'aadhaar']) !!}
                                 @if ($errors->has('aadhaar'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('aadhaar') }}</strong>
@@ -53,7 +53,7 @@
                             </div>
                             {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('rcno') ? ' has-error' : '' }}">
-                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'Enter Ration Card No.']) !!}
+                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength' => 12 ,'id'=>'rcno']) !!}
                                 @if ($errors->has('rcno'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('rcno') }}</strong>
@@ -61,27 +61,17 @@
                                 @endif
                             </div>
                         </div>
+                        
                         <div class="form-group">
-                            {!! Form::label('Farmer Category', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('farmer_category') ? ' has-error' : '' }}">
-                                {!! Form::select('farmer_category',getFarmerCategory(), null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('farmer_category'))
+                            {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
+                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength' => 10, 'pattern'=>'^[789]\d{9}$']) !!}
+                                @if ($errors->has('name'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('farmer_category') }}</strong>
+                                    <strong>{{ $errors->first('mobile') }}</strong>
                                 </span>
                                 @endif
                             </div>
-                            {!! Form::label('Gender', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('gender') ? ' has-error' : '' }}">
-                                {!! Form::select('gender', getGender(),null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('gender'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('gender') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group">
                             {!! Form::label('Marital Status', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('marital_status') ? ' has-error' : '' }}">
                                 {!! Form::select('marital_status', getMaritalStatus(),null, ['class' => 'form-control']) !!}
@@ -91,10 +81,35 @@
                                 </span>
                                 @endif
                             </div>
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('Gender', null, ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-4 {{ $errors->has('gender') ? ' has-error' : '' }}">
+                                {!! Form::select('gender', getGender(),null, ['class' => 'form-control']) !!}
+                                @if ($errors->has('gender'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('gender') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-4 {{ $errors->has('caste') ? ' has-error' : '' }}">
+                                {!! Form::select('caste',getCasteCategory(), null, ['class' => 'form-control']) !!}
+                                @if ($errors->has('caste'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('caste') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            
+                            
+                        </div>
+                        <legend>land Details / ज़मीन का विवरण (In acres / एकड़ में )</legend>
+                        <div class="form-group">
                             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idDistrict') ? ' has-error' : '' }}">
                                 <select name="idDistrict" class="form-control">
-                                    <option value="">--- Select District ---</option>
+                                    <option value="">--- अपना जिला चुने ---</option>
                                     @foreach ($districts as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
@@ -105,18 +120,19 @@
                                 </span>
                                 @endif
                             </div>
-                            
+                            {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
+                                    {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान']) !!}
+                                    @if ($errors->has('land_location'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('land_location') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                        
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
-                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter MobileNo.','maxlength' => 10]) !!}
-                                @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('mobile') }}</strong>
-                                </span>
-                                @endif
-                            </div>
+                                                       
                             {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
                                 <select name="idBlock" class="form-control" >--- Select Block ---</select>
@@ -126,19 +142,19 @@
                                 </span>
                                 @endif
                             </div>
+                            {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
+                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा ']) !!}
+                                    @if ($errors->has('total_land'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('total_land') }}</strong>
+                                        </span>
+                                    @endif
+                                </div> 
+                            
                             
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('caste') ? ' has-error' : '' }}">
-                                {!! Form::select('caste', getCasteCategory(),null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('caste'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('caste') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            
                             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idVillage') ? ' has-error' : '' }}">
                                 <select name="idVillage" class="form-control" >--- Select Village ---</select>
@@ -149,13 +165,14 @@
                                 @endif
                             </div>
                         </div>
+                        
                         <fieldset>
-                            <legend>Bank And Land Details</legend>
+                            <legend>Bank Details / बैंक विवरण</legend>
 <!--                            <strong>Bank Details</strong>-->
                             <div class="form-group">
                                 {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('ifsc_code') ? ' has-error' : '' }}">
-                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ','id'=>'ifsccode_1']) !!}
+                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ','id'=>'ifsccode_1']) !!}
                                     @if ($errors->has('ifsc_code'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('ifsc_code') }}</strong>
@@ -164,62 +181,39 @@
                                 </div>
                                 {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 ">
-                                    {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'Enter Bank Name','id'=>'branchname_1']) !!}
+                                    {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'बैंक का नाम','id'=>'bankname_1']) !!}
                                 </div>
                             </div>
                             <div class="form-group">
                                 {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
-                                    {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'Enter Branch Details','id'=>'bankname_1']) !!}
+                                    {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'अपने बैंक शाखा का नाम डाले ','id'=>'branchname_1']) !!}
                                 </div>
                                 {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('account_no') ? ' has-error' : '' }}">
-                                    {!! Form::text('account_no', null, ['class' => 'form-control']) !!}
+                                    {!! Form::text('account_no', null, ['class' => 'form-control','placeholder'=>'अपने बैंक खाता नंबर डाले ']) !!}
                                     @if ($errors->has('account_no'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('account_no') }}</strong>
                                         </span>
                                     @endif
                                 </div>
-                            </div>
-<!--                            <strong>Land Details</strong>-->
-                            <div class="form-group">
-                                {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
-                                    {!! Form::text('land_location', null, ['class' => 'form-control']) !!}
-                                    @if ($errors->has('land_location'))
+                            </div>                            
+                        </fieldset><br>
+                        <div class="form-group">
+                            <div class="col-sm-1"></div>
+                            <input type="checkbox" name="check" id="check" {{ $errors->has('check') ? ' has-error' : '' }}>
+                            <span style="font-color:black; font-size:17px;">All The Above Information Is Correct According To Me | मेरे द्वारा दिए गए सभी प्राप्त जानकारी सही है .</span>
+                            @if ($errors->has('check'))
                                         <span class="help-block">
-                                            <strong>{{ $errors->first('land_location') }}</strong>
+                                            <strong>{{ $errors->first('check') }}</strong>
                                         </span>
                                     @endif
-                                </div>
-                                {!! Form::label('OwnershipOfLand', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('land_owner') ? ' has-error' : '' }}">
-                                    {!! Form::text('land_owner', null, ['class' => 'form-control']) !!}
-                                    @if ($errors->has('land_owner'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('land_owner') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
-                                    {!! Form::text('total_land', null, ['class' => 'form-control']) !!}
-                                    @if ($errors->has('total_land'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('total_land') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </fieldset>
+                        </div>
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-4">
-                                <button class="btn btn-block btn-success" name="btn-signup"  type="submit">Register</button>
+                                <button class="btn btn-block btn-success" type="submit">Register / पंजीकरण</button>
                             </div>
-                            
                         </div>
                     </form>
                 </div>

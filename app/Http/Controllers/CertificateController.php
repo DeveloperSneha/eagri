@@ -97,6 +97,21 @@ class CertificateController extends Controller {
         $certificate->update();
         return redirect('certificates');
     }
+    /**
+     * Check There is Any dependency Exist
+     *
+
+     */
+    public function deleteCertificate($id) {
+        //
+        $certificate = \App\Certificate::where('idCertificate', '=', $id)->first();
+        $schemes = \App\Schemecert::where('idCertificate', '=', $id)->get();
+        if ($schemes->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Delete this Certificate Because it is Already in Use!');
+        }else{
+            return view('certificates.delete', compact('certificate'));
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

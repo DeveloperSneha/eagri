@@ -24,7 +24,7 @@
         <div class="form-group">
             {!! Form::label('Designation Name', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('designationName', null, ['class' => 'form-control','placeholder'=>'Enter  Name']) !!}
+                {!! Form::text('designationName', null, ['class' => 'form-control','placeholder'=>'Enter  Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return onlylettersandSpecialChar()']) !!}
             
             </div>
             <span class="help-block">
@@ -38,7 +38,7 @@
         <div class="form-group">
             {!! Form::label('Level', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-1">
-              {!! Form::text('level', null, ['class' => 'form-control']) !!}
+              {!! Form::text('level', null, ['class' => 'form-control','maxlength'=>'1','minlength'=>'1','onkeypress'=>'return isNumber(event)']) !!}
             </div>
             <span class="help-block">                
                     <strong>
@@ -66,7 +66,7 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SNO</th>
                     <th>Section</th>
                     <th>Designation Name</th>
                     <th>Level</th>
@@ -74,20 +74,22 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($designations as $var)
                 <tr>
-                    <td>{{ $var->idDesignation }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $var->section->sectionName}}</td>
                     <td>{{ $var->designationName }}</td>
                     <td>{{ $var->level }}</td>
                     <td>
-                        {{ Form::open(['route' => ['designations.destroy', $var->idDesignation], 'method' => 'delete']) }}
-                        <a href='{{url('/designations/'.$var->idDesignation.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                        <a href='{{url('/designations/'.$var->idDesignation.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                      
+                       <a href='{{url('/designations/'.$var->idDesignation.'/deletedesignation')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
+
             </tbody>
         </table>
     </div>

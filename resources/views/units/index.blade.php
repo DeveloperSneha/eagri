@@ -11,7 +11,7 @@
         <div class="form-group">
             {!! Form::label('Name Of units', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('unitName', null, ['class' => 'form-control','placeholder'=>'Enter Unit Name']) !!}
+                {!! Form::text('unitName', null, ['class' => 'form-control','placeholder'=>'Enter Unit Name','maxlength'=>'20','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -24,7 +24,7 @@
         <div class="form-group">
             {!! Form::label('Unit Type', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('unitType', null, ['class' => 'form-control','placeholder'=>'Enter Unit Type']) !!}
+                {!! Form::text('unitType', null, ['class' => 'form-control','placeholder'=>'Enter Unit Type','maxlength'=>'20','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -79,8 +79,8 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
+                    <th>SNO</th>
+                    <th>Unit Name</th>
                     <th>Type</th>
                     <th>Base Unit</th>
                     <th>Conversion Muiltipier To Base</th>
@@ -88,20 +88,21 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($units as $var)
                 <tr>
-                    <td>{{ $var->idUnit }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $var->unitName }}</td>
                     <td>{{ $var->unitType }}</td>
                     <td>{{ $var->idBaseUnit }}</td>
                     <td>{{ $var->conversionMultipierToBase }}</td>
                     <td>
-                        {{ Form::open(['route' => ['units.destroy', $var->idUnit], 'method' => 'delete']) }}
-                        <a href='{{url('/units/'.$var->idUnit.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                        <a href='{{url('/units/'.$var->idUnit.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                      
+                       <a href='{{url('/units/'.$var->idUnit.'/deleteunit')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>

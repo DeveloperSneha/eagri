@@ -78,9 +78,29 @@ class WorkflowController extends Controller {
         return redirect('workflow');
     }
 
+    /**
+     * Check There is Any dependency Exist
+     *
+
+     */
+    public function deleteWorkflow($id) {
+        //
+        $workflow = \App\Workflow::where('idWorkflow', '=', $id)->first();
+        $schact = \App\SchemeWorkflowMapping::where('idWorkflow', '=', $id)->get();
+        if ($schact->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Delete this Workflow Because it is Already in Use!');
+        }else{
+            return view('workflow.delete', compact('workflow'));
+        }
+    }
+
     public function destroy($id) {
         $workflow = \App\Workflow::where('idWorkflow', '=', $id)->first();
-        dd($workflow);
+        $step=  \App\WorkflowStep::where('idWorkflow','=', $id)->get();
+        if ($step->count() > 0) {
+            $workflow->delete();
+            return redirect('workflow')->with('message', 'All the related Data From Different Table is also be Deleted');
+        }
         $workflow->delete();
         return redirect('workflow');
     }

@@ -24,7 +24,7 @@ class WorkflowRequest extends FormRequest {
        // dd($this->all());
         $rules = [
             'idSection' => 'required',
-            'workflowName' => 'required|max:25|regex:/^[\pL\s\-()]+$/u'
+            'workflowName' => 'required|between:2,50|regex:/^[\pL\s\-()]+$/u'
         ];
         if(count($this->designations) == 0){
             $rules += ['designation'=>'required'];

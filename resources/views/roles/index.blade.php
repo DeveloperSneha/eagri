@@ -49,9 +49,10 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($roles as $var)
                 <tr>
-                    <td>{{ $var->id }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $var->name }}</td>
                     <td><a href='{{url('/roles/'.$var->id.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
                         {{ Form::open(['route' => ['roles.destroy', $var->id], 'method' => 'delete']) }}
@@ -59,6 +60,7 @@
                         {{ Form::close() }}
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>

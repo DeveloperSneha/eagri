@@ -1,7 +1,11 @@
 <?php
-$user_desig = $user->userdesig()->with('designation')
-                ->whereNotNull('idDesignation')
-                ->get()->pluck('designation.designationName', 'designation.idDesignation')->toArray();
+$user_desig = $user->userdesig()
+                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                ->join('section', 'designation.idSection', '=', 'section.idSection')
+                ->whereNotNull('user_designation_district_mapping.idDesignation')
+                ->select(DB::raw('CONCAT(designationName, " (", sectionName,")") AS designationName'),'user_designation_district_mapping.idDesignation')
+                ->get()
+                ->pluck('designationName', 'idDesignation')->toArray();
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,11 +21,11 @@ $user_desig = $user->userdesig()->with('designation')
                     <div class="panel-heading">
                         <strong>Select Your Designation And Related Districts</strong>
                     </div>
-                    <form class="form-horizontal" method="POST" action="{{ route('authority.secondlogin') }}">
+                    <form class="form-horizontal" id="secondsteplogin" method="POST" action="{{ route('authority.secondlogin') }}">
                         {{ csrf_field() }}
-                        <div class="panel-body">
+                        <div class="panel-body"><div id='formerrors'></div>
                         <input type="hidden" name='userName' value="{{$user->userName}}">
-                        <input type="hidden" name='password' value="{{$user->password}}">
+<!--                        <input type="hidden" name='password' value="{{$user->password}}">-->
                         <div class="form-group">
                             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4">
@@ -82,6 +86,20 @@ $user_desig = $user->userdesig()->with('designation')
                             </span>
 
                         </div>
+                        <div class="form-group">
+                            {!! Form::label('Re-type Password', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            <div class="col-sm-4">
+                                <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control" value="" maxlength="12" >
+                            </div>
+                            <span class="help-block">
+                                <strong>
+                                    @if ($errors->has('password'))
+                                    <p>{{ $errors->first('password') }}</p>
+                                    @endif
+                                </strong>
+                            </span>
+
+                        </div>
                        
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-4">
@@ -90,6 +108,7 @@ $user_desig = $user->userdesig()->with('designation')
                         </div>
                     </div>
                     </form>
+               
                 </div>
             </div>
         </div>
@@ -164,6 +183,45 @@ $user_desig = $user->userdesig()->with('designation')
         }else{
             $('select[id="idBlock"]').empty();
         }
+    });
+        $('#secondsteplogin').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('/authority/secondsteplogin/') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' && data[Object.keys(data)[1]] === 'DistrictUser'){		//True Case i.e. passed validation
+                    window.location = "{{url('/authority/districts')}}";
+                }else if(data[Object.keys(data)[0]] === 'SUCCESS' && data[Object.keys(data)[1]] === 'SubdivisionUser'){
+                    window.location = "{{url('/authority/subdivisions')}}";
+                }else if(data[Object.keys(data)[0]] === 'SUCCESS' && data[Object.keys(data)[1]] === 'BlockUser'){
+                    window.location = "{{url('/authority/blocks')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            errorHtml='<div class="alert alert-danger"><ul>';
+                            $.each( errors, function( key, value ) { 
+                                errorHtml += '<li>' + value + '</li>';
+                            });
+                            errorHtml += '</ul></div>';
+                            $( '#formerrors' ).html( errorHtml );
+                }
+            }
+        });
+        return false;
     });
 </script>
 </body>

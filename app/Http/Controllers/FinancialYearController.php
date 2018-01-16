@@ -38,7 +38,7 @@ class FinancialYearController extends Controller {
         //   dd($request->finanYearStartDate);
         //   dd(Carbon::createFromFormat('d-m-Y H', $request->finanYearStartDate)->format('Y-m-d H'));
         $rules=[
-            'financialYearName' => 'required|regex:/^[a-zA-Z0-9]{4,10}$/|max:4',
+            'financialYearName' => 'required|regex:/^[0-9-]*$/|max:9',
             'finanYearStartDate' => 'required',
             'finanYearEndDate' => 'required'
         ];
@@ -97,7 +97,7 @@ class FinancialYearController extends Controller {
         $fy = \App\FinancialYear::where('idFinancialYear', '=', $id)->first();
         //  dd($fy);
         $rules=[
-            'financialYearName' => 'required|max:4|unique:financialyear,financialYearName,'.$id.',idFinancialYear',
+            'financialYearName' => 'required|regex:/^[0-9-]*$/|max:9|unique:financialyear,financialYearName,'.$id.',idFinancialYear',
             'finanYearStartDate' => 'required',
             'finanYearEndDate' => 'required'
         ];
@@ -111,6 +111,22 @@ class FinancialYearController extends Controller {
         $fy->fill($request->all());
         $fy->update();
         return redirect('fys');
+    }
+    /**
+     * Check There is Any dependency Exist
+     *
+
+     */
+    public function deletefys($id) {
+        //
+        $fys = \App\FinancialYear::where('idFinancialYear', '=', $id)->first();
+        $schact = \App\SchemeActivation::where('idUnit', '=', $id)->get();
+        if ($schact->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Delete this Financial Year Because it is Already in Use!');
+        }
+        else{
+            return view('financialyear.delete', compact('fys'));
+        }
     }
 
     /**

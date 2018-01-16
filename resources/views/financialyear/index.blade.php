@@ -15,7 +15,7 @@
         <div class="form-group">
             {!! Form::label('Financial Year', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-3">
-                {!! Form::text('financialYearName', null, ['class' => 'form-control','maxlength'=>'4']) !!}
+                {!! Form::text('financialYearName', null, ['class' => 'form-control','maxlength'=>'9','minlength'=>'9','onKeyPress'=>'return onlyNumbersandSpecialChar()']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -70,7 +70,7 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SNO</th>
                     <th>Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -78,20 +78,22 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($fys as $var)
                 <tr>
-                    <td>{{ $var->idFinancialYear }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $var->financialYearName }}</td>
                     <td>{{ $var->finanYearStartDate }}</td>
                     <td>{{ $var->finanYearEndDate }}</td>
                     <td>
-                        {{ Form::open(['route' => ['fys.destroy', $var->idFinancialYear], 'method' => 'delete']) }}
-                        <a href='{{url('/fys/'.$var->idFinancialYear.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                        <a href='{{url('/fys/'.$var->idFinancialYear.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                      
+                       <a href='{{url('/fys/'.$var->idFinancialYear.'/deletefys')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
+                
             </tbody>
         </table>
     </div>

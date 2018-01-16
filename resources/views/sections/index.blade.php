@@ -11,7 +11,7 @@
         <div class="form-group">
             {!! Form::label('Name Of Sections', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('sectionName', null, ['class' => 'form-control','placeholder'=>'Enter Section Name']) !!}
+                {!! Form::text('sectionName', null, ['class' => 'form-control','placeholder'=>'Enter Section Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -41,15 +41,16 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SNO</th>
                     <th>Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($sections as $var)
                 <tr>
-                    <td>{{ $var->idSection }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{ $var->sectionName }}</td>
                     <td>
                        
@@ -59,6 +60,7 @@
                       {{--  {{ Form::close() }} --}}
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>

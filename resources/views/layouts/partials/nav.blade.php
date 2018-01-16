@@ -145,16 +145,31 @@
                         </li>-->
             <li class="treeview {{ checkActive([
             'units',
+            'units/*/edit',
+            'units/*/deleteunit',
+            'designations',
+            'designations/*/edit',
+            'designations/*/deletedesignation',
+            'programs',
+            'programs/*/edit',
+            'programs/*/deleteprogram',
+            'schemes',
             'schemes/*/edit',
             'schemes/*/deletescheme',
+            'sections',
             'sections/*/edit',
             'sections/*/deletesection',
-            'workflow','fys','certificates',
-            'schemes',
-            'sections',
-            'programs',
+            'workflow',
+            'workflow/*/edit',
+            'workflow/*/deleteworkflow',
+            'fys',
+            'fys/*/edit',
+            'fys/*/deletefys',
+            'certificates',
+            'certificates/*/edit',
+            'certificates/*/deletecertificate',
             'districtdistribution',
-            'designations'
+            
             ]) }}">
                 <a href="#">
                     <span>Masters</span>
@@ -166,11 +181,11 @@
                     <li class="{{ checkActive(['sections','sections/*/edit','sections/*/deletesection']) }}"><a href="{{ url('/sections') }}">Section</a></li>
                     <li class="{{ checkActive(['schemes','schemes/*/edit','schemes/*/deletescheme']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
                     <li class="{{ checkActive(['programs','programs/*/edit','programs/*/deleteprogram']) }}"><a href="{{ url('/programs') }}">Program</a></li>
-                    <li class="{{ checkActive(['designations']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
-                    <li class="{{ checkActive(['workflow']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
-                    <li class="{{ checkActive(['units']) }}"><a href="{{ url('/units') }}">Units</a></li>
-                    <li class="{{ checkActive(['fys']) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
-                    <li class="{{ checkActive(['certificates']) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
+                    <li class="{{ checkActive(['designations','designations/*/edit',          'designations/*/deletedesignation']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
+                    <li class="{{ checkActive(['workflow','workflow/*/edit','workflow/*/deleteunit']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
+                    <li class="{{ checkActive(['units','units/*/edit','units/*/deleteunit']) }}"><a href="{{ url('/units') }}">Units</a></li>
+                    <li class="{{ checkActive(['fys','fys/*/edit','fys/*/deletefys',]) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
+                    <li class="{{ checkActive(['certificates','certificates/*/edit','certificates/*/deletecertificate',]) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
                     
                 </ul>
             </li>

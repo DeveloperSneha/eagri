@@ -43,10 +43,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('userdistrict/{id}/edituser', 'Users\UserDistrictController@getUserDetails');
     Route::resource('userdistrict', 'Users\UserDistrictController');
 
+    Route::get('designations/{id}/deletedesignation', 'DesignationController@deleteDesignation');
     Route::resource('designations', 'DesignationController');
     Route::get('workflow/{id}/designations', 'WorkflowController@designations');
+    Route::get('workflow/{id}/deleteworkflow', 'WorkflowController@deleteWorkflow');
     Route::resource('workflow', 'WorkflowController');
     Route::resource('roles', 'RoleController');
+    Route::get('units/{id}/deleteunit', 'UnitController@deleteUnit');
     Route::resource('units', 'UnitController');
 
     Route::get('section/{id}/workflows', 'SectionController@getWorkflow');
@@ -59,10 +62,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('compcerts', 'CompcertController');
     //Route::resource('schemecerts', 'SchemecertController');
     Route::resource('components', 'ComponentController');
+    Route::get('certificates/{id}/deletecertificate', 'CertificateController@deleteCertificate');
     Route::resource('certificates', 'CertificateController');
     Route::resource('categories', 'CategoryController');
     Route::get('programs/{id}/deleteprogram', 'ProgramController@deleteProgram');
     Route::resource('programs', 'ProgramController');
+    Route::get('fys/{id}/deletefys', 'FinancialYearController@deletefys');
     Route::resource('fys', 'FinancialYearController');
     Route::resource('compsizes', 'CompsizeController');
     Route::resource('comprates', 'ComprateController');
@@ -88,6 +93,7 @@ Route::prefix('farmer')->group(function() {
     Route::get('/bankdetails', 'Auth\FarmerRegisterController@getBankDetails');
     Route::get('/register', 'Auth\FarmerRegisterController@showRegistrationForm')->name('farmer.register');
     Route::post('/register', 'Auth\FarmerRegisterController@register')->name('farmer.register.submit');
+    Route::get('/successreg', 'Auth\FarmerRegisterController@successReg');
     Route::get('/login', 'Auth\FarmerLoginController@showLoginForm')->name('farmer.login');
     Route::post('/login', 'Auth\FarmerLoginController@login')->name('farmer.login.submit');
     Route::post('/logout', 'Auth\FarmerLoginController@logout')->name('farmer.logout');
@@ -111,10 +117,31 @@ Route::prefix('authority')->group(function() {
     Route::get('/user/{user}/designations', 'Auth\AuthorityLoginController@getDesignation');
     Route::get('/login', 'Auth\AuthorityLoginController@showLoginForm')->name('authority.login');
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
+ //   Route::get('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLoginForm')->name('authority.secondlogin');
     Route::post('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLogin')->name('authority.secondlogin');
-    
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
+    
     Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
+    
+    Route::prefix('districts')->group(function () {
+        Route::get('/', 'Authority\AuthorityController@districts')->name('authority.districts.dashboard');
+        Route::resource('/profile', 'Authority\District\ProfileController');
+    });
+   
+    Route::prefix('subdivisions')->group(function () {
+        Route::get('/', 'Authority\AuthorityController@subdivisions')->name('authority.subdivisions.dashboard');
+        Route::resource('/profile', 'Authority\Subdivision\ProfileController');
+    });
+    
+    Route::prefix('blocks')->group(function () {
+        Route::get('/', 'Authority\AuthorityController@blocks')->name('authority.blocks.dashboard');
+        Route::resource('/profile', 'Authority\Block\ProfileController');
+    });
+    
+    
+    
+    
+    
 
     Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
     Route::resource('/adduser', 'Authority\AuthorityUserController');

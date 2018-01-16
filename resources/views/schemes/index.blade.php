@@ -24,7 +24,7 @@
         <div class="form-group">
             {!! Form::label('Scheme Name', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('schemeName', null, ['class' => 'form-control','placeholder'=>'Enter Scheme Name']) !!}
+                {!! Form::text('schemeName', null, ['class' => 'form-control','placeholder'=>'Enter Scheme Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -37,7 +37,7 @@
         <div class="form-group">
             {!! Form::label('Remarks', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::textarea('remarks', null, ['class' => 'form-control','size'=>'30x3','placeholder'=>'Enter Remarks']) !!}
+                {!! Form::textarea('remarks', null, ['class' => 'form-control','size'=>'30x3','placeholder'=>'Enter Remarks','maxlength'=>'100','minlength'=>'2']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -68,7 +68,7 @@
         <table class="table table-bordered table-hover table-striped dataTable" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SNO</th>
                     <th>Section</th>
                     <th>Scheme Name</th>
                     <th>Remarks</th>
@@ -76,6 +76,7 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i=1;?>
                 @foreach($schemes as $var)
                 <tr>
                     <td>{{ $var->idScheme }}</td>
@@ -90,6 +91,7 @@
                       {{--  {{ Form::close() }} --}}
                     </td>
                 </tr>
+                <?php $i++; ?>
                 @endforeach
             </tbody>
         </table>
