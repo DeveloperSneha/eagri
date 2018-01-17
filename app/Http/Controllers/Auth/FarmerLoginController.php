@@ -27,23 +27,23 @@ class FarmerLoginController extends Controller {
 //            'password' => 'required'
 //        ]);
         $rules = [
-            'aadhaar' => 'required',
+            'mobile' => 'required',
             'password' => 'required'
         ];
         $messages = [
-            'aadhaar.required'=>'Enter Your Aadhaar No. ',
-            'password.required'=>'Enter Your Mobile No.'
+            'mobile.required'=>'Enter Your Mobile No. ',
+            'password.required'=>'Enter Your Password.'
         ];
         $this->validate($request, $rules, $messages);
         // Attempt to log the user in
-        if (Auth::guard('farmer')->attempt(['aadhaar' => $request->aadhaar, 'password' => $request->password], $request->remember)) {
+        if (Auth::guard('farmer')->attempt(['mobile' => $request->mobile, 'password' => $request->password], $request->remember)) {
             // if successful, then redirect to their intended location
             return redirect('/farmer');
         }
         // if unsuccessful, then redirect back to the login with the form data
         // return redirect()->back()->withInput($request->only('aadhaar', 'remember'));
-        return Redirect::back()->withInput($request->only('aadhaar', 'remember'))->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
-
+//        return Redirect::back()->withInput($request->only('mobile', 'remember'))->withErrors(['Mobile Number Is Not vaild ']);
+        return Redirect::back()->withInput($request->only('mobile'))->withErrors(['msg' => 'Your Credential Doesnot Match Our Record.Plz Try Again !!']);
         // dd('your username and password are wrong.');
     }
 

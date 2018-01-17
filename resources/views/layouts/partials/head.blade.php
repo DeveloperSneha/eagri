@@ -116,6 +116,8 @@ function onlylettersandSpecialChar() {
             else
                 return false;
 }
+
+
    
 </script>
 	<!-- end blinkcss 15-01-2018-->

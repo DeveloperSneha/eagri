@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
+use Auth;
+use Session;
 
 class FarmerRegisterController extends Controller {
     /*
@@ -108,70 +110,69 @@ use RegistersUsers;
     public function register(Request $request) {
 //        $this->validator($request->all())->validate();
 //        dd($farmer=$request->idDistrict);
-       
 //        dd($farmer);
         $rules = [
             'name' => 'required|string|max:25',
-            'father_name'=>'required|string|max:25',
+            'father_name' => 'required|string|max:25',
             'aadhaar' => 'required|max:12|min:12',
             'check' => 'required',
             'mobile' => 'required|min:10|max:10',
-            'idDistrict'=>'required',
-            'idBlock' =>'required',
-            'idVillage' =>'required',
-            'gender' =>'required',
-            'marital_status' =>'required',
-            'caste'=>'required',
-            'rcno' =>'required|max:12|min:12',
-            'ifsc_code'=>'required',
-            'account_no'=>'required|unique:farmers',
-            'land_location'=>'required',
-            'land_owner'=>'required',
-            'total_land'=>'required|numeric'
+            'idDistrict' => 'required',
+            'idBlock' => 'required',
+            'idVillage' => 'required',
+            'gender' => 'required',
+            'marital_status' => 'required',
+            'caste' => 'required',
+            'rcno' => 'required|max:12|min:12',
+            'ifsc_code' => 'required',
+            'account_no' => 'required|unique:farmers',
+            'land_location' => 'required|max:25',
+            'total_land' => 'required|numeric|min:0'
         ];
         $message = [
             'name.required' => 'Farmer Name Must Not be Empty',
             'father_name.required' => 'Father/Husband Name Must Be Filled.',
             'aadhaar.required' => 'Aadhaar Number Must Not be Empty.',
-            'aadhaar.max'=>'Aadhaar Number is not Valid',
+            'aadhaar.max' => 'Aadhaar Number is not Valid',
             'aadhaar.unique' => 'Aadhaar Number must Be Unique.',
             'mobile.required' => 'Mobile Number Must Not be Empty.',
             'mobile.unique' => 'Mobile Number Must be unique',
-            'mobile.max'=>'Mobile Number is not Valid',
+            'mobile.max' => 'Mobile Number is not Valid',
             'idDistrict.required' => 'District Must Be selected First',
-            'idBlock.required' =>'Block must be selected First',
+            'idBlock.required' => 'Block must be selected First',
             'idVillage.required' => 'Village must be selected',
-            'gender.required'=>'Gender must be selected',
+            'gender.required' => 'Gender must be selected',
             'marital_status.required' => 'Marital Status Must be Selected',
             'caste.required' => 'Caste Category Must be selected',
             'rcno.required' => 'Ration Card Number Must Not be Empty.',
-            'rcno.max'=>'Ration Card Number is not Valid',
+            'rcno.max' => 'Ration Card Number is not Valid',
             'rcno.unique' => 'Ration Card Number must Be Unique.',
             'ifsc_code.required' => 'IFSC Code Must be Selected',
             'account_no.required' => 'Account Number Must be Filled',
             'account_no.unique' => 'Account Number Must be Unique',
             'land_location.required' => 'Land Location Must not be Empty',
-            'land_owner.required' => 'Land Owner Must Not be Empty',
             'total_land.required' => 'Total Land Must Not be Empty'
         ];
-        $this->Validate($request, $rules, $message);
-        
-        
-        if (Verhoeff::validate($request->aadhaar) === false) {
-            //  $errors = "Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है";
-            return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
+        if ($request->aadhaar != null) {
+            if (Verhoeff::validate($request->aadhaar) === false) {
+                $rules += ['aadhaarabc' => 'required'];
+                $message += ['aadhaarabc.required' => 'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है'];
+                //  $errors = "Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है";
+                // return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
+            }
         }
-        
+        $this->Validate($request, $rules, $message);
         $farmer = new \App\Farmer();
         $farmer->fill($request->all());
-        $n = substr($request->name,0,4);
-        $rn = substr($request->rcno,-4);
-        $an = substr($request->aadhaar,-4);
-        $password = ($n.$an.$rn);
+        $n = substr($request->name, 0, 4);
+        $rn = substr($request->rcno, -4);
+        $an = substr($request->aadhaar, -4);
+        $password = ($n . $an . $rn);
         $farmer->password = bcrypt($password);
         $farmer->save();
-        dd($farmer);
-        return redirect('farmer/successreg')->with( [ 'id' => $farmer ]);
+        Session::put('idFarmer', $farmer->idFarmer);
+//        dd($farmer);
+        return redirect('farmer/successreg')->with(['farmer' => $farmer]);
 //        event(new Registered($user = $this->create($request->all())));
 //
 //        $this->guard()->login($user);
@@ -180,21 +181,17 @@ use RegistersUsers;
     }
 
     public function successReg(Request $request) {
-		// dd('here');
-		$farmer = session()->get( 'id' );
-        dd($farmer);
-        return view('farmer.success_reg',compact('farmer'));
+        // dd('here');
+        $farmer = \App\Farmer::where('idFarmer', '=', Session::get('idFarmer'))->first();
+        return view('farmer.success_reg', compact('farmer'));
     }
 
     public function printFarmerDetails($id) {
-        $farmer = \App\Farmer::where('idFarmer', '=', $id)->first();
-        $n = substr($request->name,0,4);
-        $rn = substr($request->rcno,-4);
-        $an = substr($request->aadhaar,-4);
-        $password = ($n.$an.$rn);
-        return view('farmer.print_farmer_detail', compact('farmer','password'));
+        $farmer = \App\Farmer::where('idFarmer', '=', Session::get('idFarmer'))->first();
+//        dd($farmers);
+        return view('farmer.print_farmer_detail', compact('farmer'));
     }
-    
+
     public function getBlocks($id) {
         $blocks = [0 => '--- अपना ब्लाक चुने ---'] + \App\Block::where("idDistrict", $id)
                         ->pluck("blockName", "idBlock")->toArray();
@@ -210,16 +207,17 @@ use RegistersUsers;
     public function getBankDetails(Request $request) {
         //dd($request->name_startsWith);
         $banks = \App\BankDetail::where("ifsc", 'like', '%' . $request->name_startsWith . '%')
-                        //  ->select("ifsc", "bank", 'branch')
-                        ->limit(20)
-                        ->get();
+                //  ->select("ifsc", "bank", 'branch')
+                ->limit(20)
+                ->get();
         foreach ($banks as $query) {
-            $results[] = [$query->ifsc, $query->bank ,$query->branch];
+            $results[] = [$query->ifsc, $query->bank, $query->branch];
         }
         return json_encode($results);
     }
-    public function getUserDetails($id){
-        $users = \App\Farmer::where("idFarmer",$id)->pluck('mobile','')->toArray();
+
+    public function getUserDetails($id) {
+        $users = \App\Farmer::where("idFarmer", $id)->pluck('mobile', '')->toArray();
         return view('farmer.success_reg', compact('users'));
     }
 

@@ -80,6 +80,7 @@
     </div>
     <div class="panel-footer">
           <button type="submit" class="btn btn-danger">Update</button>
+          <a href="{{ url('/userblock')}}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 </div>

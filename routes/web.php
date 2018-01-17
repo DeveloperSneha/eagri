@@ -19,6 +19,8 @@ Auth::routes();
 Route::get('/index', function () {return view('layouts.frontpage');});
 /*end frontpage*/
 
+
+
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/', function () {
         return view('layouts.dashboard');
@@ -94,6 +96,10 @@ Route::prefix('farmer')->group(function() {
     Route::get('/register', 'Auth\FarmerRegisterController@showRegistrationForm')->name('farmer.register');
     Route::post('/register', 'Auth\FarmerRegisterController@register')->name('farmer.register.submit');
     Route::get('/successreg', 'Auth\FarmerRegisterController@successReg');
+	//Route::get('/forgotpassword', function () {return view('farmer.forgotpassword');});
+	Route::get('/forgotpassword', 'Farmer\ForgotpasswordsController@index');
+	Route::post('/forgotpassword', 'Farmer\ForgotpasswordsController@match')->name('farmer.submitforgotpassword.submit');
+    Route::get('/printfarmerdetail/{id}', 'Auth\FarmerRegisterController@printFarmerDetails');
     Route::get('/login', 'Auth\FarmerLoginController@showLoginForm')->name('farmer.login');
     Route::post('/login', 'Auth\FarmerLoginController@login')->name('farmer.login.submit');
     Route::post('/logout', 'Auth\FarmerLoginController@logout')->name('farmer.logout');
@@ -126,16 +132,31 @@ Route::prefix('authority')->group(function() {
     Route::prefix('districts')->group(function () {
         Route::get('/', 'Authority\AuthorityController@districts')->name('authority.districts.dashboard');
         Route::resource('/profile', 'Authority\District\ProfileController');
+        Route::get('distuser/{id}', 'Authority\District\SubdivisionUserController@getUserDetail');
+        Route::get('distsubuser/{id}/designations', 'Authority\District\SubdivisionUserController@getDesignations');
+        Route::get('/addsubuser/{id}/details', 'Authority\District\SubdivisionUserController@editUser');
+        Route::resource('/addsubuser', 'Authority\District\SubdivisionUserController');
+        Route::get('distblockuser/{id}/designations', 'Authority\District\BlockUserController@getDesignations');
+        Route::get('distsub/{id}/blocks', 'Authority\District\BlockUserController@getBlocks');
+        Route::get('/addblockuser/{id}/details', 'Authority\District\BlockUserController@editUser');
+        Route::resource('/addblockuser', 'Authority\District\BlockUserController');
+        Route::get('distvillageuser/{id}/designations', 'Authority\District\VillageUserController@getDesignations');
+        Route::get('distblock/{id}/villages', 'Authority\District\VillageUserController@getVillages');
+        Route::get('/addvillageuser/{id}/details', 'Authority\District\VillageUserController@editUser');
+        Route::resource('/addvillageuser', 'Authority\District\VillageUserController');
+        Route::get('/schsubdist/{id}/schemes','Authority\District\SubdivisionDistController@getSchemes');
+        Route::get('/schsubdist/{id}/programs','Authority\District\SubdivisionDistController@getPrograms');
+        Route::resource('/schsubdist', 'Authority\District\SubdivisionDistController');
     });
    
     Route::prefix('subdivisions')->group(function () {
         Route::get('/', 'Authority\AuthorityController@subdivisions')->name('authority.subdivisions.dashboard');
-        Route::resource('/profile', 'Authority\Subdivision\ProfileController');
+     //   Route::resource('/profile', 'Authority\Subdivision\ProfileController');
     });
     
     Route::prefix('blocks')->group(function () {
         Route::get('/', 'Authority\AuthorityController@blocks')->name('authority.blocks.dashboard');
-        Route::resource('/profile', 'Authority\Block\ProfileController');
+      //  Route::resource('/profile', 'Authority\Block\ProfileController');
     });
     
     
@@ -145,7 +166,7 @@ Route::prefix('authority')->group(function() {
 
     Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
     Route::resource('/adduser', 'Authority\AuthorityUserController');
-    Route::resource('/profile', 'Authority\AuthorityProfileController');
+   // Route::resource('/profile', 'Authority\AuthorityProfileController');
     Route::resource('/authschemes', 'Authority\AuthoritySchemeController');
     Route::get('/approvedscheme', 'Authority\AuthoritySchemeController@approvedScheme');
     Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');

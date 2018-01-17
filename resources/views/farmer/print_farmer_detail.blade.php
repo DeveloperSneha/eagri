@@ -14,6 +14,7 @@
                     <!-- /.col -->
                 </div>
                 <!-- info row -->
+                
                 <div class="row invoice-info">
                     <div class="col-sm-4 invoice-col">
                         <address>
@@ -36,47 +37,51 @@
                         </address>
                     </div>
                     <!-- /.col -->
+                    
                     <div class="col-sm-4 invoice-col">
                         <b>Version NO.: 1.0</b><br>
                         <br>
-                        <b>User ID:</b> {{ $farmer->mobile}}<br>
+                        
+                        <b>User ID:</b> {{ $farmer->mobile }}<br>
+                         
                     </div>
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->
 
                 <!-- Table row -->
+                
                 <div class="row">
                     <div class="col-xs-12 table-responsive">
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
                                     <th>Name Of Farmer </th>
-                                    <td>{{ $farmer->name}}</td>
+                                    <td>{{ $farmer->name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Username </th>
-                                    <td>{{ $farmer->mobile  }}</td>
+                                    <td>{{ $farmer->mobile }}</td>
                                 </tr>
                                 <tr>
                                     <th>Password </th>
-                                    <td>{{ $password }}</td>
+                                    <td>{{ substr($farmer->name,0,4) }}{{ substr($farmer->aadhaar,-4) }}{{ substr($farmer->rcno,-4) }}</td>
                                 </tr>
-                                
                             </tbody>
                         </table>
                     </div>
                     
                     <!-- /.col -->
                 </div>
+               
                 <!-- /.row -->
 
                 
             </section>
             <!-- /.content -->
             <div class="col-xs-12">
-                Helpline / Farmers Assistance Number : 0172-2571553<br>
-                हेल्पलाइन / किसान सहायता नं: 0172-2571553
+                <center>Helpline / Farmers Assistance Number : 0172-2571553<br>
+                    हेल्पलाइन / किसान सहायता नं: 0172-2571553</center>
 
             </div>
         </div>

@@ -1,13 +1,13 @@
-@extends('layouts.app')
+@extends('authority.districts.district_layout')
 @section('content')
 <div class="panel panel-default">
     <div class="panel-heading"><strong>{{ $userdesig->user->userName }}</strong></div>
     <div class="panel-body">
-        {!! Form::model( $userdesig, ['route' => ['usersubdivision.update', $userdesig->iddesgignationdistrictmapping], 'method' => 'patch','class'=>'form-horizontal'] ) !!}
+        {!! Form::model( $userdesig, ['route' => ['addsubuser.update', $userdesig->iddesgignationdistrictmapping], 'method' => 'patch','class'=>'form-horizontal'] ) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idDistrict',$districts,isset($userdesig) ? $userdesig->idDistrict : null, ['class' => 'form-control select2','id'=>'idDistrict','disabled', 'selected']) !!}
+                {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control','disabled', 'selected']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -21,9 +21,7 @@
         <div class="form-group">
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                <select name = "idSubdivision"  id="idSubdivision" class="form-control" >
-                    <option value="{{ $userdesig->idSubdivision }}" selected="selected" ></option>
-                </select>
+                {!! Form::select('idSubdivision',$subdivisions,isset($userdesig)? $userdesig->idSubdivision : null, ['class' => 'form-control']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -36,7 +34,7 @@
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idSection',$sections, isset($userdesig) ? $userdesig->designation->section->idSection : null, ['class' => 'form-control','id'=>'section']) !!}
+                {!! Form::select('idSection',$sections,isset($userdesig)? $userdesig->designation->section->idSection : null, ['class' => 'form-control','id'=>'section']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -66,11 +64,25 @@
     </div>
     <div class="panel-footer">
         <button type="submit" class="btn btn-danger">Update</button>
-        <a href="{{ url('/usersubdivision')}}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 </div>
 @stop
 @section('script')
-@include('view_script.user_subdivision')
+<script>
+   var cur_section = $( "#section option:selected" ).val();
+        if(cur_section){
+            $.ajax({
+                url: "{{url('/authority/districts/distsubuser') }}"+'/' +cur_section + "/designations",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idDesignation"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         } 
+</script>
 @stop

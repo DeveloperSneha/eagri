@@ -12,23 +12,14 @@
 
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <b>District  <a class="pull-right">{{ $userdesig->district->districtName or ''}}</a></b>
+                        <b>District  <a class="pull-right">@foreach($user_district as $var) {{ $var }},@endforeach</a></b>
                     </li>
-                    @if($userdesig->block)
-                    <li class="list-group-item">
-                        <b>Block  <a class="pull-right">{{ $userdesig->block->blockName or ''}}</a></b>
-                    </li>
-                    @endif
-                    @if($userdesig->village)
-                    <li class="list-group-item">
-                        <b>Village  <a class="pull-right">{{ $userdesig->village->villageName or ''}}</a></b>
-                    </li>
-                    @endif
+                    
                     <li class="list-group-item">
                         <b>Section  <a class="pull-right">{{ $userdesig->designation->section->sectionName or ''}}</a></b>
                     </li>
                     <li class="list-group-item">
-                        <b>Designation  <a class="pull-right">{{ $userdesig->designation->designationName or ''}}</a></b>
+                        <b>Designation  <a class="pull-right">@foreach($user_designation as $var) {{ $var }}</br>@endforeach</a></b>
                     </li>
                 </ul>
 

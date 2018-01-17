@@ -126,12 +126,13 @@ class UserVillageController extends Controller {
             'idSubdivision' => 'required',
             'idBlock' => 'required',
             'idSection' => 'required',
-            'idDesignation' => 'required',
-            'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
+            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idVillage,' . $request->idVillage,
+            'idVillage'=>'required',
+        //    'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
         ];
-        if (count($request->idVillages) == 0) {
-            $rules += ['idVillage' => 'required'];
-        }
+//        if (count($request->idVillages) == 0) {
+//            $rules += ['idVillage' => 'required'];
+//        }
         $messages = [
             'idDistrict.required' => 'District must be selected.',
             'idSubdivision.required' => 'Subdivision must be selected.',
@@ -140,32 +141,34 @@ class UserVillageController extends Controller {
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
             'idDesignation.unique' => 'User With This Designation has already been registered.',
-            'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
-        $user = \App\User::where('idUser', '=', $id)->first();
-        $user_district = $user->userdesig()->pluck('idDistrict')->unique()->first();
-        $user_subdivision = $user->userdesig()->pluck('idSubdivision')->unique()->first();
-        $user_block = $user->userdesig()->pluck('idBlock')->unique()->first();
-        $user->fill($request->all());
-        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
-        //dd($old_ids);
-        $user_villages = new \Illuminate\Database\Eloquent\Collection();
-        foreach ($request->idVillages as $var) {
-            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idVillage' => $var, 'idDistrict' => $user_district,'idSubdivision' => $user_subdivision,'idBlock' => $user_block, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
-            $user_villages->add($user_sub);
-        }
-        $new_ids = $user_villages->pluck('iddesgignationdistrictmapping')->toArray();
-//        dd($new_ids);
-        $detach = array_diff($old_ids, $new_ids);
-        //  dd($detach);
-        DB::beginTransaction();
-
-        $user->update();
-        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
-        $user->userdesig()->saveMany($user_villages);
-
-        DB::commit();
+        $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
+        $userdesig->fill($request->all());
+        $userdesig->update();
+//        $user = \App\User::where('idUser', '=', $id)->first();
+//        $user_district = $user->userdesig()->pluck('idDistrict')->unique()->first();
+//        $user_subdivision = $user->userdesig()->pluck('idSubdivision')->unique()->first();
+//        $user_block = $user->userdesig()->pluck('idBlock')->unique()->first();
+//        $user->fill($request->all());
+//        $old_ids = $user->userdesig()->pluck('iddesgignationdistrictmapping')->toArray();
+//        //dd($old_ids);
+//        $user_villages = new \Illuminate\Database\Eloquent\Collection();
+//        foreach ($request->idVillages as $var) {
+//            $user_sub = \App\UserDesignationDistrictMapping::firstOrNew(['idVillage' => $var, 'idDistrict' => $user_district,'idSubdivision' => $user_subdivision,'idBlock' => $user_block, 'idDesignation' => $request->idDesignation, 'idUser' => $user->idUser]);
+//            $user_villages->add($user_sub);
+//        }
+//        $new_ids = $user_villages->pluck('iddesgignationdistrictmapping')->toArray();
+////        dd($new_ids);
+//        $detach = array_diff($old_ids, $new_ids);
+//        //  dd($detach);
+//        DB::beginTransaction();
+//
+//        $user->update();
+//        \App\UserDesignationDistrictMapping::whereIn('iddesgignationdistrictmapping', $detach)->delete();
+//        $user->userdesig()->saveMany($user_villages);
+//
+//        DB::commit();
         return redirect('uservillage');
     }
 

@@ -5,17 +5,19 @@ namespace App\Http\Controllers\Authority\District;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
-class ProfileController extends \App\Http\Controllers\Authority\AuthorityController
-{
+
+class ProfileController extends \App\Http\Controllers\Authority\AuthorityController {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
-        dd($user);
+        $userdesig = $user->userdesig()->whereNotNull('idDistrict')->whereNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
+
+        return view('authority.districts.profile', compact('user', 'userdesig'));
     }
 
     /**
@@ -23,8 +25,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -34,8 +35,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -45,8 +45,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -56,8 +55,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -68,9 +66,27 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        $rules = [
+            'name' => 'required',
+            'fatherName' => 'required',
+            'motherName' => 'required',
+            'dob' => 'required',
+            'aadhaar' => 'required',
+            'mobile' => 'required|min:10|max:10',
+            'ofc_address' => 'required',
+            'address' => 'required'
+        ];
+        $this->validate($request, $rules);
+        if (Verhoeff::validate($request->aadhaar) === false) {
+            return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
+        }
+        //dd($request->all());
+        $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
+        $profile->fill($request->all());
+        $profile->isComplete = 'Y';
+        $profile->update();
+        return redirect('authority/profile');
     }
 
     /**
@@ -79,8 +95,8 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
 }

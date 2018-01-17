@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
+
 class AuthorityProfileController extends AuthorityController {
 
     /**
@@ -15,15 +16,10 @@ class AuthorityProfileController extends AuthorityController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
+        $userdesig = $user->userdesig()->whereNotNull('idBlock')->whereNull('idVillage')->get();
        
-       //dd(Auth::User());
-        
-        $user = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-        $user_district = $user->userdesig()->with('district')->get()->pluck('district.districtName')->unique();
-        $user_designation = $user->userdesig()->with('designation')->get()->pluck('designation.designationName')->unique();
-       // $user_desig = $user->load('userdesig')->where('idDesignation','=',);
-     //   dd($user_desig);
-        return view('authority.profile', compact('user','user_district','user_designation'));
+        return view('authority.profile', compact('user', 'userdesig'));
     }
 
     /**
@@ -74,19 +70,18 @@ class AuthorityProfileController extends AuthorityController {
      */
     public function update(Request $request, $id) {
         $rules = [
-            'name'=>'required',
-            'fatherName'=>'required',
-            'motherName'=>'required',
-            'dob'=>'required',
-            'aadhaar'=>'required',
-            'mobile'=>'required|min:10|max:10',
-            'ofc_address'=>'required',
-            'address'=>'required'
+            'name' => 'required',
+            'fatherName' => 'required',
+            'motherName' => 'required',
+            'dob' => 'required',
+            'aadhaar' => 'required',
+            'mobile' => 'required|min:10|max:10',
+            'ofc_address' => 'required',
+            'address' => 'required'
         ];
-        $this->validate($request,$rules);
+        $this->validate($request, $rules);
         if (Verhoeff::validate($request->aadhaar) === false) {
-                return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
-        
+            return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
         }
         //dd($request->all());
         $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
@@ -107,6 +102,7 @@ class AuthorityProfileController extends AuthorityController {
     }
 
 }
+
 class Verhoeff {
 
     static public $d = array(

@@ -6,22 +6,41 @@
             <div class="box-body box-profile">
                 <img class="profile-user-img img-responsive img-circle" alt="User profile picture" src="{{ asset('dist/img/user.jpg')}}">
 
-                <h3 class="profile-username text-center">{{ $user->name }}</h3>
+                <h3 class="profile-username text-center">{{ $user->userName }}</h3>
 
-                <p class="text-muted text-center"><strong><strong></p>
+                <p class="text-muted text-center"><strong></strong></p>
+                    <table class="table table-bordered dataTable">
+                        <thead>
+                            <tr>
+                               <th>District</th>
+                                <th>Section</th>
+                                <th>Designation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @foreach($userdesig as $var)
+                            <tr>
+                                <td>{{$var->district->districtName }}</td>
+                                <td>{{$var->designation->section->sectionName }}</td>
+                                <td>{{$var->designation->designationName }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-                <ul class="list-group list-group-unbordered">
+<!--                <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <b>District  <a class="pull-right">@foreach($user_district as $var) {{ $var }},@endforeach</a></b>
+                        <b>District  <a class="pull-right"></a></b>
                     </li>
                     
                     <li class="list-group-item">
-                        <b>Section  <a class="pull-right">{{ $userdesig->designation->section->sectionName or ''}}</a></b>
+                        <b>Section  <a class="pull-right"></a></b>
                     </li>
                     <li class="list-group-item">
-                        <b>Designation  <a class="pull-right">@foreach($user_designation as $var) {{ $var }}</br>@endforeach</a></b>
+                        <b>Designation  <a class="pull-right"></a></b>
                     </li>
-                </ul>
+                </ul>-->
+
 
 
             </div>
@@ -34,7 +53,7 @@
                 <strong>Complete Your Profile</strong>
             </div>
             <div class="panel-body">
-                {!! Form::open(['method' => 'PATCH', 'action' => ['Authority\AuthorityProfileController@update', $user->idUser,],'class'=>'form-horizontal']) !!}
+                {!! Form::open(['method' => 'PATCH', 'action' => ['Authority\District\ProfileController@update', $user->idUser,],'class'=>'form-horizontal']) !!}
 
                 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                     {!! Form::label('Name :', null, ['class' => 'col-sm-4 control-label']) !!}
@@ -86,8 +105,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
-				<button type="submit" class="btn btn-danger">Save</button>
+                <button type="submit" class="btn btn-danger">Save</button>
                 {!! Form::close() !!}
             </div>
         </div>

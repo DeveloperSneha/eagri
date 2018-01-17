@@ -16,12 +16,12 @@ function checkActive($path, $active = 'active') {
 }
 
 function getGender() {
-    $genders = ['' => '---- Select ----', 'Male' => 'Male / पुरुष', 'Female' => 'Female / महिला', 'Others' => 'Others / अन्य लोग'];
+    $genders = ['' => '---- लिंग चुने ----', 'Male' => 'Male / पुरुष', 'Female' => 'Female / महिला', 'Others' => 'Others / अन्य लोग'];
     return $genders;
 }
 
 function getCasteCategory() {
-    $cat = ['' => '---- Select ----',
+    $cat = ['' => '---- जाति श्रेणी चुने  ----',
         'General' => 'General / सामान्य',
         'SC' => 'SC - Schedule Caste / अनुसूचित जाति',
         'BC' => 'BC - BC / पिछड़े वर्ग',

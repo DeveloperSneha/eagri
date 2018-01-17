@@ -14,15 +14,21 @@
                         <span>Profile</span>
                     </a>
             </li>
-            @can('add-user')
-            <li class=" {{ checkActive(['authority/adduser','authority/adduser/*/edit']) }}">
-                <a href="{{ url('/authority/adduser')}}">
+            <li class="treeview {{ checkActive(['authority/districts/addsubuser','authority/districts/addsubuser/*/details','authority/districts/addsubuser/*/edit','authority/districts/addsubuser/create','authority/districts/addblockuser','authority/districts/addblockuser/*/details','authority/districts/addblockuser/*/edit','authority/districts/addblockuser/create','authority/districts/addvillageuser/create','authority/districts/addvillageuser','authority/districts/addvillageuser/*/details','authority/districts/addvillageuser/*/edit']) }}">
+                <a href="#">
                     <span>Add User</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
+                <ul class="treeview-menu">
+                    <li class="{{ checkActive(['authority/districts/addsubuser','authority/districts/addsubuser/*/details','authority/districts/addsubuser/*/edit','authority/districts/addsubuser/create']) }}"><a href="{{ url('/authority/districts/addsubuser') }}">ADD User in Subdivision</a></li>
+                    <li class="{{ checkActive(['authority/districts/addblockuser','authority/districts/addblockuser/create','authority/districts/addblockuser/*/details','authority/districts/addblockuser/*/edit']) }}"><a href="{{ url('/authority/districts/addblockuser') }}">ADD User in Block</a></li>
+                    <li class="{{ checkActive(['authority/districts/addvillageuser','authority/districts/addvillageuser/create','authority/districts/addvillageuser/*/details','authority/districts/addvillageuser/*/edit']) }}"><a href="{{ url('/authority/districts/addvillageuser') }}">ADD User in Village</a></li>
+                </ul>
             </li>
-            @endcan
             
-<!--            <li class="treeview {{ checkActive(['authority/schemes','authority/schemes/*','authority/approvedscheme','authority/rejectedscheme','authority/blockwisescheme'])}}">
+           <li class="treeview {{ checkActive(['authority/districts/schsubdist']) }}">
                 <a href="#">
                     <span>Scheme</span>
                     <span class="pull-right-container">
@@ -30,13 +36,14 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['authority/schemes']) }}"><a href="{{ url('/authority/schemes')}}">Scheme For Approval</a></li>
-                    <li class="{{ checkActive(['authority/approvedscheme']) }}"><a href="{{ url('/authority/approvedscheme')}}">Approved Scheme</a></li>
-                    <li class="{{ checkActive(['authority/rejectedscheme']) }}"><a href="{{ url('/authority/rejectedscheme')}}">Rejected Scheme</a></li>
-                    <li class="{{ checkActive(['authority/blockwisescheme']) }}"><a href="{{ url('/authority/blockwisescheme') }}">Scheme Distribution Block</a></li>
+                    <li class="{{ checkActive(['authority/districts/schsubdist']) }}"><a href="{{ url('/authority/districts/schsubdist') }}">Scheme Subdv. Distribution</a></li>
+                    <li class=""><a href="{{ url('/authority/districts') }}">Scheme Block Distribution</a></li>
+                    <li class=""><a href="{{ url('/authority/districts')}}">Scheme For Approval</a></li>
+                    <li class=""><a href="{{ url('/authority/districts')}}">Approved Scheme</a></li>
+                    <li class=""><a href="{{ url('/authority/districts')}}">Rejected Scheme</a></li>
                 </ul>
-            </li>
-            <li class="treeview">
+            </li> 
+<!--             <li class="treeview">
                 <a href="#">
                     <span>Vendor management</span>
                     <span class="pull-right-container">

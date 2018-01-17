@@ -100,6 +100,7 @@ class AuthorityLoginController extends Controller {
                     'userName' => $request->userName,
                     'password' => $request->password], $request->remember)) {
             //dd(Auth::guard('authority')->User());
+            Session::put('idDistrict', $request->idDistrict);
             return $this->redirectToDashboard($request);
         } else {
             return redirect('authority/login');

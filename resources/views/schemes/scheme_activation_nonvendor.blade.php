@@ -254,6 +254,7 @@
         @if(isset($sch))
         <!--{!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}-->
         <button type="submit" class="btn btn-danger">Update</button>
+        <a href="{{ url('schemeactivations/nv')}}" class="btn btn-danger">Cancel</a>
         @else
         <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
         <button type="submit" class="btn btn-danger">Save</button>
