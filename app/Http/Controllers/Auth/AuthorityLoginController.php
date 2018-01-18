@@ -101,6 +101,8 @@ class AuthorityLoginController extends Controller {
                     'password' => $request->password], $request->remember)) {
             //dd(Auth::guard('authority')->User());
             Session::put('idDistrict', $request->idDistrict);
+            Session::put('idSubdivision', $request->idSubdivision);
+            Session::put('idBlock', $request->idBlock);
             return $this->redirectToDashboard($request);
         } else {
             return redirect('authority/login');
@@ -122,6 +124,7 @@ class AuthorityLoginController extends Controller {
     }
 
     public function redirectToDashboard(Request $request) {
+       // dd(Session::get('idSubdivision'));
         $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
         $user_in_district = $loggedinuser->userdesig()
                 ->where('idDesignation', '=', $request->idDesignation)

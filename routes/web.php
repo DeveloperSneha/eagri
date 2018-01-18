@@ -10,14 +10,16 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
-Route::get('user/{id}/{desig}/details','Users\UserDistrictController@getDetails');
-Route::get('user/{id}/{desig}/{dist}/subdivision','Users\UserDistrictController@getSubdivision');
-Route::get('user/{id}/{desig}/{subdivision}/block','Users\UserDistrictController@getBlock');
+Route::get('user/{id}/{desig}/details', 'Users\UserDistrictController@getDetails');
+Route::get('user/{id}/{desig}/{dist}/subdivision', 'Users\UserDistrictController@getSubdivision');
+Route::get('user/{id}/{desig}/{subdivision}/block', 'Users\UserDistrictController@getBlock');
 Auth::routes();
 
-/*Frontpage*/
-Route::get('/index', function () {return view('layouts.frontpage');});
-/*end frontpage*/
+/* Frontpage */
+Route::get('/index', function () {
+    return view('layouts.frontpage');
+});
+/* end frontpage */
 
 
 
@@ -87,7 +89,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('villagedistribution', 'SchVillageDistributionController');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
-
 //Farmers Route
 
 
@@ -96,9 +97,10 @@ Route::prefix('farmer')->group(function() {
     Route::get('/register', 'Auth\FarmerRegisterController@showRegistrationForm')->name('farmer.register');
     Route::post('/register', 'Auth\FarmerRegisterController@register')->name('farmer.register.submit');
     Route::get('/successreg', 'Auth\FarmerRegisterController@successReg');
-	//Route::get('/forgotpassword', function () {return view('farmer.forgotpassword');});
-	Route::get('/forgotpassword', 'Farmer\ForgotpasswordsController@index');
-	Route::post('/forgotpassword', 'Farmer\ForgotpasswordsController@match')->name('farmer.submitforgotpassword.submit');
+    //Route::get('/forgotpassword', function () {return view('farmer.forgotpassword');});
+    Route::get('/forgotpassword', 'Farmer\ForgotpasswordsController@index');
+    Route::post('/forgotpassword', 'Farmer\ForgotpasswordsController@match')->name('farmer.submitforgotpassword.submit');
+    Route::post('/changepassword', 'Farmer\ForgotpasswordsController@change')->name('farmer.submitchangepassword.submit');
     Route::get('/printfarmerdetail/{id}', 'Auth\FarmerRegisterController@printFarmerDetails');
     Route::get('/login', 'Auth\FarmerLoginController@showLoginForm')->name('farmer.login');
     Route::post('/login', 'Auth\FarmerLoginController@login')->name('farmer.login.submit');
@@ -118,17 +120,19 @@ Route::prefix('farmer')->group(function() {
     Route::get('/printdetails/{id}', 'Farmer\FarmerSchemeController@printDetails');
 });
 
+
+
 // Designation wise Route
 Route::prefix('authority')->group(function() {
     Route::get('/user/{user}/designations', 'Auth\AuthorityLoginController@getDesignation');
     Route::get('/login', 'Auth\AuthorityLoginController@showLoginForm')->name('authority.login');
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
- //   Route::get('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLoginForm')->name('authority.secondlogin');
+    //   Route::get('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLoginForm')->name('authority.secondlogin');
     Route::post('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLogin')->name('authority.secondlogin');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
-    
+
     Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
-    
+
     Route::prefix('districts')->group(function () {
         Route::get('/', 'Authority\AuthorityController@districts')->name('authority.districts.dashboard');
         Route::resource('/profile', 'Authority\District\ProfileController');
@@ -144,34 +148,48 @@ Route::prefix('authority')->group(function() {
         Route::get('distblock/{id}/villages', 'Authority\District\VillageUserController@getVillages');
         Route::get('/addvillageuser/{id}/details', 'Authority\District\VillageUserController@editUser');
         Route::resource('/addvillageuser', 'Authority\District\VillageUserController');
-        Route::get('/schsubdist/{id}/schemes','Authority\District\SubdivisionDistController@getSchemes');
-        Route::get('/schsubdist/{id}/programs','Authority\District\SubdivisionDistController@getPrograms');
+
+        //Scheme Distribution By District level Authority in Subdivision 
+        Route::get('/schsubdist/{idSchemeActivation}/funddetails', 'Authority\District\SubdivisionDistController@getFunds');
+        Route::get('/schsubdist/{id}/schemes', 'Authority\District\SubdivisionDistController@getSchemes');
+        Route::get('/schsubdist/{id}/programs', 'Authority\District\SubdivisionDistController@getPrograms');
         Route::resource('/schsubdist', 'Authority\District\SubdivisionDistController');
+        
+        //Scheme Distribution By District level Authority in Block 
+        
+        Route::get('/schblockdist/{idSubdivision}/funddetails', 'Authority\District\BlockwiseSchemeDistController@getFunds');
+        Route::get('/schblockdist/{idScheme}/programs', 'Authority\District\BlockwiseSchemeDistController@getPrograms');
+        Route::get('/schblockdist/{idProgram}/subdivisions', 'Authority\District\BlockwiseSchemeDistController@distSubdivisions');
+        Route::resource('/schblockdist', 'Authority\District\BlockwiseSchemeDistController');
     });
-   
+
     Route::prefix('subdivisions')->group(function () {
         Route::get('/', 'Authority\AuthorityController@subdivisions')->name('authority.subdivisions.dashboard');
-     //   Route::resource('/profile', 'Authority\Subdivision\ProfileController');
+        Route::resource('/profile', 'Authority\Subdivision\ProfileController');
+        // Route::get('sub/{id}/blocks', 'Authority\Subdivision\BlockUserController@getBlocks');
+        // Route::get('subblockuser/{id}/designations', 'Authority\Subdivision\BlockUserController@getDesignations');
+        Route::resource('/blockuseradd', 'Authority\Subdivision\BlockUserController');
     });
-    
+
     Route::prefix('blocks')->group(function () {
         Route::get('/', 'Authority\AuthorityController@blocks')->name('authority.blocks.dashboard');
-      //  Route::resource('/profile', 'Authority\Block\ProfileController');
+        Route::resource('/profile', 'Authority\Block\ProfileController');
+        Route::get('/viuser/{id}/details', 'Authority\Block\VillageUserController@editUser');
+        Route::resource('/viuser', 'Authority\Block\VillageUserController');
     });
-    
-    
-    
-    
-    
+
+
+
+
+
 
     Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
     Route::resource('/adduser', 'Authority\AuthorityUserController');
-   // Route::resource('/profile', 'Authority\AuthorityProfileController');
+    // Route::resource('/profile', 'Authority\AuthorityProfileController');
     Route::resource('/authschemes', 'Authority\AuthoritySchemeController');
     Route::get('/approvedscheme', 'Authority\AuthoritySchemeController@approvedScheme');
     Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');
-    Route::get('/schemedistrict/{id}', 'Authority\BlockwiseSchemeDistributionController@getSchemeDist');
-    Route::resource('/blockwisescheme', 'Authority\BlockwiseSchemeDistributionController');
+
     Route::get('/registeredfarmer', 'Authority\AuthorityFarmerController@registeredFarmer');
     Route::get('/cancelregfarmer', 'Authority\AuthorityFarmerController@cancelReg');
     Route::get('/blacklistedfarmer', 'Authority\AuthorityFarmerController@blacklistedFarmer');

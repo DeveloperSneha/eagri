@@ -28,7 +28,7 @@
                 </ul>
             </li>
             
-           <li class="treeview {{ checkActive(['authority/districts/schsubdist']) }}">
+           <li class="treeview {{ checkActive(['authority/districts/schsubdist','authority/districts/schblockdist']) }}">
                 <a href="#">
                     <span>Scheme</span>
                     <span class="pull-right-container">
@@ -37,7 +37,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ checkActive(['authority/districts/schsubdist']) }}"><a href="{{ url('/authority/districts/schsubdist') }}">Scheme Subdv. Distribution</a></li>
-                    <li class=""><a href="{{ url('/authority/districts') }}">Scheme Block Distribution</a></li>
+                    <li class="{{ checkActive(['authority/districts/schblockdist']) }}"><a href="{{ url('/authority/districts/schblockdist') }}">Scheme Block Distribution</a></li>
                     <li class=""><a href="{{ url('/authority/districts')}}">Scheme For Approval</a></li>
                     <li class=""><a href="{{ url('/authority/districts')}}">Approved Scheme</a></li>
                     <li class=""><a href="{{ url('/authority/districts')}}">Rejected Scheme</a></li>

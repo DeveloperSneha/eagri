@@ -42,7 +42,7 @@
 $(document).ready(function () {
     $('.select-all').on('click', function () {
         var checkAll = this.checked;
-        var totalCount = $('input:checkbox').length;
+        var totalCount = $('.count_dist').length;
         
         var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());

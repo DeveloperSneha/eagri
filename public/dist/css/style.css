@@ -58,7 +58,9 @@ and open the template in the editor.
 legend{
     color:orangered;
     margin-bottom: 10px;
-    font-size: 15px;
+    font-size: 17px;
+    font-family: 'DSDIGI' !important;
+
 }
 .register-box-msg{
     padding: 0 20px 10px 20px !important;

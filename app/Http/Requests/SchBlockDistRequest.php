@@ -23,33 +23,33 @@ class SchBlockDistRequest extends FormRequest {
      * @return array
      */
     public function rules() {
-        //   dd($this->blocks);
+        // dd($this->blocks);
         $rules = [
+            'idSection' => 'required',
+            'idScheme' => 'required',
+            'idSubdivision' => 'required',
             'idSchemeActivation' => 'required',
-                // 'schemeDistributionDistrict' => 'required'
         ];
         $this->_details = array_where($this->input('blocks', []), function ($dis) {
             if (isset($dis['idBlock'])) {
                 return $dis;
             }
         });
-        
         if (((count($this->_details)) == 0)) {
             $rules['block'] = 'required';
-        }
-        
-        $totalFunds = 0;
-        $totalArea = 0;
-        foreach ($this->blocks as $dis) {
-            $totalFunds += $dis['amountBlock'];
-            $totalArea += $dis['areaBlock'];
-            if (isset($dis['idBlock'])) {
-                $rules['blocks.' . $dis['idBlock'] . '.idBlock'] = 'unique:schemedistributionblock,idBlock,NULL,idBlock,idSchemeActivation,' . $this->idSchemeActivation;
-                $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required|numeric|min:0';
-                $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required|numeric|min:0';
+        } else {
+             $totalFunds = 0;
+            $totalArea = 0;
+            foreach ($this->blocks as $dis) {
+                $totalFunds += $dis['amountBlock'];
+                $totalArea += $dis['areaBlock'];
+                if (isset($dis['idBlock'])) {
+                    $rules['blocks.' . $dis['idBlock'] . '.idBlock'] = 'unique:schemedistributionblock,idBlock,NULL,idBlock,idSchemeActivation,' . $this->idSchemeActivation;
+                    $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required|numeric|min:0';
+                    $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required|numeric|min:0';
+                }
             }
         }
-
         if ($this->idSchemeActivation != null) {
             $scheme = \App\SchDistrictDistribution::where('idSchemeActivation', '=', $this->idSchemeActivation)->first();
             //dd($totalFunds);

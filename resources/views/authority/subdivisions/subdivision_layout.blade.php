@@ -4,7 +4,7 @@
     <body class="hold-transition skin-green-light sidebar-mini">
         <div class="wrapper">
             @include('authority.authority_nav')
-            @include('authority.subdivision.sidebar')
+            @include('authority.subdivisions.sidebar')
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->

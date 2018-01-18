@@ -75,7 +75,7 @@
                             <span id='errordist{{$key}}'></span>
                         </td>
                         <td>
-                            <input type="checkbox" value="{{ $key}}" name="districts[{{$key}}][idDistrict]" id='district' >
+                            <input type="checkbox" value="{{ $key}}" name="districts[{{$key}}][idDistrict]" id='district' class='count_dist'>
                         </td>
                         <td>
                             <input type="text"  class="form-control" data-toggle="tooltip" data-placement="right" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})" >

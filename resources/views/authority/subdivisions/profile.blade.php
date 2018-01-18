@@ -1,4 +1,4 @@
-@extends('authority.authority_layout')
+@extends('authority.subdivisions.subdivision_layout')
 @section('content')
 <div class="row">
     <div class="col-sm-5">
@@ -8,9 +8,9 @@
 
                 <h3 class="profile-username text-center">{{ $user->name }}</h3>
 
-                <p class="text-muted text-center"><strong><strong></p>
+                <p class="text-muted text-center"><strong></strong></p>
 
-                <ul class="list-group list-group-unbordered">
+<!--                <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
                         <b>District  <a class="pull-right"></a></b>
                     </li>
@@ -21,7 +21,27 @@
                     <li class="list-group-item">
                         <b>Designation  <a class="pull-right"></a></b>
                     </li>
-                </ul>
+                </ul>-->
+                <table class="table table-bordered dataTable">
+                    <thead>
+                        <tr>
+                            <th>District</th>
+                            <th>Subdivision</th>
+                            <th>Section</th>
+                            <th>Designation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($userdesig as $var)
+                        <tr>
+                            <td>{{$var->district->districtName }}</td>
+                            <td>{{$var->subdivision->subDivisionName }}</td>
+                            <td>{{$var->designation->section->sectionName }}</td>
+                            <td>{{$var->designation->designationName }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
 
             </div>
@@ -34,7 +54,7 @@
                 <strong>Complete Your Profile</strong>
             </div>
             <div class="panel-body">
-                {!! Form::open(['method' => 'PATCH', 'action' => ['Authority\AuthorityProfileController@update', $user->idUser,],'class'=>'form-horizontal']) !!}
+                {!! Form::open(['method' => 'PATCH', 'action' => ['Authority\Subdivision\ProfileController@update', $user->idUser,],'class'=>'form-horizontal']) !!}
 
                 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                     {!! Form::label('Name :', null, ['class' => 'col-sm-4 control-label']) !!}

@@ -1,16 +1,16 @@
-@extends('authority.districts.district_layout')
+@extends('authority.blocks.block_layout')
 @section('content')
 <!-------------------Existing User---------------------------------------------------------------------->
 <div class="panel panel-default">
-    <div class="panel-heading"><strong>Add Existing User in Sub Division</strong></div>
+    <div class="panel-heading"><strong>Add Existing User in Village</strong></div>
     <div class="panel-body">
-        {!! Form::open(['url' => 'authority/districts/addsubuser','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'authority/districts/addvillageuser','class'=>'form-horizontal']) !!}
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser']) !!}
+                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idUser'))
@@ -19,18 +19,17 @@
                             </strong>
                         </span>
                     </div>
-
                 </div>
                 <div class="form-group">
                     {!! Form::label('District', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control', 'selected']) !!}
+                        {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control','selected']) !!}
                     </div>
                 </div>
                 <div class="form-group">
                     {!! Form::label('SubDivision', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idSubdivisions[]',$subdivisions,null, ['class' => 'form-control select2','multiple']) !!}
+                        {!! Form::select('idSubdivision',$user_subdivision,null, ['class' => 'form-control']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idSubdivision'))
@@ -41,9 +40,36 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    {!! Form::label('Block', null, ['class' => 'col-sm-4 control-label required']) !!}
+                    <div class="col-sm-8">
+                        {!! Form::select('idBlock',$user_block,null, ['class' => 'form-control','id'=>'idBlock']) !!}
+                        <span class="help-block">
+                            <strong>
+                                @if($errors->has('idBlock'))
+                                <p>{{ $errors->first('idBlock') }}</p>
+                                @endif
+                            </strong>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {!! Form::label('Village', null, ['class' => 'col-sm-4 control-label required']) !!}
+                    <div class="col-sm-8">
+                        <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" >
+                        </select>
+                        <span class="help-block">
+                            <strong>
+                                @if($errors->has('idVillage'))
+                                <p>{{ $errors->first('idVillage') }}</p>
+                                @endif
+                            </strong>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
                     {!! Form::label('Section', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                         {!! Form::select('idSection',$sections,null, ['class' => 'form-control','id'=>'section']) !!}
+                        {!! Form::select('idSection',$sections,null, ['class' => 'form-control','id'=>'section']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idSection'))
@@ -84,11 +110,26 @@
 @stop
 @section('script')
 <script>
+    var cur_block = $( "#idBlock option:selected" ).val();
+    if(cur_block){
+        $.ajax({
+            url: "{{url('/authority/districts/distblock') }}"+'/' +cur_block + "/villages",
+            type: "GET",
+            dataType: "json",
+            success:function(data) {
+                $('select[id="idVillage"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[id="idVillage"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+
+            }
+        });
+     }
     $('select[name="idSection"]').on('change', function() {
         var sectionID = $(this).val();
         if(sectionID) {
             $.ajax({
-                url: "{{url('/authority/districts/distsubuser') }}"+'/' +sectionID + "/designations",
+                url: "{{url('/authority/districts/distvillageuser') }}"+'/' +sectionID + "/designations",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {

@@ -84,10 +84,10 @@ class NonVendorSchemeActivationController extends Controller {
         $schact = \App\SchemeActivation::where('idSchemeActivation', '=', $id)->select('totalFundsAllocated AS TotalFund', 'totalAreaAllocated AS TotalArea', 'assistance AS Assistance')->first()->toArray();
         $dist_sch = DB::table('schemeactivation')
                         ->leftjoin('schemedistributiondistrict', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
-                        ->select(DB::raw('schemeactivation.totalFundsAllocated   -  SUM(schemedistributiondistrict.amountDistrict) AS TotalFund'), DB::raw('schemeactivation.totalAreaAllocated - SUM(schemedistributiondistrict.areaDistrict) AS TotalArea'),'schemeactivation.assistance AS Assistance')
+                        ->select(DB::raw('schemeactivation.totalFundsAllocated   -  SUM(schemedistributiondistrict.amountDistrict) AS TotalFund'), DB::raw('schemeactivation.totalAreaAllocated - SUM(schemedistributiondistrict.areaDistrict) AS TotalArea'), 'schemeactivation.assistance AS Assistance')
                         //'schemeactivation.totalAreaAllocated'- DB::raw('SUM(schemedistributiondistrict.areaDistrict)' ))
                         ->where('schemeactivation.idSchemeActivation', '=', $id)->first();
-        if($dist_sch){
+        if ($dist_sch) {
             return json_encode($dist_sch);
         }
         return json_encode($schact);
@@ -168,7 +168,9 @@ class NonVendorSchemeActivationController extends Controller {
     }
 
     public function getActivatedProgram($id) {
-        $activated_program = \App\SchemeActivation::with('program')->where("idScheme", $id)->get()
+        $activated_program = \App\SchemeActivation::with(['program' => function($q) use($id) {
+                                $q->where("idScheme", '=', $id);
+                            }])->get()
                         ->pluck("program.programName", "idSchemeActivation")->toArray();
         return json_encode($activated_program);
     }

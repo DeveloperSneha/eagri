@@ -38,4 +38,22 @@ class ForgotpasswordsController extends Controller
      
 		
     }
+	
+	public function change(Request $request)
+    {
+		//dd(bcrypt($request->password));
+	   $rules = [
+            'password' => 'required',
+        ];
+        $message = [
+            'password.required' => 'Password Must Not be Empty',
+        ];
+	 $this->Validate($request, $rules, $message);
+     $change = \App\Farmer::where(['aadhaar' => $request->aadhaar, 'rcno' => $request->rcno])->first();
+	// dd($change);
+	 $change->password = bcrypt($request->password);
+	 $change->update();
+	 //Flash:message('Your Password Has been updated');
+	 return redirect('/farmer/login')->with('msg','Password Changed ! You Can Login Now | पासवर्ड बदला गया ! अब आप लॉग इन कर सकते हैं');
+    }
 }

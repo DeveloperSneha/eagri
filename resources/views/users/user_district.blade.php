@@ -50,7 +50,7 @@
         <div class="form-group">
             {!! Form::label('Username', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50']) !!}
+                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','pattern'=>'[a-zA-Z0-9 ]+','OnKeypress'=>'javascript:return isAlphaNumeric(event,this.value)']) !!}
             </div>
             <span class="help-block">
                 <strong>

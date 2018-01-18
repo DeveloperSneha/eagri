@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Authority\District;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\SchSubdivisionRequest;
 use App\Http\Controllers\Controller;
 use Session;
 use Auth;
@@ -16,6 +17,7 @@ class SubdivisionDistController extends \App\Http\Controllers\Authority\Authorit
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $schsubdivision = \App\SchSubdivisionDistribution::orderBy('idSchemDistributionSubdivision')->get();
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $sections = ['' => '---Select Section---'] + $user->userdesig()->with('designation.section')
                         ->where('idDistrict', '=', Session::get('idDistrict'))
@@ -32,7 +34,7 @@ class SubdivisionDistController extends \App\Http\Controllers\Authority\Authorit
                         ->pluck('district.districtName', 'district.idDistrict')->toArray();
         $subdivisions = \App\Subdivision::where("idDistrict", Session::get('idDistrict'))->get()
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
-        return view('authority.districts.schdist_subdivision', compact('sections', 'subdivisions','user_district'));
+        return view('authority.districts.schdist_subdivision', compact('schsubdivision','sections', 'subdivisions', 'user_district'));
     }
 
     /**
@@ -50,13 +52,14 @@ class SubdivisionDistController extends \App\Http\Controllers\Authority\Authorit
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        dd($request->all());
+    public function store(SchSubdivisionRequest $request) {
+       // dd($request->idDistrict);
         foreach ($request->subdivisions as $dis)
             if (isset($dis['idSubdivision'])) {
                 $schdistrict = new \App\SchSubdivisionDistribution();
                 $schdistrict->fill($request->all());
                 $schdistrict->idSubdivision = $dis['idSubdivision'];
+                $schdistrict->schemeDistributionDistrict = $request->idDistrict;
                 $schdistrict->amountSubdivision = $dis['amountSubdivision'];
                 $schdistrict->areaSubdivision = $dis['areaSubdivision'];
                 $schdistrict->save();
@@ -115,9 +118,31 @@ class SubdivisionDistController extends \App\Http\Controllers\Authority\Authorit
     }
 
     public function getPrograms($id) {
-        dd($id);
-       // $programs = DB::table()->
+        //dd($id);
+        $programs = DB::table('schemedistributiondistrict')
+                        ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                        ->join('program', 'schemeactivation.idProgram', '=', 'program.idProgram')
+                        ->select('program.idProgram', 'program.programName')
+                        ->groupBy('schemedistributiondistrict.idSchemeActivation')
+                        ->get()->pluck('programName', 'idProgram')->toArray();
+        // $programs = DB::table()->
         return json_encode($programs);
+    }
+
+    public function getFunds($id) {
+        $schact = DB::table('schemeactivation')
+                        ->leftjoin('schemedistributiondistrict', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                        ->where('idDistrict', '=', Session::get('idDistrict'))
+                        ->select('amountDistrict AS TotalFund', 'areaDistrict AS TotalArea', 'assistance AS Assistance')->first();
+        $dist_sch = DB::table('schemedistributiondistrict')
+                        ->leftjoin('schemeactivation', 'schemeactivation.idSchemeActivation', '=', 'schemedistributiondistrict.idSchemeActivation')
+                        ->leftjoin('schemedistributionsubdivision', 'schemedistributionsubdivision.idSchemeActivation', '=', 'schemedistributiondistrict.idSchemeActivation')
+                        ->select(DB::raw('schemedistributiondistrict.amountDistrict   -  SUM(schemedistributionsubdivision.amountSubdivision) AS TotalFund'), DB::raw('schemedistributiondistrict.areaDistrict - SUM(schemedistributionsubdivision.areaSubdivision) AS TotalArea'),'schemeactivation.assistance AS Assistance')
+                       ->where('idDistrict', '=', Session::get('idDistrict'))->first();
+        if ($dist_sch) {
+            return json_encode($dist_sch);
+        }
+        return json_encode($schact);
     }
 
 }

@@ -36,11 +36,14 @@ class UserDistrictRequest extends FormRequest {
                 }
             }
         } else {
+			// foreach ($this->idDistricts as $var) {
             $rules = [
                 'idSection' => 'required',
                 'idDesignation' => 'required',
                 'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+                // 'userName' => 'required|between:2,50|unique:users,userName,' . $var . ',idUser'
             ];
+			 // }
             if (count($this->idDistricts) == 0) {
                 $rules['idDistrict'] = 'required';
             } else {

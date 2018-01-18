@@ -6,11 +6,11 @@
     <div class="panel-heading"><strong>ADD  User In Village</strong></div>
     {!! Form::open(['url' => 'authority/districts/addvillageuser','class'=>'form-horizontal']) !!}
     <div class="panel-body">
-        {!! Form::open(['url' => 'uservillage','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'authority/districts/addvillageuser','class'=>'form-horizontal']) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-               {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control','disabled', 'selected']) !!}
+               {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control', 'selected']) !!}
             </div>
         </div>
         <div class="form-group">

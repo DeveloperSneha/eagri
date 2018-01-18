@@ -1,11 +1,11 @@
-@extends('authority.districts.district_layout')
+@extends('authority.subdivisions.subdivision_layout')
 @section('content')
-<a href="{{url('authority/districts/addblockuser/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>   
+<a href="{{url('authority/subdivisions/blockuseradd/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>   
 <!-------------------New User---------------------------------------------------------------------->
 <div class="panel panel-default tab-pane fade in active" id='new'>
     <div class="panel-heading"><strong>ADD   User In Block</strong></div>
     <div class="panel-body">
-        {!! Form::open(['url' => 'authority/districts/addblockuser','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'authority/subdivisions/blockuseradd','class'=>'form-horizontal']) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
@@ -15,7 +15,7 @@
         <div class="form-group">
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idSubdivision',$subdivisions,null, ['class' => 'form-control','id'=>'idSubdivision']) !!}
+                {!! Form::select('idSubdivision',$user_subdivision,null, ['class' => 'form-control']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -103,7 +103,7 @@
                 <tr>
                     <td>{{ $i }}</td>
                     <td>{{ $var->userName}}</td>
-                    <td> <a href='{{url('/authority/districts/addblockuser/'.$var->idUser.'/details')}}' class="btn btn-xs btn-warning">Edit</a>
+                    <td> <a href='{{url('/authority/subdivisions/blockuseradd/'.$var->idUser.'/details')}}' class="btn btn-xs btn-warning">Edit</a>
                     </td>
                 </tr>
                 <?php $i++; ?>
@@ -120,11 +120,11 @@
            if(subdivisionID.length > 0) {
                 $.ajax({
                     type: "GET",
-                    url: "{{url('/authority/districts/distsub') }}"+'/' +subdivisionID + "/blocks",
+                    url: "{{url('/authority/subdivisions/sub') }}"+'/' +subdivisionID + "/blocks",
                     dataType: 'json',
                     success:function(data) {
                         $('select[id="idBlock"]').empty();
-                       // $('select[id="idBlock"]').append('<option value="">Select Block</option>');
+                       $('select[id="idBlock"]').append('<option value="">Select Block</option>');
                         $.each(data, function(key, value) {
                             $('select[id="idBlock"]').append('<option value="'+ key +'">'+ value +'</option>');
                         });
@@ -138,7 +138,7 @@
         var sectionID = $(this).val();
         if(sectionID) {
             $.ajax({
-                url: "{{url('/authority/districts/distblockuser') }}"+'/' +sectionID + "/designations",
+                url: "{{url('/authority/subdivisions/subblockuser') }}"+'/' +sectionID + "/designations",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {

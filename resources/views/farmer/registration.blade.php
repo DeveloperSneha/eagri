@@ -57,7 +57,7 @@
                             </div>
                             {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('rcno') ? ' has-error' : '' }}">
-                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'20','minlength'=>'4']) !!}
+                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'20','minlength'=>'4','pattern'=>'[a-zA-Z0-9 ]+','OnKeypress'=>'javascript:return isAlphaNumeric(event,this.value)']) !!}
                                 @if ($errors->has('rcno'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('rcno') }}</strong>
@@ -69,7 +69,7 @@
                         <div class="form-group">
                             {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
-                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[789]\d{9}$']) !!}
+                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$']) !!}
                                 @if ($errors->has('name'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('mobile') }}</strong>
@@ -108,7 +108,7 @@
                             
                             
                         </div>
-                        <legend>land Details / ज़मीन का विवरण (In acres / एकड़ में )</legend>
+                        <legend>Land Details / ज़मीन का विवरण (In acres / एकड़ में )</legend>
                         <div class="form-group">
                             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idDistrict') ? ' has-error' : '' }}">
@@ -148,7 +148,7 @@
                             </div>
                             {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
-                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा ','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
+                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
                                     @if ($errors->has('total_land'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('total_land') }}</strong>
@@ -176,7 +176,7 @@
                             <div class="form-group">
                                 {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('ifsc_code') ? ' has-error' : '' }}">
-                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ','id'=>'ifsccode_1']) !!}
+                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ','id'=>'ifsccode_1','pattern'=>'^[A-Za-z]{4}[a-zA-Z0-9]{7}$','OnKeypress'=>'javascript:return isAlphaNumeric(event,this.value)']) !!}
                                     @if ($errors->has('ifsc_code'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('ifsc_code') }}</strong>
@@ -184,14 +184,24 @@
                                     @endif
                                 </div>
                                 {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 ">
-                                    {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'बैंक का नाम','id'=>'bankname_1','readonly' => 'true']) !!}
+                                <div class="col-sm-4 {{ $errors->has('bank_name') ? ' has-error' : '' }}">
+                                    {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'बैंक का नाम','id'=>'bankname_1','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'50','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
+                                    @if ($errors->has('bank_name'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('bank_name') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="form-group">
                                 {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4">
-                                    {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'अपने बैंक शाखा का नाम डाले ','id'=>'branchname_1','readonly' => 'true']) !!}
+                                <div class="col-sm-4 {{ $errors->has('bank_branch') ? ' has-error' : '' }}">
+                                    {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'अपने बैंक शाखा का नाम डाले ','id'=>'branchname_1','maxlength'=>'40','minlength'=>'3']) !!}
+                                    @if ($errors->has('bank_branch'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('bank_branch') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('account_no') ? ' has-error' : '' }}">
@@ -203,16 +213,18 @@
                                     @endif
                                 </div>
                             </div>                            
-                        </fieldset><br>
+                        </fieldset>
                         <div class="form-group">
                             <div class="col-sm-1"></div>
-                            <input type="checkbox" name="check" id="check" {{ $errors->has('check') ? ' has-error' : '' }}>
+                            <div class="col-xs-11 {{ $errors->has('check') ? ' has-error' : '' }}">
+                            <input type="checkbox" name="check" id="check">
                             <span style="font-color:black; font-size:17px;">All The Above Information Is Correct According To Me | मेरे द्वारा दिए गए सभी प्राप्त जानकारी सही है .</span>
                             @if ($errors->has('check'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('check') }}</strong>
                                         </span>
                                     @endif
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-4">

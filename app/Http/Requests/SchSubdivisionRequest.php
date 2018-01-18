@@ -24,25 +24,25 @@ class SchSubdivisionRequest extends FormRequest {
         $rules = [
             'idSchemeActivation' => 'required',
         ];
-        $this->_details = array_where($this->input('blocks', []), function ($dis) {
-            if (isset($dis['idBlock'])) {
+        $this->_details = array_where($this->input('subdivisions', []), function ($dis) {
+            if (isset($dis['idSubdivision'])) {
                 return $dis;
             }
         });
 
         if (((count($this->_details)) == 0)) {
-            $rules['block'] = 'required';
+            $rules['subdivision'] = 'required';
         }
 
         $totalFunds = 0;
         $totalArea = 0;
-        foreach ($this->blocks as $dis) {
-            $totalFunds += $dis['amountBlock'];
-            $totalArea += $dis['areaBlock'];
-            if (isset($dis['idBlock'])) {
-                $rules['blocks.' . $dis['idBlock'] . '.idBlock'] = 'unique:schemedistributionblock,idBlock,NULL,idBlock,idSchemeActivation,' . $this->idSchemeActivation;
-                $rules['blocks.' . $dis['idBlock'] . '.amountBlock'] = 'required|numeric|min:0';
-                $rules['blocks.' . $dis['idBlock'] . '.areaBlock'] = 'required|numeric|min:0';
+        foreach ($this->subdivisions as $dis) {
+            $totalFunds += $dis['amountSubdivision'];
+            $totalArea += $dis['areaSubdivision'];
+            if (isset($dis['idSubdivision'])) {
+                $rules['subdivisions.' . $dis['idSubdivision'] . '.idSubdivision'] = 'unique:schemedistributionsubdivision,idSubdivision,NULL,idSubdivision,idSchemeActivation,' . $this->idSchemeActivation;
+                $rules['subdivisions.' . $dis['idSubdivision'] . '.amountSubdivision'] = 'required|numeric|min:0';
+                $rules['subdivisions.' . $dis['idSubdivision'] . '.areaSubdivision'] = 'required|numeric|min:0';
             }
         }
 
@@ -66,16 +66,16 @@ class SchSubdivisionRequest extends FormRequest {
         $messages += [
             'idSchemeActivation.required' => 'Select Any One Of the Scheme',
             //   'schemeDistributionDistrict.required' => 'Scheme Distribution(District) Must be Selected',
-            'block.required' => 'Atleast One Block Should Be Selected',
+            'subdivision.required' => 'Atleast One Subdivision Should Be Selected',
             'totalFunds.required' => 'Financial Target is Exceeded for this District',
             'totalArea.required' => 'Physical Target is Exceeded for this District',
-            'blocks.*idBlock.unique' => 'This Scheme is Already Distributed To This Block',
-            'blocks.*amountBlock.required' => 'Financial Target Must Not Be Empty',
-            'blocks.*areaBlock.required' => 'Physical Target Must Not Be Empty',
-            'blocks.*amountBlock.numeric' => 'Financial Target Must Have Numeric Value ',
-            'blocks.*areaBlock.numeric' => 'Physical Target Must Have Numeric Value',
-            'blocks.*amountBlock.min' => 'Financial Target Must Have Positive Value',
-            'blocks.*areaBlock.min' => 'Physical Target Must Have Positive Value',
+            'subdivisions.*idSubdivision.unique' => 'This Scheme is Already Distributed To This Block',
+            'subdivisions.*amountSubdivision.required' => 'Financial Target Must Not Be Empty',
+            'subdivisions.*areaSubdivision.required' => 'Physical Target Must Not Be Empty',
+            'subdivisions.*amountSubdivision.numeric' => 'Financial Target Must Have Numeric Value ',
+            'subdivisions.*areaSubdivision.numeric' => 'Physical Target Must Have Numeric Value',
+            'subdivisions.*amountSubdivision.min' => 'Financial Target Must Have Positive Value',
+            'subdivisions.*areaSubdivision.min' => 'Physical Target Must Have Positive Value',
         ];
 
         return $messages;

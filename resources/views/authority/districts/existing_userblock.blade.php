@@ -23,7 +23,7 @@
                 <div class="form-group">
                     {!! Form::label('District', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control','disabled', 'selected']) !!}
+                        {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control', 'selected']) !!}
                     </div>
                 </div>
                 <div class="form-group">

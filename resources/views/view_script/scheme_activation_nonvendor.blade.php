@@ -27,6 +27,7 @@
                 dataType: "json",
                 success:function(data) {
                     $('select[name="idScheme"]').empty();
+                    $('select[name="idScheme"]').append('<option val>---Select Scheme--</option>');
                     $.each(data, function(key, value) {
                         $('select[name="idScheme"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });

@@ -117,7 +117,29 @@ function onlylettersandSpecialChar() {
                 return false;
 }
 
+function isAlphaNumeric(e){ // Alphanumeric only
+            var k;
+            document.all ? k=e.keycode : k=e.which;
+            return((k>47 && k<58)||(k>64 && k<91)||(k>96 && k<123)||k==0);
+         }
+		 
+		 
+		 function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
 
+          return true;
+       }
+	   
+	   function checkDec(el){
+ var ex = /^[0-9]+\.?[0-9]*$/;
+ if(ex.test(el.value)==false){
+   el.value = el.value.substring(0,el.value.length - 1);
+  }
+}
    
 </script>
 	<!-- end blinkcss 15-01-2018-->

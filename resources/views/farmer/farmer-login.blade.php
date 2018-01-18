@@ -17,6 +17,11 @@
                 <div style="font-family: Verdana; font-size: 20px; color: #fff; margin: 10px 0px; text-transform: uppercase;">Agriculture Department</div>
                 <div class="log-panel">
                     <div class="hd">Login / लॉगिन</div>
+					@if(session()->has('msg'))
+                    <div class="alert alert-success">
+                        {{ session()->get('msg') }}
+                    </div>
+                    @endif
                     <div class="login-box-body">
                         <form class="form-horizontal" method="POST" action="{{ route('farmer.login.submit') }}">
                             {{ csrf_field() }}
@@ -47,6 +52,11 @@
                                 <div class="">
                                     <button type="submit" style="background-color:rgba(252,139,28,0.9);color:#fff;border-color:#fff;" onclick="encrypt();" class="btn btn-block btn-primary" name="btn-login">Login / लॉगिन</button>
                                 </div>
+                                @if ($errors->has('msg'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('msg') }}</strong>
+                                </span>
+                                @endif
                             </div>
 <!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
                             <p></p>

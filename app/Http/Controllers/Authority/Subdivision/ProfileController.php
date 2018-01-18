@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Authority\District;
+namespace App\Http\Controllers\Authority\Subdivision;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,9 +15,9 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      */
     public function index() {
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
-        $userdesig = $user->userdesig()->whereNotNull('idDistrict')->whereNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
+        $userdesig = $user->userdesig()->whereNotNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
 
-        return view('authority.districts.profile', compact('user', 'userdesig'));
+        return view('authority.subdivisions.profile', compact('user', 'userdesig'));
     }
 
     /**
@@ -67,26 +67,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $rules = [
-            'name' => 'required',
-            'fatherName' => 'required',
-            'motherName' => 'required',
-            'dob' => 'required',
-            'aadhaar' => 'required',
-            'mobile' => 'required|min:10|max:10',
-            'ofc_address' => 'required',
-            'address' => 'required'
-        ];
-        $this->validate($request, $rules);
-        if (Verhoeff::validate($request->aadhaar) === false) {
-            return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
-        }
-        //dd($request->all());
-        $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
-        $profile->fill($request->all());
-        $profile->isComplete = 'Y';
-        $profile->update();
-        return redirect('authority/districts/profile');
+        //
     }
 
     /**
