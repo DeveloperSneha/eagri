@@ -59,19 +59,19 @@
                 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                     {!! Form::label('Name :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'Enter Name']) !!}
+                        {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'Enter Name','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('fatherName') ? ' has-error' : '' }}">
                     {!! Form::label('Father Name :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('fatherName', null, ['class' => 'form-control','placeholder'=>'Enter FatherName']) !!}
+                        {!! Form::text('fatherName', null, ['class' => 'form-control','placeholder'=>'Enter FatherName','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('motherName') ? ' has-error' : '' }}">
                     {!! Form::label('Mother Name :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('motherName', null, ['class' => 'form-control','placeholder'=>'Enter MotherName']) !!}
+                        {!! Form::text('motherName', null, ['class' => 'form-control','placeholder'=>'Enter MotherName','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('dob') ? ' has-error' : '' }}">
@@ -83,13 +83,18 @@
                 <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
                     {!! Form::label('Aadhaar :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhaar here']) !!}
+                        {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhaar here','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
+                        @if ($errors->has('aadhaarabc'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('aadhaarabc') }}</strong>
+                                        </span>
+                                    @endif
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('mobile') ? ' has-error' : '' }}">
                     {!! Form::label('Mobile :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter Mobile No.']) !!}
+                        {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter Mobile No.','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('ofc_address') ? ' has-error' : '' }}">

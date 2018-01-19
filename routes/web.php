@@ -136,6 +136,7 @@ Route::prefix('authority')->group(function() {
     Route::prefix('districts')->group(function () {
         Route::get('/', 'Authority\AuthorityController@districts')->name('authority.districts.dashboard');
         Route::resource('/profile', 'Authority\District\ProfileController');
+
         Route::get('distuser/{id}', 'Authority\District\SubdivisionUserController@getUserDetail');
         Route::get('distsubuser/{id}/designations', 'Authority\District\SubdivisionUserController@getDesignations');
         Route::get('/addsubuser/{id}/details', 'Authority\District\SubdivisionUserController@editUser');
@@ -154,9 +155,9 @@ Route::prefix('authority')->group(function() {
         Route::get('/schsubdist/{id}/schemes', 'Authority\District\SubdivisionDistController@getSchemes');
         Route::get('/schsubdist/{id}/programs', 'Authority\District\SubdivisionDistController@getPrograms');
         Route::resource('/schsubdist', 'Authority\District\SubdivisionDistController');
-        
+
         //Scheme Distribution By District level Authority in Block 
-        
+
         Route::get('/schblockdist/{idSubdivision}/funddetails', 'Authority\District\BlockwiseSchemeDistController@getFunds');
         Route::get('/schblockdist/{idScheme}/programs', 'Authority\District\BlockwiseSchemeDistController@getPrograms');
         Route::get('/schblockdist/{idProgram}/subdivisions', 'Authority\District\BlockwiseSchemeDistController@distSubdivisions');
@@ -166,9 +167,14 @@ Route::prefix('authority')->group(function() {
     Route::prefix('subdivisions')->group(function () {
         Route::get('/', 'Authority\AuthorityController@subdivisions')->name('authority.subdivisions.dashboard');
         Route::resource('/profile', 'Authority\Subdivision\ProfileController');
-        // Route::get('sub/{id}/blocks', 'Authority\Subdivision\BlockUserController@getBlocks');
-        // Route::get('subblockuser/{id}/designations', 'Authority\Subdivision\BlockUserController@getDesignations');
+        Route::get('blockuseradd/{id}/details', 'Authority\Subdivision\BlockUserController@editUser');
         Route::resource('/blockuseradd', 'Authority\Subdivision\BlockUserController');
+        Route::get('/addviuser/{id}/details', 'Authority\Subdivision\VillageUserController@editUser');
+        Route::resource('/addviuser', 'Authority\Subdivision\VillageUserController');
+
+        //Scheme Distribution By Subdivision level Authority in Block 
+        Route::get('/blockdist/{idSchemeActivation}/funddetails', 'Authority\Subdivision\BlockSchemeDistController@getFunds');
+        Route::resource('/blockdist', 'Authority\Subdivision\BlockSchemeDistController');
     });
 
     Route::prefix('blocks')->group(function () {
@@ -178,7 +184,11 @@ Route::prefix('authority')->group(function() {
         Route::resource('/viuser', 'Authority\Block\VillageUserController');
     });
 
-
+    Route::prefix('villages')->group(function () {
+        Route::get('/', 'Authority\AuthorityController@village')->name('authority.villages.dashboard');
+        Route::resource('/profile', 'Authority\Village\ProfileController');
+        Route::resource('/schappreject','Authority\Village\SchemeApprRejectController');
+    });
 
 
 

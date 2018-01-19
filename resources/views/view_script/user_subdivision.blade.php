@@ -26,26 +26,28 @@ $(document).ready(function () {
                 type: "GET",
                 dataType: "json",
                 success:function(data) {
-                  
                     @if(isset($userdesig))
+                        console.log(data);
                         var myPlayList = [];
                         var h = {{$userdesig->idSubdivision}}; 
                                 myPlayList.push(h.toString());
-                        console.log(h); 
-                        console.log(myPlayList); 
                         $.each(data, function(key, value) {
-                            console.log($.inArray(key,myPlayList));
                             if($.inArray(key,myPlayList) === -1){
                                    $('select[id="idSubdivision"]').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }else{
                                    $('select[id="idSubdivision"] option:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            
                             });
+                    @else
+                        $.each(data, function(key, value) {
+                            $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        
+                        });
                     @endif
                 }
 
               });  
-         }
+        }
     $('select[name="idSection"]').on('change', function() {
         var sectionID = $(this).val();
         if(sectionID) {
@@ -109,4 +111,44 @@ $(document).ready(function () {
         });
     
     });
+  $('#usersubdivision').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('/usersubdivision/') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
+                window.location = "{{url('usersubdivision')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            $.each( errors, function( key, value ) {                                
+                               var errors = data.responseJSON.errors;
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            $.each( errors, function( key, value ) {    
+                               errorHtml += '<li>' + value + '</li>'; 
+                            });
+                            errorHtml += '</ul></div>';
+                             $('#formerrors').html(errorHtml);
+                            });
+                           
+                     }
+                }
+        });
+        return false;
+    });
+
 </script>

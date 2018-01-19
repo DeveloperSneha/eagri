@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Authority\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Http\Verhoeff;
 
 class ProfileController extends \App\Http\Controllers\Authority\AuthorityController {
 
@@ -71,12 +72,19 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             'name' => 'required',
             'fatherName' => 'required',
             'motherName' => 'required',
-            'dob' => 'required',
+            'dob' => 'required|date|before:' . today_date(),
             'aadhaar' => 'required',
             'mobile' => 'required|min:10|max:10',
-            'ofc_address' => 'required',
-            'address' => 'required'
+            'ofc_address' => 'required|alpha_dash',
+            'address' => 'required|alpha_dash'
         ];
+        if ($request->aadhaar != null) {
+        if (Verhoeff::validate($request->aadhaar) === false) {
+            $rules += ['aadhaarabc' => 'required'];
+            // return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
+        }
+        }
+        $message = ['aadhaarabc.required'=>'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है'];
         $this->validate($request, $rules);
         //dd($request->all());
         $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();

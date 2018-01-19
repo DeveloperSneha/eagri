@@ -77,3 +77,4 @@ function yesterday_date() {
 function tomorrow_date() {
   return Carbon\Carbon::tomorrow()->format('d-m-Y');
 }
+

@@ -35,7 +35,7 @@ class UserVillageRequest extends FormRequest {
                 $rules['idVillage'] = 'required';
             }else {
                 foreach ($this->idVillages as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idVillage,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idVillage,' . $var;
                 }
             }
         } else {
@@ -45,13 +45,13 @@ class UserVillageRequest extends FormRequest {
                 'idBlock'=>'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idVillages) == 0) {
                 $rules['idVillage'] = 'required';
             }else {
                 foreach ($this->idVillages as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idVillage,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idVillage,' . $var;
                 }
             }
         }

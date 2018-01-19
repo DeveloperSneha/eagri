@@ -39,4 +39,8 @@ class AuthorityController extends Controller {
         return view('authority.blocks.dashboard');
     }
 
+    public function village() {
+        return view('authority.villages.dashboard');
+    }
+
 }

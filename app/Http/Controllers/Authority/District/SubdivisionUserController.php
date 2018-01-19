@@ -139,9 +139,10 @@ class SubdivisionUserController extends \App\Http\Controllers\Authority\Authorit
                 ->get()
                 ->pluck('designation.section.sectionName', 'designation.section.idSection')
                 ->toArray();
+        $user_section = $userdesig->designation->section->idSection;
         $subdivisions = \App\Subdivision::where("idDistrict", Session::get('idDistrict'))->get()
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
-        return view('authority.districts.edituser_subdivision', compact( 'sections','userdesig','user_district','subdivisions'));
+        return view('authority.districts.edituser_subdivision', compact('user_section' ,'sections','userdesig','user_district','subdivisions'));
     }
 
     /**

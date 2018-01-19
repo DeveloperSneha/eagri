@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <a href="{{url('/usersubdivision/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>
-
+<div id="formerrors"></div>
 <!-------------------New User---------------------------------------------------------------------->
 <div class="panel panel-default">
     <div class="panel-heading"><strong>ADD User In Sub Division</strong></div>
     <div class="panel-body">
-        {!! Form::open(['url' => 'usersubdivision','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'usersubdivision','class'=>'form-horizontal','id'=>'usersubdivision']) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">

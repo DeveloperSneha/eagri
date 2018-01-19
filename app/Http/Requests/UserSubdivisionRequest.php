@@ -21,7 +21,7 @@ class UserSubdivisionRequest extends FormRequest {
      * @return array
      */
     public function rules() {
-        // dd($this->all());
+//        dd($this->has('existing'));
         if ($this->has('existing')) {
             $rules = [
                 'idDistrict' => 'required',
@@ -33,7 +33,7 @@ class UserSubdivisionRequest extends FormRequest {
                 $rules['idSubdivision'] = 'required';
             } else {
                 foreach ($this->idSubdivisions as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idSubdivision,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idSubdivision,' . $var;
                 }
             }
         } else {
@@ -41,13 +41,13 @@ class UserSubdivisionRequest extends FormRequest {
                 'idDistrict' => 'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idSubdivisions) == 0) {
                 $rules['idSubdivision'] = 'required';
             } else {
                 foreach ($this->idSubdivisions as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idSubdivision,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idSubdivision,' . $var;
                 }
             }
         }
@@ -57,6 +57,7 @@ class UserSubdivisionRequest extends FormRequest {
     public function messages() {
         $messages = [
             'idUser.required' => 'User must be selected.',
+            'idUser.unique'=> 'User Already Taken',
             'idDistrict.required' => 'District must be selected.',
             'idSubdivision.required' => 'Sub Division must be selected.',
             'idSection.required' => 'Select Section First.',

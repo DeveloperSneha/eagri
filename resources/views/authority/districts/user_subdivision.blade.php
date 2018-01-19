@@ -92,6 +92,7 @@
                     <td>{{ $i }}</td>
                     <td>{{ $var->userName}}</td>
                     <td> <a href='{{url('/authority/districts/addsubuser/'.$var->idUser.'/details')}}' class="btn btn-xs btn-warning">Edit</a>
+                        
                     </td>
                 </tr>
                 <?php $i++; ?>
@@ -122,6 +123,19 @@
             $('select[id="idDesignation"]').empty();
         }
     });
-    
+    var cur_section = $( "#section option:selected" ).val();
+        if(cur_section){
+            $.ajax({
+                url: "{{url('/authority/districts/distsubuser') }}"+'/' +cur_section + "/designations",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idDesignation"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         } 
 </script>
 @stop

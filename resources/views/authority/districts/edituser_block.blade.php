@@ -79,6 +79,7 @@
     </div>
     <div class="panel-footer">
           <button type="submit" class="btn btn-danger">Update</button>
+          <a href="{{ url('/authority/districts/addblockuser/'.$userdesig->idUser.'/details')}}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 </div>

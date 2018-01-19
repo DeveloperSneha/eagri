@@ -7,6 +7,7 @@
         {!! Form::open(['url' => 'authority/districts/addsubuser','class'=>'form-horizontal']) !!}
         <div class="row">
             <div class="col-sm-6">
+                 <input type="hidden" name="existing">
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
@@ -103,6 +104,20 @@
             $('select[id="idDesignation"]').empty();
         }
     });
+    var cur_section = $( "#section option:selected" ).val();
+        if(cur_section){
+            $.ajax({
+                url: "{{url('/authority/districts/distsubuser') }}"+'/' +cur_section + "/designations",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idDesignation"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         } 
     $('select[name="idUser"]').on('change', function() {
             var userID = $(this).val();
             if(userID) {

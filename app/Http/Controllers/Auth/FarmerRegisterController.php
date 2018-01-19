@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
+use App\Http\Verhoeff;
 use Auth;
 use Session;
 
@@ -103,7 +104,7 @@ use RegistersUsers;
 //    }
 
     public function showRegistrationForm() {
-        $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
+        $districts = [''=>'--- अपना जिला चुने ---'] +\App\District::pluck('districtName', 'idDistrict')->toArray();
         return view('farmer.registration', compact('districts'));
     }
 
@@ -115,18 +116,18 @@ use RegistersUsers;
             'name' => 'required|string|max:25',
             'father_name' => 'required|string|max:25',
             'aadhaar' => 'required|max:12|min:12|unique:farmers',
-            'check' => 'required',
+            'check' => 'required|accepted',
             'mobile' => 'required|min:10|max:10|unique:farmers',
             'idDistrict' => 'required',
-            'idBlock' => 'required',
-            'idVillage' => 'required',
+            'idBlock' => 'required|integer|min:1',
+            'idVillage' => 'required|integer|min:1',
             'gender' => 'required',
             'marital_status' => 'required',
             'caste' => 'required',
-            'rcno' => 'required|max:20|min:4|unique:farmers',
-            'ifsc_code' => 'required',
+            'rcno' => 'required|alpha_dash|max:20|min:4|unique:farmers',
+            'ifsc_code' => 'required|alpha_num|regex:/^[A-Za-z]{4}\d{7}$/',
             'bank_name' =>'required|string|max:60|min:3',
-            'bank_branch' =>'required|max:60||min:3',
+            'bank_branch' =>'required|max:60|min:3|regex:/^[a-z\d\-_\s]+$/i',
             'account_no' => 'required|unique:farmers',
             'land_location' => 'required|max:25',
             'total_land' => 'required|numeric|min:0'
@@ -139,24 +140,32 @@ use RegistersUsers;
             'aadhaar.unique' => 'Aadhaar Number  is Already Taken.',
             'mobile.required' => 'Mobile Number Must Not be Empty.',
             'mobile.unique' => 'Mobile Number  is Already Taken',
-            'mobile.max' => 'Mobile Number is not Valid',
+            'mobile.max' => 'Mobile Number is Not Valid',
             'idDistrict.required' => 'District Must Be selected First',
-            'idBlock.required' => 'Block must be selected First',
+            'idBlock.required' => 'Block must be selected',
+            'idBlock.integer' => 'Block must be selected',
+            'idBlock.min' => 'Block must be selected',
             'idVillage.required' => 'Village must be selected',
+            'idVillage.integer' => 'Village must be selected',
+            'idVillage.min' => 'Village must be selected',
             'gender.required' => 'Gender must be selected',
             'marital_status.required' => 'Marital Status Must be Selected',
             'caste.required' => 'Caste Category Must be selected',
             'rcno.required' => 'Ration Card Number Must Not be Empty.',
-            'rcno.max' => 'Ration Card Number is not Valid',
-            'rcno.min' => 'Ration Card Number is not Valid',
+            'rcno.max' => 'Ration Card Number is Not Valid',
+            'rcno.alpha_dash'=>'The Ration Card Number is Not Valid',
+            'rcno.min' => 'Ration Card Number is Not Valid',
             'rcno.unique' => 'Ration Card Number is Already Taken',
             'bank_name.required' => 'Bank Name Must Not be Empty.',
-            'bank_name.max' => 'Bank Name is not Valid',
-            'bank_name.min' => 'Bank Name is not Valid',
+            'bank_name.max' => 'Bank Name is Not Valid',
+            'bank_name.min' => 'Bank Name is Not Valid',
             'bank_branch.required' => 'Bank Branch Name Must Not be Empty.',
-            'bank_branch.max' => 'Bank Branch Name is not Valid',
-            'bank_branch.min' => 'Bank Name is not Valid',
+            'bank_branch.max' => 'Bank Branch Name is Not Valid',
+            'bank_branch.regex' => 'Bank Branch Name is Not Valid',
+            'bank_branch.min' => 'Bank Name is Not Valid',
             'ifsc_code.required' => 'IFSC Code Must be Selected',
+            'ifsc_code.alpha_num' => 'IFSC Code is Not Valid',
+            'ifsc_code.regex' => 'IFSC Code is Not Valid',
             'account_no.required' => 'Account Number Must be Filled',
             'account_no.unique' => 'Account Number  is Already Taken',
             'land_location.required' => 'Land Location Must not be Empty',
@@ -236,62 +245,4 @@ use RegistersUsers;
 
 }
 
-class Verhoeff {
 
-    static public $d = array(
-        array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
-        array(1, 2, 3, 4, 0, 6, 7, 8, 9, 5),
-        array(2, 3, 4, 0, 1, 7, 8, 9, 5, 6),
-        array(3, 4, 0, 1, 2, 8, 9, 5, 6, 7),
-        array(4, 0, 1, 2, 3, 9, 5, 6, 7, 8),
-        array(5, 9, 8, 7, 6, 0, 4, 3, 2, 1),
-        array(6, 5, 9, 8, 7, 1, 0, 4, 3, 2),
-        array(7, 6, 5, 9, 8, 2, 1, 0, 4, 3),
-        array(8, 7, 6, 5, 9, 3, 2, 1, 0, 4),
-        array(9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-    );
-    static public $p = array(
-        array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
-        array(1, 5, 7, 6, 2, 8, 3, 0, 9, 4),
-        array(5, 8, 0, 3, 7, 9, 6, 1, 4, 2),
-        array(8, 9, 1, 6, 0, 4, 3, 5, 2, 7),
-        array(9, 4, 5, 3, 1, 2, 6, 8, 7, 0),
-        array(4, 2, 8, 6, 5, 7, 3, 9, 0, 1),
-        array(2, 7, 9, 3, 8, 0, 6, 4, 1, 5),
-        array(7, 0, 4, 6, 9, 1, 3, 2, 5, 8)
-    );
-    static public $inv = array(0, 4, 3, 2, 1, 5, 6, 7, 8, 9);
-
-    static function calc($num) {
-        if (!preg_match('/^[0-9]+$/', $num)) {
-            throw new \InvalidArgumentException(sprintf("Error! Value is restricted to the number, %s is not a number.", $num));
-        }
-
-        $r = 0;
-        foreach (array_reverse(str_split($num)) as $n => $N) {
-            $r = self::$d[$r][self::$p[($n + 1) % 8][$N]];
-        }
-        return self::$inv[$r];
-    }
-
-    static function check($num) {
-        if (!preg_match('/^[0-9]+$/', $num)) {
-            throw new \InvalidArgumentException(sprintf("Error! Value is restricted to the number, %s is not a number.", $num));
-        }
-
-        $r = 0;
-        foreach (array_reverse(str_split($num)) as $n => $N) {
-            $r = self::$d[$r][self::$p[$n % 8][$N]];
-        }
-        return $r;
-    }
-
-    static function generate($num) {
-        return sprintf("%s%s", $num, self::calc($num));
-    }
-
-    static function validate($num) {
-        return self::check($num) === 0;
-    }
-
-}

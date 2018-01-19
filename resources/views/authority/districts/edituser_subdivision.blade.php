@@ -34,7 +34,7 @@
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idSection',$sections,isset($userdesig)? $userdesig->designation->section->idSection : null, ['class' => 'form-control','id'=>'section']) !!}
+                {!! Form::select('idSection',$sections, isset($userdesig) ? $user_section : null, ['class' => 'form-control','id'=>'section']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -64,12 +64,32 @@
     </div>
     <div class="panel-footer">
         <button type="submit" class="btn btn-danger">Update</button>
+        <a href="{{ url('/authority/districts/addsubuser/'.$userdesig->idUser.'/details')}}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 </div>
 @stop
 @section('script')
 <script>
+    $('select[name="idSection"]').on('change', function() {
+        var sectionID = $(this).val();
+        if(sectionID) {
+            $.ajax({
+                url: "{{url('/authority/districts/distsubuser') }}"+'/' +sectionID + "/designations",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idDesignation"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idDesignation"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+
+                }
+            });
+        }else{
+            $('select[id="idDesignation"]').empty();
+        }
+    });
    var cur_section = $( "#section option:selected" ).val();
         if(cur_section){
             $.ajax({

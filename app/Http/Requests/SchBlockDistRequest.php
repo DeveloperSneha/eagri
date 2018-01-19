@@ -38,7 +38,7 @@ class SchBlockDistRequest extends FormRequest {
         if (((count($this->_details)) == 0)) {
             $rules['block'] = 'required';
         } else {
-             $totalFunds = 0;
+            $totalFunds = 0;
             $totalArea = 0;
             foreach ($this->blocks as $dis) {
                 $totalFunds += $dis['amountBlock'];

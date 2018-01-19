@@ -32,7 +32,7 @@ class UserDistrictRequest extends FormRequest {
                 $rules['idDistrict'] = 'required';
             } else {
                 foreach ($this->idDistricts as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $var;
                 }
             }
         } else {
@@ -40,7 +40,7 @@ class UserDistrictRequest extends FormRequest {
             $rules = [
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
                 // 'userName' => 'required|between:2,50|unique:users,userName,' . $var . ',idUser'
             ];
 			 // }
@@ -48,7 +48,7 @@ class UserDistrictRequest extends FormRequest {
                 $rules['idDistrict'] = 'required';
             } else {
                 foreach ($this->idDistricts as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idDistrict,' . $var;
                 }
             }
         }

@@ -2,10 +2,11 @@
 @section('content')
 <a href="{{url('/userblock/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>   
 <!-------------------New User---------------------------------------------------------------------->
+<div id="formerrors"></div>
 <div class="panel panel-default tab-pane fade in active" id='new'>
     <div class="panel-heading"><strong>ADD   User In Block</strong></div>
     <div class="panel-body">
-        {!! Form::open(['url' => 'userblock','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'userblock','class'=>'form-horizontal','id'=>'userblock']) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">

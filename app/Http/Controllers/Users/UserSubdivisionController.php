@@ -53,7 +53,7 @@ class UserSubdivisionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(UserSubdivisionRequest $request) {
-        // dd($request->all());
+//         dd($request->all());
         if ($request->has('existing')) {
             foreach ($request->idSubdivisions as $var) {
                 $user_desig = new \App\UserDesignationDistrictMapping();
@@ -77,6 +77,9 @@ class UserSubdivisionController extends Controller {
                 $user_desig->save();
             }
             DB::commit();
+        }
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
         }
         return redirect('usersubdivision');
     }

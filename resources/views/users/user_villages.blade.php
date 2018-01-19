@@ -2,12 +2,13 @@
 @section('content')
 <a href="{{url('/uservillage/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>
 <!-------------------New User---------------------------------------------------------------------->
+<div id="formerrors"></div>
 <div class="panel panel-default">
     <div class="panel-heading"><strong>@if(isset($user)) UPDATE @else ADD @endif  User In Village</strong></div>
     @if(isset($user))
     {{ Form::model( $user, ['route' => ['uservillage.update', $user->idUser], 'method' => 'patch','class'=>'form-horizontal'] ) }}
     @else
-    {!! Form::open(['url' => 'uservillage','class'=>'form-horizontal']) !!}
+    {!! Form::open(['url' => 'uservillage','class'=>'form-horizontal','id'=>'uservillage']) !!}
     @endif 
     <div class="panel-body">
         {!! Form::open(['url' => 'uservillage','class'=>'form-horizontal']) !!}

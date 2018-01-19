@@ -7,6 +7,7 @@
         {!! Form::open(['url' => 'userdistrict','class'=>'form-horizontal']) !!}
         <div class="row">
             <div class="col-sm-6">
+                 <input type="hidden" name="existing">
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">

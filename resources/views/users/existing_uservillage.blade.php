@@ -1,12 +1,14 @@
 @extends('layouts.app')
 @section('content')
 <!-------------------Existing User---------------------------------------------------------------------->
+<div id="formerrors"></div>
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Add Existing User in Village</strong></div>
     <div class="panel-body">
-        {!! Form::open(['url' => 'uservillage','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'uservillage','class'=>'form-horizontal','id'=>'uservillage']) !!}
         <div class="row">
             <div class="col-sm-6">
+                 <input type="hidden" name="existing">
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">

@@ -57,7 +57,7 @@
                             </div>
                             {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('rcno') ? ' has-error' : '' }}">
-                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'20','minlength'=>'4','pattern'=>'[a-zA-Z0-9 ]+','OnKeypress'=>'javascript:return isAlphaNumeric(event,this.value)']) !!}
+                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले']) !!}
                                 @if ($errors->has('rcno'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('rcno') }}</strong>
@@ -112,12 +112,13 @@
                         <div class="form-group">
                             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idDistrict') ? ' has-error' : '' }}">
-                                <select name="idDistrict" class="form-control" id="idDistrict">
-                                    <option value="">--- अपना जिला चुने ---</option>
+<!--                                <select name="idDistrict" class="form-control" id="idDistrict">
+                                    <option value="" selected="selected">--- अपना जिला चुने ---</option>
                                     @foreach ($districts as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
-                                </select>
+                                </select>-->
+                                {!! Form::select('idDistrict',$districts, null, ['class' => 'form-control','id'=>'idDistrict']) !!}
                                 @if ($errors->has('idDistrict'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('idDistrict') }}</strong>
@@ -139,7 +140,8 @@
                                                        
                             {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
-                                <select name="idBlock" class="form-control" id="idBlock">--- Select Block ---</select>
+                                <select name="idBlock" class="form-control" id="idBlock">--- Select Block ---
+                                    <option value="" selected="selected"></option></select>
                                 @if ($errors->has('idBlock'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('idBlock') }}</strong>
@@ -161,7 +163,9 @@
                         <div class="form-group">
                             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idVillage') ? ' has-error' : '' }}">
-                                <select name="idVillage" class="form-control" id="idVillage"></select>
+                                <select name="idVillage" class="form-control" id="idVillage" >
+                                    <option value="" selected="selected"></option>
+                                </select>
                                 @if ($errors->has('idVillage'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('idVillage') }}</strong>
@@ -176,7 +180,7 @@
                             <div class="form-group">
                                 {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('ifsc_code') ? ' has-error' : '' }}">
-                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ','id'=>'ifsccode_1','pattern'=>'^[A-Za-z]{4}[a-zA-Z0-9]{7}$','OnKeypress'=>'javascript:return isAlphaNumeric(event,this.value)']) !!}
+                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ']) !!}
                                     @if ($errors->has('ifsc_code'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('ifsc_code') }}</strong>
@@ -216,7 +220,7 @@
                         </fieldset>
                         <div class="form-group">
                             <div class="col-sm-1"></div>
-                            <div class="col-xs-11 {{ $errors->has('check') ? ' has-error' : '' }}">
+                            <div class='col-sm-11 checkbox-inline' {{ $errors->has('check') ? ' has-error' : '' }}">
                             <input type="checkbox" name="check" id="check">
                             <span style="font-color:black; font-size:17px;">All The Above Information Is Correct According To Me | मेरे द्वारा दिए गए सभी प्राप्त जानकारी सही है .</span>
                             @if ($errors->has('check'))
@@ -240,6 +244,10 @@
 
 @include('layouts.partials.script')
 <script>
+     $('#check').click(function (){
+        var val = $(this).is(':checked');
+        // $.load('url_here',{status:val});
+    });
     $(document).ready(function() {
         $('select[name="idDistrict"]').on('change', function() {
             var districtID = $(this).val();
@@ -260,6 +268,20 @@
                 $('select[name="idBlock"]').empty();
             }
         });
+        var cur_dist = $( "#idDistrict option:selected" ).val();
+        if(cur_dist){
+            $.ajax({
+                url: "{{url('/farmer/district/') }}"+'/' +cur_dist + "/blocks",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idBlock"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idBlock"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         }
                 
         $('select[name="idBlock"]').on('change', function() {
             var blockID = $(this).val();
@@ -271,7 +293,7 @@
                     success:function(data) {
                         $('select[name="idVillage"]').empty();
                         $.each(data, function(key, value) {
-                            $('select[name="idVillage"]').append('<option value="'+ key +'">'+ value +'</option>');
+                            $('select[name="idVillage"] ').append('<option value="'+ key +'">'+ value +'</option>');
                         });
 
                     }
@@ -280,8 +302,23 @@
                 $('select[name="idVillage"]').empty();
             }
         });
+        var cur_block = $( "#idBlock option:selected" ).val();
+        if(cur_block){
+            $.ajax({
+                url: "{{url('/farmer/block/') }}"+'/' +cur_block + "/villages",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idVillage"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idVillage"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         }
         
     });
+
 $('#ifsccode_1').autocomplete({
 	source: function( request, response ) {
 		$.ajax({

@@ -78,6 +78,9 @@ class UserVillageController extends Controller {
             }
             DB::commit();
         }
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('uservillage');
     }
 
@@ -122,9 +125,6 @@ class UserVillageController extends Controller {
      */
     public function update(Request $request, $id) {
         $rules = [
-            'idDistrict' => 'required',
-            'idSubdivision' => 'required',
-            'idBlock' => 'required',
             'idSection' => 'required',
             'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idVillage,' . $request->idVillage,
             'idVillage'=>'required',
@@ -169,7 +169,7 @@ class UserVillageController extends Controller {
 //        $user->userdesig()->saveMany($user_villages);
 //
 //        DB::commit();
-        return redirect('uservillage');
+        return redirect('uservillage/'.$userdesig->idUser.'/edituser');
     }
 
     /**

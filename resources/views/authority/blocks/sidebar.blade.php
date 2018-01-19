@@ -14,8 +14,8 @@
                     <span>Profile</span>
                 </a>
             </li>
-            <li class="{{ checkActive(['authority/blocks/viuser','authority/blocks/viuser/*/details','authority/blocks/viuser/*/edit']) }}">
-                <a href="{{ url('/authority/blocks/viuser','authority/blocks/viuser/*/details','authority/blocks/viuser/*/edit')}}">
+            <li class="{{ checkActive(['authority/blocks/viuser','authority/blocks/viuser/create','authority/blocks/viuser/*/details','authority/blocks/viuser/*/edit']) }}">
+                <a href="{{ url('/authority/blocks/viuser')}}">
                     <span>Add User in Villages</span>
                 </a>
             </li>
@@ -27,9 +27,9 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class=""><a href="{{ url('/authority/districts')}}">Scheme For Approval</a></li>
-                    <li class=""><a href="{{ url('/authority/districts')}}">Approved Scheme</a></li>
-                    <li class=""><a href="{{ url('/authority/districts')}}">Rejected Scheme</a></li>
+                    <li class=""><a href="{{ url('#')}}">Scheme For Approval</a></li>
+                    <li class=""><a href="{{ url('#')}}">Approved Scheme</a></li>
+                    <li class=""><a href="{{ url('#')}}">Rejected Scheme</a></li>
                 </ul>
             </li> 
             <li class="treeview {{ checkActive([''])}}">

@@ -33,7 +33,7 @@ class UserBlockRequest extends FormRequest {
                 $rules['idBlock'] = 'required';
             } else {
                 foreach ($this->idBlocks as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $var;
                 }
             }
         } else {
@@ -42,13 +42,13 @@ class UserBlockRequest extends FormRequest {
                 'idDistrict' => 'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
             ];
             if (count($this->idBlocks) == 0) {
                 $rules['idBlock'] = 'required';
             } else {
                 foreach ($this->idBlocks as $var) {
-                    $rules['idDesignation'] = 'unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $var;
+                    $rules['idDesignation'] = 'required|unique:user_designation_district_mapping,idDesignation,NULL,iddesgignationdistrictmapping,idBlock,' . $var;
                 }
             }
         }
@@ -63,7 +63,8 @@ class UserBlockRequest extends FormRequest {
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
             'idDesignation.unique' => 'User With This Designation has already been registered in this Block.',
-            'userName.required' => 'UserName Must Not Be Empty.'
+            'userName.required' => 'UserName Must Not Be Empty.',
+            'idUser.required' =>'User Must be Selected.'
         ];
         return $messages;
     }

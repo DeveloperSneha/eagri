@@ -2,9 +2,10 @@
 @section('content')
 <a href="{{url('authority/blocks/viuser/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>
 <!-------------------New User---------------------------------------------------------------------->
+<div id='formerrors'></div>
 <div class="panel panel-default">
     <div class="panel-heading"><strong>ADD  User In Village</strong></div>
-    {!! Form::open(['url' => 'authority/blocks/viuser','class'=>'form-horizontal']) !!}
+    {!! Form::open(['url' => 'authority/blocks/viuser','class'=>'form-horizontal','id'=>'uservillage']) !!}
     <div class="panel-body">
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -155,6 +156,45 @@
         }else{
             $('select[id="idDesignation"]').empty();
         }
+    });
+    $('#uservillage').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('/authority/blocks/viuser/') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
+                window.location = "{{url('authority/blocks/viuser')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            $.each( errors, function( key, value ) {                                
+                               var errors = data.responseJSON.errors;
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            $.each( errors, function( key, value ) {    
+                               errorHtml += '<li>' + value + '</li>'; 
+                            });
+                            errorHtml += '</ul></div>';
+                             $('#formerrors').html(errorHtml);
+                            });
+                           
+                     }
+                }
+        });
+        return false;
     });
 </script>
 @stop

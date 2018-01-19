@@ -14,7 +14,7 @@ class AuthorityLoginController extends Controller {
 
     use Traits\CaptchaTrait;
 
-     // protected $redirectTo = '/authority';
+    // protected $redirectTo = '/authority';
 
     public function __construct() {
         $this->middleware('guest:authority')->except('logout');
@@ -32,16 +32,15 @@ class AuthorityLoginController extends Controller {
             'password' => 'required',
             'g-recaptcha-response' => 'required',
             'captcha' => 'required|min:1',
-       ];
+        ];
         $messages = [
             'userName.required' => 'Enter Your Username ',
             'password.required' => 'Enter Your Password',
             'g-recaptcha-response.required' => 'Captcha authentication is required.',
             'captcha.min' => 'Wrong captcha, please try again.',
-
         ];
         $this->validate($request, $rules, $messages);
-      
+
         $user = \App\User::where('userName', $request->userName)->first();
         if ($user) {
             if ($user->userdesig()->count() > 0) {
@@ -100,6 +99,7 @@ class AuthorityLoginController extends Controller {
                     'userName' => $request->userName,
                     'password' => $request->password], $request->remember)) {
             //dd(Auth::guard('authority')->User());
+            Session::put('idDesignation', $request->idDesignation);
             Session::put('idDistrict', $request->idDistrict);
             Session::put('idSubdivision', $request->idSubdivision);
             Session::put('idBlock', $request->idBlock);
@@ -124,7 +124,7 @@ class AuthorityLoginController extends Controller {
     }
 
     public function redirectToDashboard(Request $request) {
-       // dd(Session::get('idSubdivision'));
+        // dd(Session::get('idSubdivision'));
         $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
         $user_in_district = $loggedinuser->userdesig()
                 ->where('idDesignation', '=', $request->idDesignation)
@@ -148,15 +148,24 @@ class AuthorityLoginController extends Controller {
                     ->where('idDistrict', '=', $request->idDistrict)
                     ->where('idSubdivision', '=', $request->idSubdivision)
                     ->where('idBlock', '=', $request->idBlock)
-                    //->whereNull('idVillage')
+                    ->whereNull('idVillage')
+                    ->get();
+            $user_in_village = $loggedinuser->userdesig()
+                    ->where('idDesignation', '=', $request->idDesignation)
+                    ->where('idDistrict', '=', $request->idDistrict)
+                    ->where('idSubdivision', '=', $request->idSubdivision)
+                    ->where('idBlock', '=', $request->idBlock)
+                    ->whereNotNull('idVillage')
                     ->get();
         }
-        if ($user_in_district) {
-                return response()->json(['success' => "SUCCESS",'userdistrict'=>"DistrictUser"], 200, ['app-status' => 'success']);
-        } else if ($user_in_subdivision) {
-            return response()->json(['success' => "SUCCESS",'usersubdivision'=>"SubdivisionUser"], 200, ['app-status' => 'success']);
-        } else if ($user_in_block) {
-            return response()->json(['success' => "SUCCESS",'userblock'=>"BlockUser"], 200, ['app-status' => 'success']);
+        if (count($user_in_district) > 0) {
+            return response()->json(['success' => "SUCCESS", 'userdistrict' => "DistrictUser"], 200, ['app-status' => 'success']);
+        } else if (count($user_in_subdivision) > 0) {
+            return response()->json(['success' => "SUCCESS", 'usersubdivision' => "SubdivisionUser"], 200, ['app-status' => 'success']);
+        } else if (count($user_in_block) > 0) {
+            return response()->json(['success' => "SUCCESS", 'userblock' => "BlockUser"], 200, ['app-status' => 'success']);
+        } else if (count($user_in_village) > 0) {
+            return response()->json(['success' => "SUCCESS", 'uservillage' => "VillageUser"], 200, ['app-status' => 'success']);
         }
     }
 

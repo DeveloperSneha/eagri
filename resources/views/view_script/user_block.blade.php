@@ -42,6 +42,12 @@ $(document).ready(function () {
                                    $('select[id="idSubdivision"] option:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            
                             });
+                    @else
+                      $('select[id="idSubdivision"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        
+                        });
                     @endif
                 }
 
@@ -153,5 +159,44 @@ $(document).ready(function () {
                 });
             }
         });
+    });
+    $('#userblock').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('/userblock/') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
+                window.location = "{{url('userblock')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            $.each( errors, function( key, value ) {                                
+                               var errors = data.responseJSON.errors;
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            $.each( errors, function( key, value ) {    
+                               errorHtml += '<li>' + value + '</li>'; 
+                            });
+                            errorHtml += '</ul></div>';
+                             $('#formerrors').html(errorHtml);
+                            });
+                           
+                     }
+                }
+        });
+        return false;
     });
 </script>

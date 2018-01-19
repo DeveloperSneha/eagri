@@ -26,6 +26,7 @@
                     <td>{{$var->designation->section->sectionName }}</td>
                     <td>{{$var->designation->designationName }}</td>
                     <td><a href='{{url('/authority/districts/addblockuser/'.$var->iddesgignationdistrictmapping.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
+                        <a href='{{url('/authority/districts/addblockuser')}}' class="btn btn-xs btn-danger">Cancel</a>
                     </td>
                 </tr>
                 <?php $i++; ?>

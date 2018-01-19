@@ -78,6 +78,9 @@ class UserBlockController extends Controller {
             }
             DB::commit();
         }
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('userblock');
     }
 

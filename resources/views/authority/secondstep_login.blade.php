@@ -201,6 +201,8 @@ $user_desig = $user->userdesig()
                     window.location = "{{url('/authority/subdivisions')}}";
                 }else if(data[Object.keys(data)[0]] === 'SUCCESS' && data[Object.keys(data)[1]] === 'BlockUser'){
                     window.location = "{{url('/authority/blocks')}}";
+                }else if(data[Object.keys(data)[0]] === 'SUCCESS' && data[Object.keys(data)[1]] === 'VillageUser'){
+                    window.location = "{{url('/authority/villages')}}";
                 }
                 else {					//False Case: With error msg
                 $("#msg").html(data);	//$msg is the id of empty msg
