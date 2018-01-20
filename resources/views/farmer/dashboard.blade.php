@@ -48,8 +48,8 @@
                         @if($farmer->schemes->contains('idScheme', $value->idScheme))
                         <strong> {{  $value->schemeName  }} <span class=""> : Applied</span><br></strong>
                         @else
-                        <a href="{{url('/farmer/scheme/'.$value->idScheme.'/apply')}}">
-                            <blink class="blink"> {{  $value->schemeName  }}&nbsp;&nbsp;<img src="{{ asset('dist/img/new_blink.gif') }}"><br></blink>
+                        <a href="{{url('/farmer/program/'.$value->idProgram.'/apply')}}">
+                            <blink class="blink"> {{  $value->programName  }} : {{  $value->schemeName  }}&nbsp;&nbsp;<img src="{{ asset('dist/img/new_blink.gif') }}"><br></blink>
                         </a>
                         @endif
                     @endforeach

@@ -1,6 +1,6 @@
 @extends('farmer.farmer_layout')
 @section('content')
-<div class="panel panel-success">
+<div class="panel panel-default">
     <div class="panel-heading">
         <strong>{{ $section->sectionName}} : Schemes</strong>
     </div>
@@ -8,7 +8,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Scheme Name</th>
+                    <th>Available Scheme Programs</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -16,12 +16,11 @@
             <tbody>
                 @foreach($schemes as $var) 
                <tr>
-                    <td>{{ $var->schemeName}}</td>
-                    @if($farmer->schemes->contains('idScheme', $var->idScheme))
+                   <td><strong>{{ $var->programName}} : </strong>{{ $var->schemeName}}</td>
+                    @if($farmer->schemes->contains('idProgram', $var->idProgram))
                     <td><a href="#" class="btn btn-danger disabled">Apply Here</a></td>
-
-                    @else
-                    <td><a href="{{url('/farmer/scheme/'.$var->idScheme.'/apply')}}" class="btn btn-danger">Apply Here</a></td>
+                     @else
+                    <td><a href="{{url('/farmer/program/'.$var->idProgram.'/apply')}}" class="btn btn-danger">Apply Here</a></td>
                     @endif
                 </tr>
                 @endforeach

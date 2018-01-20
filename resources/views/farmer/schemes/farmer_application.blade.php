@@ -1,34 +1,29 @@
 @extends('farmer.farmer_layout')
 @section('content')
-<div class="panel panel-success">
-    <div class="panel-heading">Apply For : <strong>{{$scheme->schemeName}}</strong></div>
-   {{ Form::open(['action' => ['Farmer\FarmerSchemeController@submitSchemeApplication', $scheme->idScheme], 'method' => 'post','class'=>'form-horizontal'] ) }}
-   <input type="hidden" name='idScheme' value="{{$scheme->idScheme}}">
+<div class="panel panel-default">
+    <div class="panel-heading">Apply For : <strong>{{$program->programName}}</strong></div>
+   {{ Form::open(['action' => ['Farmer\FarmerSchemeController@submitSchemeApplication', $program->idProgram], 'method' => 'post','class'=>'form-horizontal'] ) }}
    <div class="panel-body">
+       <div class="form-group">
+            {!! Form::label('Section Name', null, ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                 <input type="hidden" name='idScheme' value="{{$program->scheme->idScheme}}">
+                <p class="form-control-static">{{$program->scheme->section->sectionName}}</p>
+            </div>
+        </div>
         <div class="form-group">
             {!! Form::label('Scheme Name', null, ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-6">
-                <p class="form-control-static">{{$scheme->schemeName}}</p>
+                <p class="form-control-static">{{$program->scheme->schemeName}}</p>
             </div>
         </div>
         <div class="form-group">
             {!! Form::label('Program For Which Applied', null, ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idProgram',$programs, null, ['class' => 'form-control']) !!}
+               <p class="form-control-static">{{$program->programName}}</p>
+                <input type="hidden" name='idProgram' value="{{$program->idProgram}}">
             </div>
         </div>
-<!--       <div class="form-group">
-           {!! Form::label('Category For Which Applied', null, ['class' => 'col-sm-3 control-label']) !!}
-           <div class="col-sm-4">
-               {!! Form::select('idCategory',[''=>'Select'], null, ['class' => 'form-control']) !!}
-           </div>
-       </div>
-       <div class="form-group">
-           {!! Form::label('Component For Which Applied', null, ['class' => 'col-sm-3 control-label']) !!}
-           <div class="col-sm-4">
-               {!! Form::select('idComponent',[''=>'Select'], null, ['class' => 'form-control']) !!}
-           </div>
-       </div>-->
         <div class="form-group">
             {!! Form::label('Area For Which Applied /No.Of Items Applied', null, ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-4">

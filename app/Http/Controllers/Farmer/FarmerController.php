@@ -26,13 +26,14 @@ class FarmerController extends Controller {
     public function index() {
         $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
         $sections = \App\Section:: orderBy('idSection')->get();
-        $districts = DB::table('schemedistributiondistrict')
-                ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+        $districts = DB::table('schemedistributionblock')
+                ->join('schemeactivation', 'schemedistributionblock.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                ->join('program', 'schemeactivation.idProgram', '=', 'program.idProgram')
                 ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
                 ->join('section', 'scheme.idSection', '=', 'section.idSection')
-                ->where('schemedistributiondistrict.idDistrict', '=', $farmer->idDistrict)
+                ->where('schemedistributionblock.idBlock', '=', $farmer->idBlock)
                 ->get();
-
+//        dd($districts);
         return view('farmer.dashboard', compact('sections', 'farmer', 'schemes', 'districts'));
     }
 

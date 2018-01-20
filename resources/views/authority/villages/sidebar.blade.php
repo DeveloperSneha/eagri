@@ -14,7 +14,7 @@
                     <span>Profile</span>
                 </a>
             </li>
-            <li class="treeview {{ checkActive(['authority/villages/schappreject']) }}">
+            <li class="treeview {{ checkActive(['authority/villages/schappreject','authority/villages/apr/*/view','authority/villages/apprscheme','authority/villages/rejscheme']) }}">
                 <a href="#">
                     <span>Scheme</span>
                     <span class="pull-right-container">
@@ -22,9 +22,9 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['authority/villages/schappreject']) }}"><a href="{{ url('authority/villages/schappreject')}}">Scheme For Approval</a></li>
-                    <li class=""><a href="{{ url('#')}}">Approved Scheme</a></li>
-                    <li class=""><a href="{{ url('#')}}">Rejected Scheme</a></li>
+                    <li class="{{ checkActive(['authority/villages/schappreject','authority/villages/apr/*/view']) }}"><a href="{{ url('authority/villages/schappreject')}}">Scheme For Approval</a></li>
+                    <li class="{{ checkActive(['authority/villages/apprscheme'])}}"><a href="{{ url('authority/villages/apprscheme')}}">Approved Scheme</a></li>
+                    <li class="{{ checkActive(['authority/villages/rejscheme'])}}"><a href="{{ url('authority/villages/rejscheme')}}">Rejected Scheme</a></li>
                 </ul>
             </li> 
             <li class="treeview {{ checkActive([''])}}">

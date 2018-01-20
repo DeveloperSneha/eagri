@@ -18,51 +18,31 @@
                 <div class="panel-body">
                     
 
-                    <form class="form-horizontal" method="POST" action="{{ route('farmer.register.submit') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('farmer.register.submit') }}" id="register">
                         {{ csrf_field() }}
                         <div class="form-group">
                             {!! Form::label('Name Of Farmer', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4  {{ $errors->has('name') ? ' has-error' : '' }}">
                                 {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'किसान का नाम','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
-                                @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('name') }}</strong>
-                                </span>
-                                @endif
+                                <span id="name1"></span>
                             </div>
                             {!! Form::label('Father/Husband', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('father_name') ? ' has-error' : '' }}">
                                 {!! Form::text('father_name', null, ['class' => 'form-control','placeholder'=>'पिता/पति का नाम','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
-                                @if ($errors->has('father_name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('father_name') }}</strong>
-                                </span>
-                                @endif
+                                <span id="father_name1"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('Aadhaar No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('aadhaar') ? ' has-error' : '' }}{{ $errors->has('aadhaarabc') ? ' has-error' : '' }}">
-                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'अपना आधार नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
-                                @if ($errors->has('aadhaar'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('aadhaar') }}</strong>
-                                </span>
-                                @endif
-                                @if ($errors->has('aadhaarabc'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('aadhaarabc') }}</strong>
-                                </span>
-                                @endif
+                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'अपना आधार नंबर डाले','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
+                                <span id="aadhaarabc1"></span>
+                                <span  id="aadhaar1"></span>
                             </div>
                             {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('rcno') ? ' has-error' : '' }}">
-                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले']) !!}
-                                @if ($errors->has('rcno'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('rcno') }}</strong>
-                                </span>
-                                @endif
+                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isAlphaNumeric(event)']) !!}
+                                <span id="rcno1"></span>
                             </div>
                         </div>
                         
@@ -70,40 +50,24 @@
                             {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
                                 {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$']) !!}
-                                @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('mobile') }}</strong>
-                                </span>
-                                @endif
+                                <span id="mobile1"></span>
                             </div>
                             {!! Form::label('Marital Status', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('marital_status') ? ' has-error' : '' }}">
-                                {!! Form::select('marital_status', getMaritalStatus(),null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('marital_status'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('marital_status') }}</strong>
-                                </span>
-                                @endif
+                                {!! Form::select('marital_status', getMaritalStatus(),null, ['class' => 'form-control','id'=>'marital_status']) !!}
+                                <span id="marital_status1"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('Gender', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('gender') ? ' has-error' : '' }}">
                                 {!! Form::select('gender', getGender(),null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('gender'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('gender') }}</strong>
-                                </span>
-                                @endif
+                                <span id="gender1"></span>
                             </div>
                             {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('caste') ? ' has-error' : '' }}">
                                 {!! Form::select('caste',getCasteCategory(), null, ['class' => 'form-control']) !!}
-                                @if ($errors->has('caste'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('caste') }}</strong>
-                                </span>
-                                @endif
+                                <span id="caste1"></span>
                             </div>
                             
                             
@@ -119,20 +83,12 @@
                                     @endforeach
                                 </select>-->
                                 {!! Form::select('idDistrict',$districts, null, ['class' => 'form-control','id'=>'idDistrict']) !!}
-                                @if ($errors->has('idDistrict'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('idDistrict') }}</strong>
-                                </span>
-                                @endif
+                                <span id="idDistrict1"></span>
                             </div>
                             {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
                                     {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान']) !!}
-                                    @if ($errors->has('land_location'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('land_location') }}</strong>
-                                        </span>
-                                    @endif
+                                    <span id="land_location1"></span>
                                 </div>
                         
                         </div>
@@ -142,20 +98,12 @@
                             <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
                                 <select name="idBlock" class="form-control" id="idBlock">--- Select Block ---
                                     <option value="" selected="selected"></option></select>
-                                @if ($errors->has('idBlock'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('idBlock') }}</strong>
-                                </span>
-                                @endif
+                                <span id="idBlock1"></span>
                             </div>
                             {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
-                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
-                                    @if ($errors->has('total_land'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('total_land') }}</strong>
-                                        </span>
-                                    @endif
+                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा (in Hectares) ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
+                                    <span  id="total_land1"></span>
                                 </div> 
                             
                             
@@ -166,11 +114,7 @@
                                 <select name="idVillage" class="form-control" id="idVillage" >
                                     <option value="" selected="selected"></option>
                                 </select>
-                                @if ($errors->has('idVillage'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('idVillage') }}</strong>
-                                </span>
-                                @endif
+                                <span  id="idVillage1"></span>
                             </div>
                         </div>
                         
@@ -181,53 +125,33 @@
                                 {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('ifsc_code') ? ' has-error' : '' }}">
                                    {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ']) !!}
-                                    @if ($errors->has('ifsc_code'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('ifsc_code') }}</strong>
-                                        </span>
-                                    @endif
+                                     <span  id="ifsc_code1"></span>
                                 </div>
                                 {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('bank_name') ? ' has-error' : '' }}">
                                     {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'बैंक का नाम','id'=>'bankname_1','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'50','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
-                                    @if ($errors->has('bank_name'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('bank_name') }}</strong>
-                                        </span>
-                                    @endif
+                                    <span  id="bank_name1"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4 {{ $errors->has('bank_branch') ? ' has-error' : '' }}">
                                     {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'अपने बैंक शाखा का नाम डाले ','id'=>'branchname_1','maxlength'=>'40','minlength'=>'3']) !!}
-                                    @if ($errors->has('bank_branch'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('bank_branch') }}</strong>
-                                        </span>
-                                    @endif
+                                    <span class="help-block" id="bank_branch1"></span>
                                 </div>
                                 {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('account_no') ? ' has-error' : '' }}">
+                                <div class="col-sm-4 {{ $errors->has('account_no1') ? ' has-error' : '' }}">
                                     {!! Form::text('account_no', null, ['class' => 'form-control','placeholder'=>'अपने बैंक खाता नंबर डाले ','maxlength'=>'16','minlength'=>'12','onkeypress'=>'return isNumber(event)']) !!}
-                                    @if ($errors->has('account_no'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('account_no') }}</strong>
-                                        </span>
-                                    @endif
+                                    <span  id="account_no1"></span>
                                 </div>
                             </div>                            
                         </fieldset>
                         <div class="form-group">
                             <div class="col-sm-1"></div>
-                            <div class='col-sm-11 checkbox-inline' {{ $errors->has('check') ? ' has-error' : '' }}">
+                            <div class="col-sm-11 checkbox-inline {{ $errors->has('check') ? ' has-error' : '' }}">
                             <input type="checkbox" name="check" id="check">
                             <span style="font-color:black; font-size:17px;">All The Above Information Is Correct According To Me | मेरे द्वारा दिए गए सभी प्राप्त जानकारी सही है .</span>
-                            @if ($errors->has('check'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('check') }}</strong>
-                                        </span>
-                                    @endif
+                            <span class="help-block" id="check1"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -351,6 +275,159 @@ $('#ifsccode_1').autocomplete({
 	
 	}		      	
 });
+$('#register').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('farmer/register') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){     //True Case i.e. passed validation
+                window.location = "{{url('farmer/successreg')}}";
+                }
+                else {                  //False Case: With error msg
+                $("#msg").html(data);   //$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                                console.log(errors['idDistrict']);
+                                console.log(errors['aadhaar']);
+                                console.log(errors['rcno']);
+//                                if(errors['aadhaar']){
+//                                       errorname = '<span class="help-block"><strong>'+errors['aadhaar']+'</strong></span>';
+//                                       $( '#aadhaar1' ).html( errorname );
+//                                    }
+                                $.each( errors, function( key, value ) {
+                                    
+                                    if(errors['idDistrict']=== undefined){
+                                        $( '#idDistrict1' ).empty();
+                                    }else{
+                                       errorname = '<span class="help-block"><strong>Select District First</strong></span>';
+                                       $( '#idDistrict1' ).html( errorname );
+                                    }
+                                    if(errors['idBlock']=== undefined){
+                                        $( '#idBlock1' ).empty();
+                                    }else{
+                                       errorname = '<span class="help-block"><strong>Select Block </strong></span>';
+                                       $( '#idBlock1' ).html( errorname );
+                                    }
+                                    if(errors['idVillage']=== undefined){
+                                        $( '#idVillage1' ).empty();
+                                    }else{
+                                       errorname = '<span class="help-block"><strong>Select Village</strong></span>';
+                                       $( '#idVillage1' ).html( errorname );
+                                    }
+                                    if(errors['name']=== undefined){
+                                        $( '#name1' ).empty();
+                                    }else{
+                                       errorname = '<span class="help-block"><strong>Farmer Name Must Not be Empty</strong></span>';
+                                       $( '#name1' ).html( errorname );
+                                    }
+                                    if(errors['father_name']=== undefined){
+                                        $( '#father_name1' ).empty();
+                                    }else{
+                                       errorfname = '<span class="help-block"><strong>Fathers Name Must Not be Empty</strong></span>';
+                                       $( '#father_name1' ).html( errorfname );
+                                    }
+//                                   if(errors['aadhaar']=== undefined){
+//                                        $( '#aadhaar1' ).empty();
+//                                    }else{
+//                                       erroraadhar = '<span class="help-block"><strong>Aadhaar No. Must Not Be Empty</strong></span>';
+//                                       $( '#aadhaar1' ).html( erroraadhar );
+//                                   }
+                                   if(errors['aadhaarabc']=== undefined){
+                                        $( '#aadhaarabc1' ).empty();
+                                    }else{
+                                       erroraadhar = '<span class="help-block"><strong>Aadhaar No. is Not Valid..</strong></span>';
+                                       $( '#aadhaarabc1' ).html( erroraadhar );
+                                   }
+                                   if(errors['mobile']=== undefined){
+                                        $( '#mobile1' ).empty();
+                                    }else{
+                                       errormob = '<span class="help-block"><strong>Mobile Number Must Be Filled</strong></span>';
+                                       $( '#mobile1' ).html( errormob );
+                                   }
+                                   if(errors['rcno']=== undefined){
+                                        $( '#rcno1' ).empty();
+                                    }else{
+                                       errorrc = '<span class="help-block"><strong>Ration Card No. Must be Filled</strong></span>';
+                                       $( '#rcno1' ).html( errorrc );
+                                   }
+                                   if(errors['caste']=== undefined){
+                                        $( '#caste1' ).empty();
+                                    }else{
+                                       errorcaste = '<span class="help-block"><strong>Caste Category Must be Selected</strong></span>';
+                                       $( '#caste1' ).html( errorcaste );
+                                   }
+                                   if(errors['land_location']=== undefined){
+                                        $( '#land_location1' ).empty();
+                                    }else{
+                                       errorland = '<span class="help-block"><strong>Land Location Must be Filled</strong></span>';
+                                       $( '#land_location1' ).html( errorland );
+                                   }
+                                   if(errors['total_land']=== undefined){
+                                        $( '#total_land1' ).empty();
+                                    }else{
+                                       errortot = '<span class="help-block"><strong>Total Land Must be Filled</strong></span>';
+                                       $( '#total_land1' ).html( errortot );
+                                   }
+                                   if(errors['gender']=== undefined){
+                                        $( '#gender1' ).empty();
+                                    }else{
+                                       errorgen = '<span class="help-block"><strong>Gender Must be Selected</strong></span>';
+                                       $( '#gender1' ).html( errorgen );
+                                   }
+                                   if(errors['account_no']=== undefined){
+                                        $( '#account_no1' ).empty();
+                                    }else{
+                                       errorland = '<span class="help-block"><strong>Account No Must be Filled</strong></span>';
+                                       $( '#account_no1' ).html( errorland );
+                                   }
+                                   if(errors['bank_name']=== undefined){
+                                        $( '#bank_name1' ).empty();
+                                    }else{
+                                       errortot = '<span class="help-block"><strong>Bank Name Must be Filled</strong></span>';
+                                       $( '#bank_name1' ).html( errortot );
+                                   }
+                                   if(errors['bank_branch']=== undefined){
+                                        $( '#bank_branch1' ).empty();
+                                    }else{
+                                       errorgen = '<span class="help-block"><strong>Bank Branch Must be Filled</strong></span>';
+                                       $( '#bank_branch1' ).html( errorgen );
+                                   }
+                                   if(errors['marital_status']=== undefined){
+                                        $( '#marital_status1' ).empty();
+                                    }else{
+                                       errorgen = '<span class="help-block"><strong>Marital Status Must Be Selected</strong></span>';
+                                       $( '#marital_status1' ).html( errorgen );
+                                   }
+                                   if(errors['ifsc_code']=== undefined){
+                                        $( '#ifsc_code1' ).empty();
+                                    }else{
+                                       errorgen = '<span class="help-block"><strong>IFSC Code Must Be Filled</strong></span>';
+                                       $( '#ifsc_code1' ).html( errorgen );
+                                   }
+                                   if(errors['check']=== undefined){
+                                        $( '#check1' ).empty();
+                                    }else{
+                                       errorgen = '<span class="help-block"><strong>CheckBox Must be Checked</strong></span>';
+                                       $( '#check1' ).html( errorgen );
+                                   }
+                                });
+                        }
+                }
+        });
+        return false;
+    });
 			      
 </script>
  </body>

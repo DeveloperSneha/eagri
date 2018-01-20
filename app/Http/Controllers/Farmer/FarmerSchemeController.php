@@ -17,10 +17,11 @@ class FarmerSchemeController extends FarmerController {
     public function getScheme($id) {
         $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
         $section = \App\Section:: where('idSection', '=', $id)->first();
-        $schemes = DB::table('schemedistributiondistrict')
-                ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+        $schemes = DB::table('schemedistributionblock')
+                ->join('schemeactivation', 'schemedistributionblock.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
                 ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
-                ->where('schemedistributiondistrict.idDistrict', '=', $farmer->idDistrict)
+                ->join('program', 'schemeactivation.idProgram', '=', 'program.idProgram')
+                ->where('schemedistributionblock.idBlock', '=', $farmer->idBlock)
                 ->where('scheme.idSection', '=', $section->idSection)
                 ->get();
         //dd($schemes);
@@ -33,10 +34,9 @@ class FarmerSchemeController extends FarmerController {
      */
     public function applicationScheme($id) {
         $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
-        $scheme = \App\Scheme:: where('idScheme', '=', $id)->first();
-        $programs = ['' => '---Select Program---'] + $scheme->programs->pluck('programName', 'idProgram')->toArray();
-        //dd($programs);
-        return view('farmer.schemes.farmer_application', compact('scheme', 'programs', 'farmer'));
+        $program = \App\Program:: where('idProgram', '=', $id)->first();
+
+        return view('farmer.schemes.farmer_application', compact('program', 'farmer'));
     }
 
     /**
@@ -55,17 +55,6 @@ class FarmerSchemeController extends FarmerController {
             'areaApplied.required' => 'Area For Which Applied /No.Of Items Applied Should Not Be Empty'
         ];
         $this->validate($request, $rules, $messages);
-//        $program = \App\Program:: where('idProgram', '=', $request->idProgram)->first();
-//        if($program->vendorRequired == 'Y'){
-//            $rules+=[
-//                'idCategory' => 'required',
-//                'idComponent' => 'required'
-//            ];
-//            $messages+=[
-//                'idCategory.required' => 'Program Must be Selected',
-//                'idComponent.required' => 'Program Must be Selected',
-//            ];
-//        }
         $appsch = new \App\FarmerAppliedScheme();
         $appsch->idFarmer = Auth::user()->idFarmer;
         $appsch->fill($request->all());

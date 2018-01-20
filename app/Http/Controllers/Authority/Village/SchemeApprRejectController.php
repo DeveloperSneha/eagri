@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Authority\Village;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use DB;
+use Auth;
+use Session;
 
 class SchemeApprRejectController extends \App\Http\Controllers\Authority\AuthorityController {
 
@@ -13,23 +16,26 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        dd('here');
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $user_village = $user->userdesig()
-                    ->where('idDesignation', '=', $request->idDesignation)
-                    ->where('idDistrict', '=', $request->idDistrict)
-                    ->where('idSubdivision', '=', $request->idSubdivision)
-                    ->where('idBlock', '=', $request->idBlock)
-                    ->whereNotNull('idVillage')
-                    ->get();
+                        ->where('idDesignation', '=', Session::get('idDesignation'))
+                        ->where('idDistrict', '=', Session::get('idDistrict'))
+                        ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                        ->where('idBlock', '=', Session::get('idBlock'))
+                        ->whereNotNull('idVillage')
+                        ->get()->pluck('idVillage')->toArray();
         $schemes = DB::table('farmerapplied_scheme')
                 ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
+                ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
                 ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
                 ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
                 ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                 ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
-                ->where('farmers.idDistrict', '=', $authority_dist)
+                ->whereIn('farmers.idVillage', $user_village)
+                ->select('name', 'farmers.idFarmer', 'schemeName', 'programName', 'villageName', 'blockName', 'scheme.idScheme', 'idAppliedScheme')
                 ->get();
+        //dd($schemes);
+        return view('authority.villages.scheme_for_approval', compact('schemes'));
     }
 
     /**
@@ -41,6 +47,12 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
         //
     }
 
+    public function viewAppliedScheme($id) {
+        $farmer_scheme = \App\FarmerAppliedScheme::findOrfail($id);
+        // dd($farmer_scheme);
+        return view('authority.villages.view_appliedscheme', compact('farmer_scheme'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -48,7 +60,30 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $rules = [
+            'remarks' => 'required',
+            'haveChecked' => 'required'
+        ];
+        $messages = [
+            'haveChecked.required' => 'Please Confirm You Have Checked And Verified The Details Of The Farmer'
+        ];
+        $this->validate($request, $rules, $messages);
+        $workflow = \App\WorkflowStep::where('idDesignation', '=', Session::get('idDesignation'))->first();
+        $approve_scheme = new \App\SchemeApproveReject();
+        $approve_scheme->fill($request->all());
+        $approve_scheme->haveChecked = $request->has('haveChecked') ? 'Y' : 'N';
+        $approve_scheme->idDesignation = Session::get('idDesignation');
+        $approve_scheme->idWorkflow = $workflow->idWorkflow;
+
+        if ($request->has('Approve')) {
+            $approve_scheme->status = 'A';
+            $approve_scheme->save();
+            return redirect('authority/villages/apprscheme');
+        } else {
+            $approve_scheme->status = 'R';
+            $approve_scheme->save();
+            return redirect('authority/villages/rejscheme');
+        }
     }
 
     /**
@@ -90,6 +125,39 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
      */
     public function destroy($id) {
         //
+    }
+
+    public function approvedScheme() {
+        $schemes = DB::table('schemeappreject')
+                ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
+                ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
+                ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
+                ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
+                ->where('idDesignation', '=', Session::get('idDesignation'))
+                ->where('schemeappreject.status', '=', 'A')
+                ->select('farmers.name', 'scheme.schemeName','programName', 'district.districtName', 'block.blockName', 'village.villageName')
+                ->get();
+       // dd($schemes);
+        return view('authority.villages.approved_scheme', compact('schemes'));
+    }
+
+    public function rejectedScheme() {
+        $schemes = DB::table('schemeappreject')
+                ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
+                ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
+                ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
+                ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
+                ->where('idDesignation', '=', Session::get('idDesignation'))
+                ->where('schemeappreject.status', '=', 'R')
+                ->select('farmers.name', 'scheme.schemeName','programName', 'district.districtName', 'block.blockName', 'village.villageName')
+                ->get();
+        return view('authority.villages.rejected_scheme', compact('schemes'));
     }
 
 }

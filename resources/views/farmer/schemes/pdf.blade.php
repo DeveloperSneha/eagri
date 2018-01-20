@@ -21,28 +21,38 @@
                 </div>
                 <!-- info row -->
                 <div class="row invoice-info">
-                    <div class="col-xs-4 invoice-col">
+                    <table>
+                    <!-- <div class="col-xs-4 invoice-col"> -->
+                    <tr>
+                        <td style="text-align: center;">
                         <address>
                             <img src="{{asset('dist/img/logo.png')}}" >
                         </address>
-                    </div>
+                    </td>
+                    <!-- </div> -->
                     <!-- /.col -->
-                    <div class="col-xs-4 invoice-col">
-                        <address>
+                    <!-- <div class="col-xs-4 invoice-col"> -->
+                    <td> <center>   <address>
                             <strong>GOVERNMENT OF HARYANA<br>
                                 DEPARTMENT OF AGRICULTURE<br>
                                 AND FARMER WELFARE,<br>
                                 HARYANA<br>
                             </strong>
-                        </address>
-                    </div>
+                        </address></center>
+                    </td>
+                    <!-- </div> -->
                     <!-- /.col -->
-                    <div class="col-xs-4 invoice-col">
+                    <!-- <div class="col-xs-4 invoice-col"> -->
+                        <td style="text-align: right;">
                         <b>Version NO.: 1.0</b><br>
                         <br>
-                        <b>User ID:</b> {{ $fscheme->farmer->aadhaar}}<br>
-                    </div>
+                        <b>User ID:</b>{{ $fscheme->farmer->aadhaar}}<br>
+                    
+                    <!-- </div> -->
+                </td>
+            </tr>
                     <!-- /.col -->
+                </table>
                 </div>
                 <!-- /.row -->
 
@@ -57,32 +67,36 @@
                                 </tr>
                                 <tr>
                                     <th>Aadhaar Number</th>
-                                    <td>{{ str_limit($fscheme->farmer->aadhaar, $limit = 2, $end = 'xxxxxxxxxx') }}</td>
+                                    <td>
+                                        {{ substr($fscheme->farmer->aadhaar, 0, 2) . str_repeat('X', strlen($fscheme->farmer->aadhaar) - 4) . substr($fscheme->farmer->aadhaar, -2)}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Mobile No.</th>
-                                    <td>{{ str_limit($fscheme->farmer->mobile, $limit = 2, $end = 'xxxxxxxxx') }}</td>
+
+                                    <td>
+                                        {{ substr($fscheme->farmer->mobile, 0, 2) . str_repeat('X', strlen($fscheme->farmer->mobile) - 4) . substr($fscheme->farmer->mobile, -2)}}
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <th>Scheme Name</th>
+                                    <td>{{ $fscheme->scheme->schemeName}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Unique Scheme Id Number</th>
-                                   <td>{{ $fscheme->scheme->idScheme}}{{$fscheme->farmer->mobile}}{{$fscheme->farmer->aadhaar}}</td>
+                                    <th>Program Name</th>
+                                    <td>{{ $fscheme->program->programName}}</td>
                                 </tr>
                                 <tr>
                                     <th>Applied Date And Time</th>
                                     <td>{{ $fscheme->created_at }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Scheme Name</th>
-                                    <td>{{ $fscheme->scheme->schemeName}}</td>
-                                </tr>
-                                <tr>
                                     <th>Area (In Acres)</th>
                                     <td>{{ $fscheme->areaApplied }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Type Of Scheme</th>
-                                    <td>{{ $fscheme->scheme->section->sectionName}}</td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>

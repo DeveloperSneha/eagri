@@ -43,7 +43,7 @@
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::select('idSection',$sections, null, ['class' => 'form-control']) !!}
+                {!! Form::select('idSection',$sections, null, ['class' => 'form-control','id'=>'idSection']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -56,9 +56,9 @@
         <div class="form-group">
             {!! Form::label('Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-               <select name="idScheme" class="form-control select2" >--- Select Scheme ---</select>
+               <select name="idScheme" id="idScheme" class="form-control select2" >--- Select Scheme ---</select>
             </div>
-            <span class="help-block">
+            <span class="help-block"> 
                     <strong>
                         @if($errors->has('idScheme'))
                         <p>{{ $errors->first('idScheme') }}</p>
@@ -157,6 +157,20 @@
                 $('select[name="idScheme"]').empty();
             }
         });
+        var cur_section = $( "#idSection option:selected" ).val();
+        if(cur_section){
+            $.ajax({
+                url: "{{url('/section') }}"+'/' +cur_section + "/schemes",
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('select[id="idScheme"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[id="idScheme"]').append('<option value="'+ key +'">'+ value +'</option>');
+                    });
+                }
+            });
+         }
     });
  </script>
 @stop

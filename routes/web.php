@@ -111,8 +111,8 @@ Route::prefix('farmer')->group(function() {
     Route::get('block/{id}/villages', 'Auth\FarmerRegisterController@getVillages');
 
     Route::get('section/{id}/schemes', 'Farmer\FarmerSchemeController@getScheme');
-    Route::get('scheme/{id}/apply', 'Farmer\FarmerSchemeController@applicationScheme');
-    Route::post('scheme/{id}/apply', 'Farmer\FarmerSchemeController@submitSchemeApplication');
+    Route::get('program/{id}/apply', 'Farmer\FarmerSchemeController@applicationScheme');
+    Route::post('program/{id}/apply', 'Farmer\FarmerSchemeController@submitSchemeApplication');
     Route::get('program/{id}/categories', 'Farmer\FarmerSchemeController@getCategory');
     Route::get('category/{id}/components', 'Farmer\FarmerSchemeController@getComponent');
     Route::get('/schemes', 'Farmer\FarmerSchemeController@farmerSchemes');
@@ -127,7 +127,6 @@ Route::prefix('authority')->group(function() {
     Route::get('/user/{user}/designations', 'Auth\AuthorityLoginController@getDesignation');
     Route::get('/login', 'Auth\AuthorityLoginController@showLoginForm')->name('authority.login');
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
-    //   Route::get('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLoginForm')->name('authority.secondlogin');
     Route::post('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLogin')->name('authority.secondlogin');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
 
@@ -187,20 +186,24 @@ Route::prefix('authority')->group(function() {
     Route::prefix('villages')->group(function () {
         Route::get('/', 'Authority\AuthorityController@village')->name('authority.villages.dashboard');
         Route::resource('/profile', 'Authority\Village\ProfileController');
-        Route::resource('/schappreject','Authority\Village\SchemeApprRejectController');
+
+        Route::get('apr/{idAppliedProgram}/view', 'Authority\Village\SchemeApprRejectController@viewAppliedScheme');
+        Route::get('/apprscheme', 'Authority\Village\SchemeApprRejectController@approvedScheme');
+        Route::get('/rejscheme', 'Authority\Village\SchemeApprRejectController@rejectedScheme');
+        Route::resource('/schappreject', 'Authority\Village\SchemeApprRejectController');
     });
 
 
 
 
-    Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
-    Route::resource('/adduser', 'Authority\AuthorityUserController');
-    // Route::resource('/profile', 'Authority\AuthorityProfileController');
-    Route::resource('/authschemes', 'Authority\AuthoritySchemeController');
-    Route::get('/approvedscheme', 'Authority\AuthoritySchemeController@approvedScheme');
-    Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');
-
-    Route::get('/registeredfarmer', 'Authority\AuthorityFarmerController@registeredFarmer');
-    Route::get('/cancelregfarmer', 'Authority\AuthorityFarmerController@cancelReg');
-    Route::get('/blacklistedfarmer', 'Authority\AuthorityFarmerController@blacklistedFarmer');
+//    Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
+//    Route::resource('/adduser', 'Authority\AuthorityUserController');
+//    // Route::resource('/profile', 'Authority\AuthorityProfileController');
+//    Route::resource('/authschemes', 'Authority\AuthoritySchemeController');
+//    Route::get('/approvedscheme', 'Authority\AuthoritySchemeController@approvedScheme');
+//    Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');
+//
+//    Route::get('/registeredfarmer', 'Authority\AuthorityFarmerController@registeredFarmer');
+//    Route::get('/cancelregfarmer', 'Authority\AuthorityFarmerController@cancelReg');
+//    Route::get('/blacklistedfarmer', 'Authority\AuthorityFarmerController@blacklistedFarmer');
 });

@@ -6,7 +6,7 @@
         <table class="table table-bordered" id='table1'>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>S.No.</th>
                     <th>Farmer Name</th>
                     <th>Scheme Name</th>
                     <th>District Name</th>
@@ -16,16 +16,18 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $i= 1;?>
                 @foreach($schemes as $var)
                 <tr>
-                    <td>{{ $var->idAppliedScheme }}</td>
+                    <td>{{ $i }}</td>
                     <td>{{$var->name}}</td>
                     <td>{{$var->schemeName}}</td>
-                    <td>{{$var->districtName}}</td>
+                    <td>{{$var->programName}}</td>
                     <td>{{$var->blockName}}</td>
                     <td>{{$var->villageName}}</td>
-                    <td> <a href='{{url('authority/schemes/'.$var->idAppliedScheme)}}' class="btn btn-xs btn-warning">View</a> </td>
+                    <td> <a href='{{url('authority/villages/apr/'.$var->idAppliedScheme.'/view')}}' class="btn btn-xs btn-warning">View</a> </td>
                 </tr>
+                <?php $i++ ?>
                 @endforeach
             </tbody>
         </table>

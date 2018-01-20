@@ -136,7 +136,6 @@ use RegistersUsers;
             'name.required' => 'Farmer Name Must Not be Empty',
             'father_name.required' => 'Father/Husband Name Must Be Filled.',
             'aadhaar.required' => 'Aadhaar Number Must Not be Empty.',
-            'aadhaar.max' => 'Aadhaar Number is not Valid',
             'aadhaar.unique' => 'Aadhaar Number  is Already Taken.',
             'mobile.required' => 'Mobile Number Must Not be Empty.',
             'mobile.unique' => 'Mobile Number  is Already Taken',
@@ -187,9 +186,18 @@ use RegistersUsers;
         $an = substr($request->aadhaar, -4);
         $password = ($n . $an . $rn);
         $farmer->password = bcrypt($password);
+        if($request->total_land <=2){
+            $farmer->farmer_category = 'Small Farmer';
+        }elseif($request->total_land >2 && $request->total_land <= 5){
+            $farmer->farmer_category = 'Medium Farmer';
+        }elseif($request->total_land >5){
+            $farmer->farmer_category = 'Large Farmer';
+        }
         $farmer->save();
         Session::put('idFarmer', $farmer->idFarmer);
-//        dd($farmer);
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('farmer/successreg')->with(['farmer' => $farmer]);
 //        event(new Registered($user = $this->create($request->all())));
 //
