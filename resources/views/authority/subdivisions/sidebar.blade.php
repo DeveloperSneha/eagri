@@ -43,7 +43,7 @@
                         <a href="{{ url('/authority/subdivisions/addviuser') }}">ADD User in Village</a></li>
                 </ul>
             </li>
-            <li class="treeview {{ checkActive(['authority/subdivisions/blockdist']) }}">
+            <li class="treeview {{ checkActive(['authority/subdivisions/apprejectscheme/*/view','authority/subdivisions/blockdist','authority/subdivisions/apprejectscheme','authority/subdivisions/apvscheme','authority/subdivisions/rjctscheme']) }}">
                 <a href="#">
                     <span>Scheme</span>
                     <span class="pull-right-container">
@@ -52,12 +52,12 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ checkActive(['authority/subdivisions/blockdist']) }}"><a href="{{ url('/authority/subdivisions/blockdist') }}">Scheme Block Distribution</a></li>
-                    <li class=""><a href="{{ url('#')}}">Scheme For Approval</a></li>
-                    <li class=""><a href="{{ url('#')}}">Approved Scheme</a></li>
-                    <li class=""><a href="{{ url('#')}}">Rejected Scheme</a></li>
+                    <li class="{{ checkActive(['authority/subdivisions/apprejectscheme/*/view','authority/subdivisions/apprejectscheme']) }}"><a href="{{ url('authority/subdivisions/apprejectscheme')}}">Scheme For Approval</a></li>
+                    <li class="{{ checkActive(['authority/subdivisions/apvscheme']) }}"><a href="{{ url('authority/subdivisions/apvscheme')}}">Approved Scheme</a></li>
+                    <li class="{{ checkActive(['authority/subdivisions/rjctscheme']) }}"><a href="{{ url('authority/subdivisions/rjctscheme')}}">Rejected Scheme</a></li>
                 </ul>
             </li> 
-            <li class="treeview {{ checkActive([''])}}">
+            <li class="treeview {{ checkActive(['authority/subdivisions/farmer_reg'])}}">
                 <a href="#">
                     <span>Farmer Section</span>
                     <span class="pull-right-container">
@@ -65,8 +65,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class=""><a href="#">Registered Farmer</a></li>
-                    <li class=""><a href="#">Cancel Farmer Registration</a></li>
+                    <li class="{{ checkActive(['authority/subdivisions/farmer_reg'])}}"><a href="{{ url('authority/subdivisions/farmer_reg')}}">Registered Farmer</a></li>
                     <li class=""><a href="#">Blacklisted Farmer</a></li>
                 </ul>
             </li>

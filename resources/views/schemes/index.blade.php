@@ -85,7 +85,7 @@
                     <td>{{ $var->remarks }}</td>
                     <td>
                         
-                        <a href='{{url('/schemes/'.$var->idScheme.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
+                        <a href='{{url('/schemes/'.$var->idScheme.'/editscheme')}}' class="btn btn-xs btn-warning">Edit</a>
                       {{--   {{ Form::open(['route' => ['schemes.destroy', $var->idScheme], 'method' => 'delete']) }} --}}
                        <a href='{{url('/schemes/'.$var->idScheme.'/deletescheme')}}' class="btn btn-xs btn-danger">Delete</a>
                       {{--  {{ Form::close() }} --}}

@@ -40,14 +40,15 @@ class SchemeController extends Controller {
         $rules = [
             'idSection' => 'required',
             'schemeName' => 'required|unique:scheme|regex:/^[\pL\s\-()]+$/u|between:2,50',
-            'remarks' => 'required'
+            'remarks' => 'required|regex:/^[0-9a-zA-Z-()]+/'
         ];
         $messages = [
             'idSection.required' => 'Section Must be Selected',
             'schemeName.required' => 'Scheme Name Must be Filled',
             'schemeName.unique' => 'Scheme Name Is Already Taken',
             'schemeName.regex' => 'Scheme Name is Not Valid',
-            'remarks.required' => 'Remark must be Provided'
+            'remarks.required' => 'Remark must be Provided',
+            'remarks.regex' => 'Remarks is Not Valid',
         ];
         $this->validate($request, $rules, $messages);
 
@@ -119,6 +120,20 @@ class SchemeController extends Controller {
         }
         else{
             return view('schemes.delete', compact('schemes'));
+        }
+    }
+    public function editScheme($id) {
+        //
+        
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        $schemes = \App\Scheme::orderBy('schemeName')->get();
+        $scheme = \App\Scheme:: where('idScheme', '=', $id)->first();
+        $program = \App\Program::where('idScheme', '=', $id)->get();
+        if($program->count() > 0){
+            return redirect()->back()->with('message', 'You Can Not Edit this Scheme Because it  Already Exist in Some Program!');
+        }
+        else{
+            return view('schemes.index', compact('scheme', 'schemes', 'sections'));
         }
     }
 

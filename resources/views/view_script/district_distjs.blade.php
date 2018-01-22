@@ -23,7 +23,7 @@
         var schemeID = $(this).val();
         if(schemeID) {
             $.ajax({
-                url: "{{url('/activated') }}"+'/' +schemeID + "/programs",
+                url: "{{url('/schemes') }}"+'/' +schemeID + "/activatedprograms",
                 type: "GET",
                 dataType: "json",
                 success:function(data) {

@@ -24,7 +24,7 @@ class SchemeActivationRequest extends FormRequest {
         $id = $this->route('schemeactivation');
         $rules = [
             'idScheme' => 'required',
-            'idFinancialYear' => 'required|unique:schemeactivation,idFinancialYear,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
+            'idFinancialYear' => 'required|unique:schemeactivation,idFinancialYear,NULL,idSchemeActivation,idProgram,' . $this->idProgram,
             'startDate' => 'required',
             'endDate' => 'required',
             'extendDays' => 'required',

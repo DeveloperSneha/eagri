@@ -10,6 +10,7 @@
                     <th>Farmer Name</th>
                     <th>Scheme Name</th>
                     <th>District Name</th>
+                     <th>Subdivision Name</th>
                     <th>Block Name</th>
                     <th>Village Name</th>
                 </tr>
@@ -22,6 +23,7 @@
                     <td>{{$var->name }}</td>
                     <td>{{$var->schemeName }}</td>
                     <td>{{$var->districtName}}</td>
+                    <td>{{ $var->subDivisionName}}</td>
                     <td>{{$var->blockName}}</td>
                     <td>{{$var->villageName}}</td>
                 </tr>

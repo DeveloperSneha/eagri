@@ -135,9 +135,10 @@ class BlockwiseSchemeDistController extends \App\Http\Controllers\Authority\Auth
                         ->join('schemeactivation', 'schemedistributionsubdivision.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
                         ->join('program', 'schemeactivation.idProgram', '=', 'program.idProgram')
                         ->where('schemeDistributionDistrict', '=', Session::get('idDistrict'))
-                        ->select('program.idProgram', 'program.programName')
+                        ->where('schemeactivation.idScheme', '=', $id)
+                        ->select('schemeactivation.idSchemeActivation', 'program.programName')
                         ->groupBy('schemedistributionsubdivision.idSchemeActivation')
-                        ->get()->pluck('programName', 'idProgram')->toArray();
+                        ->get()->pluck('programName', 'idSchemeActivation')->toArray();
         // $programs = DB::table()->
         return json_encode($programs);
     }
@@ -151,15 +152,16 @@ class BlockwiseSchemeDistController extends \App\Http\Controllers\Authority\Auth
     }
 
     public function getFunds($id) {
-        $schact = DB::table('schemeactivation')
-                        ->leftjoin('schemedistributionsubdivision', 'schemedistributionsubdivision.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
-                        ->where('idSubdivision', '=', $id)
+      //  dd($id);
+        $schact = DB::table('schemedistributionsubdivision')
+                        ->leftjoin('schemeactivation', 'schemeactivation.idSchemeActivation', '=', 'schemedistributionsubdivision.idSchemeActivation')
+                        ->where('schemedistributionsubdivision.idSchemeActivation', '=', $id)
                         ->select('amountSubdivision AS TotalFund', 'areaSubdivision AS TotalArea', 'assistance AS Assistance')->first();
         $dist_sch = DB::table('schemedistributionsubdivision')
                         ->leftjoin('schemeactivation', 'schemeactivation.idSchemeActivation', '=', 'schemedistributionsubdivision.idSchemeActivation')
                         ->leftjoin('schemedistributionblock', 'schemedistributionblock.schemeDistributionSubdivision', '=', 'schemedistributionsubdivision.idSubdivision')
                         ->select(DB::raw('schemedistributionsubdivision.amountSubdivision   -  SUM(schemedistributionblock.amountBlock) AS TotalFund'), DB::raw('schemedistributionsubdivision.areaSubdivision - SUM(schemedistributionblock.areaBlock) AS TotalArea'),'schemeactivation.assistance AS Assistance')
-                         ->where('schemeDistributionSubdivision', '=', $id)
+                        ->where('schemedistributionsubdivision.idSchemeActivation', '=', $id)
                         ->first();
         if ($dist_sch->TotalFund!=null){
             return json_encode($dist_sch);

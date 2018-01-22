@@ -126,9 +126,9 @@ class UserVillageController extends Controller {
     public function update(Request $request, $id) {
         $rules = [
             'idSection' => 'required',
-            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idVillage,' . $request->idVillage,
-            'idVillage'=>'required',
-        //    'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
+            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,' . $id . ',iddesgignationdistrictmapping,idVillage,' . $request->idVillage,
+            'idVillage' => 'required',
+                //    'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
         ];
 //        if (count($request->idVillages) == 0) {
 //            $rules += ['idVillage' => 'required'];
@@ -169,7 +169,7 @@ class UserVillageController extends Controller {
 //        $user->userdesig()->saveMany($user_villages);
 //
 //        DB::commit();
-        return redirect('uservillage/'.$userdesig->idUser.'/edituser');
+        return redirect('uservillage/' . $userdesig->idUser . '/edituser');
     }
 
     /**
@@ -185,13 +185,28 @@ class UserVillageController extends Controller {
     public function getUserDetails($id) {
         $user = \App\User::where('idUser', '=', $id)->first();
         $userdesig = $user->userdesig()->whereNotNull('idVillage')->get();
-        return view('users.userdetails_village', compact('user','userdesig'));
-        
+        return view('users.userdetails_village', compact('user', 'userdesig'));
     }
+
     public function getDesignations($id) {
-        $designations = \App\Designation::where("idSection", $id)
-                        ->where('level', 4)->get()
-                        ->pluck("designationName", "idDesignation")->toArray();
+        $desig = \App\Designation::where("idSection", $id)->get();
+        if ($desig->count() == 4) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 4)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 3) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 2) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } else {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        }
         return json_encode($designations);
     }
 

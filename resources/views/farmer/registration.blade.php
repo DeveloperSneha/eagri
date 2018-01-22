@@ -35,7 +35,7 @@
                         <div class="form-group">
                             {!! Form::label('Aadhaar No', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('aadhaar') ? ' has-error' : '' }}{{ $errors->has('aadhaarabc') ? ' has-error' : '' }}">
-                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'अपना आधार नंबर डाले','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
+                                {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'अपना आधार नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
                                 <span id="aadhaarabc1"></span>
                                 <span  id="aadhaar1"></span>
                             </div>
@@ -85,37 +85,46 @@
                                 {!! Form::select('idDistrict',$districts, null, ['class' => 'form-control','id'=>'idDistrict']) !!}
                                 <span id="idDistrict1"></span>
                             </div>
-                            {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
-                                    {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान']) !!}
-                                    <span id="land_location1"></span>
+                            {!! Form::label('Subdivision', null, ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-4 {{ $errors->has('idSubdivision') ? ' has-error' : '' }}">
+                                    <select name="idSubdivision" class="form-control select2" id="idSubdivision">--- Select Subdivision ---
+                                    <option value="" selected="selected"></option></select>
+                                    <span id="idSubdivision1"></span>
                                 </div>
+                            
                         
                         </div>
                         <div class="form-group">
                                                        
                             {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
-                                <select name="idBlock" class="form-control" id="idBlock">--- Select Block ---
+                                <select name="idBlock" class="form-control select2" id="idBlock">--- Select Block ---
                                     <option value="" selected="selected"></option></select>
                                 <span id="idBlock1"></span>
                             </div>
-                            {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
-                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा (in Hectares) ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
-                                    <span  id="total_land1"></span>
-                                </div> 
+                            {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
+                                    {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान']) !!}
+                                    <span id="land_location1"></span>
+                                </div>
+                            
                             
                             
                         </div>
                         <div class="form-group">
                             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-4 {{ $errors->has('idVillage') ? ' has-error' : '' }}">
-                                <select name="idVillage" class="form-control" id="idVillage" >
+                                <select name="idVillage" class="form-control select2" id="idVillage" >
                                     <option value="" selected="selected"></option>
                                 </select>
                                 <span  id="idVillage1"></span>
                             </div>
+                            {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
+                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा (in Hectares) ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
+                                    <span  id="total_land1"></span>
+                                </div> 
+
                         </div>
                         
                         <fieldset>
@@ -177,7 +186,40 @@
             var districtID = $(this).val();
             if(districtID) {
                 $.ajax({
-                    url: "{{url('/farmer/district/') }}"+'/' +districtID + "/blocks",
+                    url: "{{url('/farmer/district/') }}"+'/' +districtID + "/subdivisions",
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="idSubdivision"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+
+                    }
+                });
+            }else{
+                $('select[name="idBlock"]').empty();
+            }
+        });
+        // var cur_dist = $( "#idDistrict option:selected" ).val();
+        // if(cur_dist){
+        //     $.ajax({
+        //         url: "{{url('/farmer/district/') }}"+'/' +cur_dist + "/subdivisions",
+        //         type: "GET",
+        //         dataType: "json",
+        //         success:function(data) {
+        //             $('select[id="idSubdivision"]').empty();
+        //             $.each(data, function(key, value) {
+        //                 $('select[id="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
+        //             });
+        //         }
+        //     });
+        //  }
+         $('select[name="idSubdivision"]').on('change', function() {
+            var subID = $(this).val();
+            if(subID) {
+                $.ajax({
+                    url: "{{url('/farmer/subdivision/') }}"+'/' +subID + "/blocks",
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
@@ -192,20 +234,6 @@
                 $('select[name="idBlock"]').empty();
             }
         });
-        var cur_dist = $( "#idDistrict option:selected" ).val();
-        if(cur_dist){
-            $.ajax({
-                url: "{{url('/farmer/district/') }}"+'/' +cur_dist + "/blocks",
-                type: "GET",
-                dataType: "json",
-                success:function(data) {
-                    $('select[id="idBlock"]').empty();
-                    $.each(data, function(key, value) {
-                        $('select[id="idBlock"]').append('<option value="'+ key +'">'+ value +'</option>');
-                    });
-                }
-            });
-         }
                 
         $('select[name="idBlock"]').on('change', function() {
             var blockID = $(this).val();
@@ -226,20 +254,20 @@
                 $('select[name="idVillage"]').empty();
             }
         });
-        var cur_block = $( "#idBlock option:selected" ).val();
-        if(cur_block){
-            $.ajax({
-                url: "{{url('/farmer/block/') }}"+'/' +cur_block + "/villages",
-                type: "GET",
-                dataType: "json",
-                success:function(data) {
-                    $('select[id="idVillage"]').empty();
-                    $.each(data, function(key, value) {
-                        $('select[id="idVillage"]').append('<option value="'+ key +'">'+ value +'</option>');
-                    });
-                }
-            });
-         }
+        // var cur_block = $( "#idBlock option:selected" ).val();
+        // if(cur_block){
+        //     $.ajax({
+        //         url: "{{url('/farmer/block/') }}"+'/' +cur_block + "/villages",
+        //         type: "GET",
+        //         dataType: "json",
+        //         success:function(data) {
+        //             $('select[id="idVillage"]').empty();
+        //             $.each(data, function(key, value) {
+        //                 $('select[id="idVillage"]').append('<option value="'+ key +'">'+ value +'</option>');
+        //             });
+        //         }
+        //     });
+        //  }
         
     });
 
@@ -299,130 +327,126 @@ $('#register').on('submit',function(e){
                        // e.preventDefault(e);
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
-                                console.log(errors['idDistrict']);
-                                console.log(errors['aadhaar']);
-                                console.log(errors['rcno']);
-//                                if(errors['aadhaar']){
-//                                       errorname = '<span class="help-block"><strong>'+errors['aadhaar']+'</strong></span>';
-//                                       $( '#aadhaar1' ).html( errorname );
-//                                    }
-                                $.each( errors, function( key, value ) {
-                                    
-                                    if(errors['idDistrict']=== undefined){
+                            // $.each( errors, function( key, value ) {
+                               if(errors['aadhaar']){
+                                      errorname = '<span class="help-block"><strong>'+errors['aadhaar']+'</strong></span>';
+                                      $( '#aadhaar1' ).html( errorname );
+                                   }
+                                   if(errors['idDistrict']=== undefined){
                                         $( '#idDistrict1' ).empty();
                                     }else{
-                                       errorname = '<span class="help-block"><strong>Select District First</strong></span>';
+                                       errorname = '<span class="help-block"><strong>'+errors['idDistrict']+'</strong></span>';
                                        $( '#idDistrict1' ).html( errorname );
                                     }
                                     if(errors['idBlock']=== undefined){
                                         $( '#idBlock1' ).empty();
                                     }else{
-                                       errorname = '<span class="help-block"><strong>Select Block </strong></span>';
+                                       errorname = '<span class="help-block"><strong>'+errors['idBlock']+'</strong></span>';
                                        $( '#idBlock1' ).html( errorname );
                                     }
                                     if(errors['idVillage']=== undefined){
                                         $( '#idVillage1' ).empty();
                                     }else{
-                                       errorname = '<span class="help-block"><strong>Select Village</strong></span>';
+                                       errorname = '<span class="help-block"><strong>'+errors['idVillage']+'</strong></span>';
                                        $( '#idVillage1' ).html( errorname );
                                     }
                                     if(errors['name']=== undefined){
                                         $( '#name1' ).empty();
                                     }else{
-                                       errorname = '<span class="help-block"><strong>Farmer Name Must Not be Empty</strong></span>';
+                                       errorname = '<span class="help-block"><strong>'+errors['name']+'</strong></span>';
                                        $( '#name1' ).html( errorname );
                                     }
                                     if(errors['father_name']=== undefined){
                                         $( '#father_name1' ).empty();
                                     }else{
-                                       errorfname = '<span class="help-block"><strong>Fathers Name Must Not be Empty</strong></span>';
+                                       errorfname = '<span class="help-block"><strong>'+errors['father_name']+'</strong></span>';
                                        $( '#father_name1' ).html( errorfname );
                                     }
-//                                   if(errors['aadhaar']=== undefined){
-//                                        $( '#aadhaar1' ).empty();
-//                                    }else{
-//                                       erroraadhar = '<span class="help-block"><strong>Aadhaar No. Must Not Be Empty</strong></span>';
-//                                       $( '#aadhaar1' ).html( erroraadhar );
-//                                   }
+                                  if(errors['idSubdivision']=== undefined){
+                                       $( '#idSubdivision1' ).empty();
+                                   }else{
+                                      erroraadhar = '<span class="help-block"><strong>'+errors['idSubdivision']+'</strong></span>';
+                                      $( '#idSubdivision1' ).html( erroraadhar );
+                                  }
                                    if(errors['aadhaarabc']=== undefined){
                                         $( '#aadhaarabc1' ).empty();
                                     }else{
-                                       erroraadhar = '<span class="help-block"><strong>Aadhaar No. is Not Valid..</strong></span>';
+                                       erroraadhar = '<span class="help-block"><strong>'+errors['aadhaarabc']+'</strong></span>';
                                        $( '#aadhaarabc1' ).html( erroraadhar );
                                    }
                                    if(errors['mobile']=== undefined){
                                         $( '#mobile1' ).empty();
                                     }else{
-                                       errormob = '<span class="help-block"><strong>Mobile Number Must Be Filled</strong></span>';
+                                       errormob = '<span class="help-block"><strong>'+errors['mobile']+'</strong></span>';
                                        $( '#mobile1' ).html( errormob );
                                    }
                                    if(errors['rcno']=== undefined){
                                         $( '#rcno1' ).empty();
                                     }else{
-                                       errorrc = '<span class="help-block"><strong>Ration Card No. Must be Filled</strong></span>';
+                                       errorrc = '<span class="help-block"><strong>'+errors['rcno']+'</strong></span>';
                                        $( '#rcno1' ).html( errorrc );
                                    }
                                    if(errors['caste']=== undefined){
                                         $( '#caste1' ).empty();
                                     }else{
-                                       errorcaste = '<span class="help-block"><strong>Caste Category Must be Selected</strong></span>';
+                                       errorcaste = '<span class="help-block"><strong>'+errors['caste']+'</strong></span>';
                                        $( '#caste1' ).html( errorcaste );
                                    }
                                    if(errors['land_location']=== undefined){
                                         $( '#land_location1' ).empty();
                                     }else{
-                                       errorland = '<span class="help-block"><strong>Land Location Must be Filled</strong></span>';
+                                       errorland = '<span class="help-block"><strong>'+errors['land_location']+'</strong></span>';
                                        $( '#land_location1' ).html( errorland );
                                    }
                                    if(errors['total_land']=== undefined){
                                         $( '#total_land1' ).empty();
                                     }else{
-                                       errortot = '<span class="help-block"><strong>Total Land Must be Filled</strong></span>';
+                                       errortot = '<span class="help-block"><strong>'+errors['total_land']+'</strong></span>';
                                        $( '#total_land1' ).html( errortot );
                                    }
                                    if(errors['gender']=== undefined){
                                         $( '#gender1' ).empty();
                                     }else{
-                                       errorgen = '<span class="help-block"><strong>Gender Must be Selected</strong></span>';
+                                       errorgen = '<span class="help-block"><strong>'+errors['gender']+'</strong></span>';
                                        $( '#gender1' ).html( errorgen );
                                    }
                                    if(errors['account_no']=== undefined){
                                         $( '#account_no1' ).empty();
                                     }else{
-                                       errorland = '<span class="help-block"><strong>Account No Must be Filled</strong></span>';
+                                       errorland = '<span class="help-block"><strong>'+errors['account_no']+'</strong></span>';
                                        $( '#account_no1' ).html( errorland );
                                    }
                                    if(errors['bank_name']=== undefined){
                                         $( '#bank_name1' ).empty();
                                     }else{
-                                       errortot = '<span class="help-block"><strong>Bank Name Must be Filled</strong></span>';
+                                       errortot = '<span class="help-block"><strong>'+errors['bank_name']+'</strong></span>';
                                        $( '#bank_name1' ).html( errortot );
                                    }
                                    if(errors['bank_branch']=== undefined){
                                         $( '#bank_branch1' ).empty();
                                     }else{
-                                       errorgen = '<span class="help-block"><strong>Bank Branch Must be Filled</strong></span>';
+                                       errorgen = '<span class="help-block"><strong>'+errors['bank_branch']+'</strong></span>';
                                        $( '#bank_branch1' ).html( errorgen );
                                    }
                                    if(errors['marital_status']=== undefined){
                                         $( '#marital_status1' ).empty();
                                     }else{
-                                       errorgen = '<span class="help-block"><strong>Marital Status Must Be Selected</strong></span>';
+                                       errorgen = '<span class="help-block"><strong>'+errors['marital_status']+'</strong></span>';
                                        $( '#marital_status1' ).html( errorgen );
                                    }
                                    if(errors['ifsc_code']=== undefined){
                                         $( '#ifsc_code1' ).empty();
                                     }else{
-                                       errorgen = '<span class="help-block"><strong>IFSC Code Must Be Filled</strong></span>';
+                                       errorgen = '<span class="help-block"><strong>'+errors['ifsc_code']+'</strong></span>';
                                        $( '#ifsc_code1' ).html( errorgen );
                                    }
                                    if(errors['check']=== undefined){
                                         $( '#check1' ).empty();
                                     }else{
-                                       errorgen = '<span class="help-block"><strong>CheckBox Must be Checked</strong></span>';
+                                       errorgen = '<span class="help-block"><strong>'+errors['check']+'</strong></span>';
                                        $( '#check1' ).html( errorgen );
                                    }
-                                });
+                                // });
                         }
                 }
         });

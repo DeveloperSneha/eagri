@@ -18,7 +18,7 @@ class Farmer extends Authenticatable
      */
     protected $fillable = [
         'name','father_name','mother_name','aadhaar','rcno','password',
-        'farmer_category','gender','marital_status','caste','mobile','idDistrict','idBlock',
+        'farmer_category','gender','marital_status','caste','mobile','idDistrict','idSubdivision','idBlock',
         'idVillage','bank_name','bank_branch','ifsc_code','account_no','land_location','land_owner','total_land'
     ];
 
@@ -36,6 +36,9 @@ class Farmer extends Authenticatable
     }
     public function district() {
         return $this->belongsTo(District::class,'idDistrict','idDistrict');
+    }
+    public function subdivision() {
+        return $this->belongsTo(Subdivision::class,'idSubdivision','idSubdivision');
     }
     public function block() {
         return $this->belongsTo(Block::class,'idBlock','idBlock');

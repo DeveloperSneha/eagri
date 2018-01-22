@@ -27,7 +27,7 @@
             </div>
 			<!--Total Count-->
            <!-- <span class="small-box-footer">Schemes<i class="fa fa-arrow-circle-right"></i></span>-->
-		   <span class="small-box-footer">Total No of Schemes&nbsp;-&nbsp;{{ $schemes = DB::table('schemedistributiondistrict')
+		   <span class="small-box-footer">Total No of Schemes &nbsp;-&nbsp;{{ $schemes = DB::table('schemedistributiondistrict')
                 ->join('schemeactivation', 'schemedistributiondistrict.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
                 ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
                 ->where('schemedistributiondistrict.idDistrict', '=', $farmer->idDistrict)

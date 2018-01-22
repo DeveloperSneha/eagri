@@ -38,7 +38,7 @@ class ProgramController extends Controller {
         $rules = [
             'idSection' =>'required',
             'idScheme' => 'required',
-            'programName' => 'required|max:100|regex:/^[\pL\s\-]+$/u|unique:program,programName,NULL,idProgram,idScheme,' . $request->idScheme,
+            'programName' => 'required|max:100|regex:/^[\pL\s\-()]+$/u|unique:program,programName,NULL,idProgram,idScheme,' . $request->idScheme,
         ];
         $messages = [
             'idSection.required'=>'Section Must be Selected First',
@@ -121,6 +121,18 @@ class ProgramController extends Controller {
         }
     }
 
+    public function editprogram($id) {
+        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+        $programs = \App\Program::orderBy('programName')->get();
+        $program = \App\Program::where('idProgram', '=', $id)->first();
+        $schact = \App\SchemeActivation::where('idProgram', '=', $id)->get();
+        if($schact->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Delete this Program Because it is Already Exist in Some Scheme Activation!');
+        }
+        else{
+            return view('program.index', compact('program', 'programs','sections'));
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

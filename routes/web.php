@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('section/{id}/schemes', 'SectionController@getScheme');
     Route::get('sections/{id}/deletesection', 'SectionController@deleteSection');
     Route::get('schemes/{id}/deletescheme', 'SchemeController@deleteScheme');
+    Route::get('schemes/{id}/editscheme', 'SchemeController@editScheme');
     Route::resource('sections', 'SectionController');
     Route::resource('schemes', 'SchemeController');
     Route::resource('compcerts', 'CompcertController');
@@ -69,6 +70,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('certificates/{id}/deletecertificate', 'CertificateController@deleteCertificate');
     Route::resource('certificates', 'CertificateController');
     Route::resource('categories', 'CategoryController');
+    Route::get('programs/{id}/editprogram', 'ProgramController@editProgram');
     Route::get('programs/{id}/deleteprogram', 'ProgramController@deleteProgram');
     Route::resource('programs', 'ProgramController');
     Route::get('fys/{id}/deletefys', 'FinancialYearController@deletefys');
@@ -76,7 +78,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('compsizes', 'CompsizeController');
     Route::resource('comprates', 'ComprateController');
 
-    Route::get('activated/{id}/programs', 'NonVendorSchemeActivationController@getActivatedProgram');
+    Route::get('schemes/{idScheme}/activatedprograms', 'NonVendorSchemeActivationController@getActivatedProgram');
+    Route::get('schemes/{idScheme}/programs', 'NonVendorSchemeActivationController@getPrograms');
     Route::resource('schemeactivations/nv', 'NonVendorSchemeActivationController');
     Route::resource('schemeactivations', 'SchemeActivationController');
     Route::resource('districtdistribution', 'SchDistrictDistributionController');
@@ -90,8 +93,6 @@ Route::group(['middleware' => ['auth']], function() {
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 //Farmers Route
-
-
 Route::prefix('farmer')->group(function() {
     Route::get('/bankdetails', 'Auth\FarmerRegisterController@getBankDetails');
     Route::get('/register', 'Auth\FarmerRegisterController@showRegistrationForm')->name('farmer.register');
@@ -107,7 +108,8 @@ Route::prefix('farmer')->group(function() {
     Route::post('/logout', 'Auth\FarmerLoginController@logout')->name('farmer.logout');
     Route::get('/', 'Farmer\FarmerController@index')->name('farmer.dashboard');
 
-    Route::get('district/{id}/blocks', 'Auth\FarmerRegisterController@getBlocks');
+    Route::get('district/{id}/subdivisions', 'Auth\FarmerRegisterController@getSubdivisions');
+    Route::get('subdivision/{id}/blocks', 'Auth\FarmerRegisterController@getBlocks');
     Route::get('block/{id}/villages', 'Auth\FarmerRegisterController@getVillages');
 
     Route::get('section/{id}/schemes', 'Farmer\FarmerSchemeController@getScheme');
@@ -129,7 +131,6 @@ Route::prefix('authority')->group(function() {
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
     Route::post('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLogin')->name('authority.secondlogin');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
-
     Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
 
     Route::prefix('districts')->group(function () {
@@ -157,10 +158,17 @@ Route::prefix('authority')->group(function() {
 
         //Scheme Distribution By District level Authority in Block 
 
-        Route::get('/schblockdist/{idSubdivision}/funddetails', 'Authority\District\BlockwiseSchemeDistController@getFunds');
+        Route::get('/schblockdist/{idProgram}/funddetails', 'Authority\District\BlockwiseSchemeDistController@getFunds');
         Route::get('/schblockdist/{idScheme}/programs', 'Authority\District\BlockwiseSchemeDistController@getPrograms');
         Route::get('/schblockdist/{idProgram}/subdivisions', 'Authority\District\BlockwiseSchemeDistController@distSubdivisions');
         Route::resource('/schblockdist', 'Authority\District\BlockwiseSchemeDistController');
+        Route::get('/farmer-reg', 'Authority\District\RegFarmerController@registeredFarmer');
+        
+         //Scheme(Program) Approval Or Rejection By District User
+        Route::get('/apvrscheme', 'Authority\District\SchemeApprRejectController@approvedScheme');
+        Route::get('/rejectschemes', 'Authority\District\SchemeApprRejectController@rejectedScheme');
+        Route::get('aprvrejectscheme/{idAppliedProgram}/view', 'Authority\District\SchemeApprRejectController@viewAppliedScheme');
+        Route::resource('/aprvrejectscheme', 'Authority\District\SchemeApprRejectController');
     });
 
     Route::prefix('subdivisions')->group(function () {
@@ -174,6 +182,13 @@ Route::prefix('authority')->group(function() {
         //Scheme Distribution By Subdivision level Authority in Block 
         Route::get('/blockdist/{idSchemeActivation}/funddetails', 'Authority\Subdivision\BlockSchemeDistController@getFunds');
         Route::resource('/blockdist', 'Authority\Subdivision\BlockSchemeDistController');
+        Route::get('/farmer_reg', 'Authority\Subdivision\RegFarmerController@registeredFarmer');
+        
+        //Scheme(Program) Approval Or Rejection By Subdivisionlevel User
+        Route::get('/apvscheme', 'Authority\Subdivision\SchemeApprRejectController@approvedScheme');
+        Route::get('/rjctscheme', 'Authority\Subdivision\SchemeApprRejectController@rejectedScheme');
+        Route::get('apprejectscheme/{idAppliedProgram}/view', 'Authority\Subdivision\SchemeApprRejectController@viewAppliedScheme');
+        Route::resource('/apprejectscheme', 'Authority\Subdivision\SchemeApprRejectController');
     });
 
     Route::prefix('blocks')->group(function () {
@@ -181,29 +196,29 @@ Route::prefix('authority')->group(function() {
         Route::resource('/profile', 'Authority\Block\ProfileController');
         Route::get('/viuser/{id}/details', 'Authority\Block\VillageUserController@editUser');
         Route::resource('/viuser', 'Authority\Block\VillageUserController');
+        
+        //Scheme(Program) Approval Or Rejection By Blocklevel User
+        Route::get('/aprscheme', 'Authority\Block\SchemeApprRejectController@approvedScheme');
+        Route::get('/rjscheme', 'Authority\Block\SchemeApprRejectController@rejectedScheme');
+        Route::get('approvescheme/{idAppliedProgram}/view', 'Authority\Block\SchemeApprRejectController@viewAppliedScheme');
+        Route::resource('/approvescheme', 'Authority\Block\SchemeApprRejectController');
+        //Faremer  Rejection By Blocklevel User
+        Route::get('/reg-farmer', 'Authority\Block\RegFarmerController@registeredFarmer');
+        
     });
 
     Route::prefix('villages')->group(function () {
         Route::get('/', 'Authority\AuthorityController@village')->name('authority.villages.dashboard');
         Route::resource('/profile', 'Authority\Village\ProfileController');
-
+         //Scheme(Program) Approval Or Rejection By Villagelevel User
         Route::get('apr/{idAppliedProgram}/view', 'Authority\Village\SchemeApprRejectController@viewAppliedScheme');
         Route::get('/apprscheme', 'Authority\Village\SchemeApprRejectController@approvedScheme');
         Route::get('/rejscheme', 'Authority\Village\SchemeApprRejectController@rejectedScheme');
         Route::resource('/schappreject', 'Authority\Village\SchemeApprRejectController');
+         //Faremer  Rejection By Villagelevel User
+        Route::get('/regfarmers', 'Authority\Village\RegFarmerController@registeredFarmer');
+        Route::get('farmer/{idFarmer}/cancelreg','Authority\Village\RegFarmerController@cancelFarmerReg');
+        Route::get('/blistfarmers', 'Authority\Village\RegFarmerController@blacklistedFarmer');
     });
 
-
-
-
-//    Route::get('/block/{blockid}/villages', 'Authority\AuthorityUserController@villages');
-//    Route::resource('/adduser', 'Authority\AuthorityUserController');
-//    // Route::resource('/profile', 'Authority\AuthorityProfileController');
-//    Route::resource('/authschemes', 'Authority\AuthoritySchemeController');
-//    Route::get('/approvedscheme', 'Authority\AuthoritySchemeController@approvedScheme');
-//    Route::get('/rejectedscheme', 'Authority\AuthoritySchemeController@rejectedScheme');
-//
-//    Route::get('/registeredfarmer', 'Authority\AuthorityFarmerController@registeredFarmer');
-//    Route::get('/cancelregfarmer', 'Authority\AuthorityFarmerController@cancelReg');
-//    Route::get('/blacklistedfarmer', 'Authority\AuthorityFarmerController@blacklistedFarmer');
 });

@@ -5,7 +5,7 @@
 
         <ul class="sidebar-menu" data-widget="tree">
             <li class="">
-                <a href="{{ url('/authority/blocks')}}">
+                <a href="{{ url('/authority/villages')}}">
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -27,7 +27,7 @@
                     <li class="{{ checkActive(['authority/villages/rejscheme'])}}"><a href="{{ url('authority/villages/rejscheme')}}">Rejected Scheme</a></li>
                 </ul>
             </li> 
-            <li class="treeview {{ checkActive([''])}}">
+            <li class="treeview {{ checkActive(['authority/villages/regfarmers'])}}">
                 <a href="#">
                     <span>Farmer Section</span>
                     <span class="pull-right-container">
@@ -35,8 +35,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class=""><a href="#">Registered Farmer</a></li>
-                    <li class=""><a href="#">Cancel Farmer Registration</a></li>
+                    <li class="{{ checkActive(['authority/villages/regfarmers'])}}"><a href="{{url('authority/villages/regfarmers')}}">Registered Farmer</a></li>
                     <li class=""><a href="#">Blacklisted Farmer</a></li>
                 </ul>
             </li>

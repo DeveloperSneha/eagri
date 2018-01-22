@@ -114,7 +114,7 @@ class UserBlockController extends Controller {
 //        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.edituser_block', compact('districts','sections','userdesig'));
+        return view('users.edituser_block', compact('districts', 'sections', 'userdesig'));
     }
 
     /**
@@ -126,10 +126,10 @@ class UserBlockController extends Controller {
      */
     public function update(Request $request, $id) {
         $rules = [
-            'idBlock'=>'required',
+            'idBlock' => 'required',
             'idSection' => 'required',
-            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
-            //'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
+            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,' . $id . ',iddesgignationdistrictmapping,idBlock,' . $request->idBlock,
+                //'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
         ];
 //        if (count($request->idBlocks) == 0) {
 //            $rules += ['idBlock' => 'required'];
@@ -141,7 +141,7 @@ class UserBlockController extends Controller {
             'idDesignation.unique' => 'User With This Designation has already been registered in this Block.',
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
-           // 'userName.required' => 'UserName Must Not Be Empty.'
+                // 'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
@@ -169,7 +169,7 @@ class UserBlockController extends Controller {
 //        $user->userdesig()->saveMany($user_blocks);
 //
 //        DB::commit();
-        return redirect('userblock/'.$userdesig->idUser.'/edituser');
+        return redirect('userblock/' . $userdesig->idUser . '/edituser');
     }
 
     /**
@@ -185,13 +185,28 @@ class UserBlockController extends Controller {
     public function getUserDetails($id) {
         $user = \App\User::where('idUser', '=', $id)->first();
         $userdesig = $user->userdesig()->whereNotNull('idBlock')->whereNull('idVillage')->get();
-        return view('users.userdetails_block', compact('user','userdesig'));
-        
+        return view('users.userdetails_block', compact('user', 'userdesig'));
     }
+
     public function getDesignations($id) {
-        $designations = \App\Designation::where("idSection", $id)
-                        ->where('level', 3)->get()
-                        ->pluck("designationName", "idDesignation")->toArray();
+        $desig = \App\Designation::where("idSection", $id)->get();
+        if ($desig->count() == 4) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 3) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 2) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } else {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        }
         return json_encode($designations);
     }
 

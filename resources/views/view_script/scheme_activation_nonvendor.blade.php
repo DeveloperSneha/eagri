@@ -113,24 +113,24 @@
             $('select[name="idProgram"]').empty();
         }
     });
-    $('#idProgram').click(function(){
-        //console.log('here');
-        var cur_scheme = $( "#idScheme option:selected" ).val();
-        if(cur_scheme){
-            $.ajax({
-                    url: "{{url('/schemes') }}"+'/' +cur_scheme + "/programs",
-                    type: "GET",
-                    dataType: "json",
-                    success:function(data) {
-                        $('select[name="idProgram"]').empty();
-                        $.each(data, function(key, value) {
-                            $('select[name="idProgram"]').append('<option value="'+ key +'">'+ value +'</option>');
-                        });
-
-                    }
-                });                    
-        }
-    });
+//    $('#idProgram').click(function(){
+//        //console.log('here');
+//        var cur_scheme = $( "#idScheme option:selected" ).val();
+//        if(cur_scheme){
+//            $.ajax({
+//                    url: "{{url('/schemes') }}"+'/' +cur_scheme + "/programs",
+//                    type: "GET",
+//                    dataType: "json",
+//                    success:function(data) {
+//                        $('select[name="idProgram"]').empty();
+//                        $.each(data, function(key, value) {
+//                            $('select[name="idProgram"]').append('<option value="'+ key +'">'+ value +'</option>');
+//                        });
+//
+//                    }
+//                });                    
+//        }
+//    });
     $('select[name="idWorkflow"]').on('change', function() {
         var workflowID = $(this).val();
         if(workflowID) {

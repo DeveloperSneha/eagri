@@ -9,6 +9,7 @@
                     <th>ID</th>
                     <th>Farmer Name</th>
                     <th>Scheme Name</th>
+                    <th>Program Name</th>
                     <th>District Name</th>
                     <th>Block Name</th>
                     <th>Village Name</th>
@@ -21,10 +22,11 @@
                     <td>{{ $var->idAppliedScheme }}</td>
                     <td>{{$var->name}}</td>
                     <td>{{$var->schemeName}}</td>
+                    <td>{{$var->programName}}</td>
                     <td>{{$var->districtName}}</td>
                     <td>{{$var->blockName}}</td>
                     <td>{{$var->villageName}}</td>
-                    <td> <a href='{{url('authority/schemes/'.$var->idAppliedScheme)}}' class="btn btn-xs btn-warning">View</a> </td>
+                    <td> <a href="{{url('authority/subdivisions/apprejectscheme/'.$var->idSchemeappreject.'/view')}}" class="btn btn-xs btn-warning">View</a> </td>
                 </tr>
                 @endforeach
             </tbody>

@@ -209,6 +209,17 @@
                         });
                 }
             });
+             $.ajax({
+                url: "{{url('/authority/districts/schblockdist') }}"+'/' +schemeActivationID + '/funddetails',
+                type: "GET",
+                dataType: "json",
+                success:function(data) {
+                    $('#area-fund').empty();
+                    $.each(data, function(key, value) {
+                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly></div></div>');
+                    });
+                }
+            });
         }else{
             $('#area-fund').empty();
         }
@@ -234,17 +245,7 @@
                         });
                 }
             });
-            $.ajax({
-                url: "{{url('/authority/districts/schblockdist') }}"+'/' +subDivisionID + '/funddetails',
-                type: "GET",
-                dataType: "json",
-                success:function(data) {
-                    $('#area-fund').empty();
-                    $.each(data, function(key, value) {
-                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly></div></div>');
-                    });
-                }
-            });
+           
         }else{
             $('#area-fund').empty();
         }

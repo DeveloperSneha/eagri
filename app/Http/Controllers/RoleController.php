@@ -35,7 +35,7 @@ class RoleController extends Controller {
     public function store(Request $request) {
                       
         $request->validate([
-            'name' => 'required|unique:roles|regex:/^[\pL\s\-)]+$/u',
+            'name' => 'required|unique:roles|regex:/^[\pL\s\-())]+$/u',
             
         ]);
         //  dd($request->all());

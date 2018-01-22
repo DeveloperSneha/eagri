@@ -122,7 +122,7 @@
                     <td>@if($var->isVendorRequired == 'Y')Yes @else NO @endif</td>
                     <td>
                         
-                        <a href='{{url('/programs/'.$var->idProgram.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
+                        <a href='{{url('/programs/'.$var->idProgram.'/editprogram')}}' class="btn btn-xs btn-warning">Edit</a>
                       
                        <a href='{{url('/programs/'.$var->idProgram.'/deleteprogram')}}' class="btn btn-xs btn-danger">Delete</a>
                      

@@ -185,9 +185,24 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
     }
 
     public function getDesignations($id) {
-        $designations = \App\Designation::where("idSection", $id)
-                        ->where('level', 3)->get()
-                        ->pluck("designationName", "idDesignation")->toArray();
+        $desig = \App\Designation::where("idSection", $id)->get();
+        if ($desig->count() == 4) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 3) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 2) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } else {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        }
         return json_encode($designations);
     }
 

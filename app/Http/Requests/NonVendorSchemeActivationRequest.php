@@ -25,10 +25,9 @@ class NonVendorSchemeActivationRequest extends FormRequest {
         $id = $this->route('nv');
         $rules = [
             'idScheme' => 'required',
-            'idProgram'=>'required',
             'idWorkflow'=>'required',
             'idProgram' => 'required|unique:schemeactivation,idProgram,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
-            'idFinancialYear' => 'required|unique:schemeactivation,idFinancialYear,NULL,idSchemeActivation,idScheme,' . $this->idScheme,
+            'idFinancialYear' => 'required|unique:schemeactivation,idFinancialYear,NULL,idSchemeActivation,idProgram,' . $this->idProgram,
             'startDate' => 'required|date|after:' . yesterday_date(),
             'endDate' => 'required|date|after:startDate',
             'idUnit' => 'required',

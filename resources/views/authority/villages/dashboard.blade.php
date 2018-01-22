@@ -7,7 +7,7 @@
 
         <div class="info-box-content">
             <h4>Welcome !!</h4>
-            <span class="info-box-number">@auth <h3>{{ Auth::user()->userName }}</p> @endauth</h3>
+            <span class="info-box-number">@auth <h3>{{ Auth::guard('authority')->User()->userName }}</p> @endauth</h3>
         </div>
         <!-- /.info-box-content -->
     </div>

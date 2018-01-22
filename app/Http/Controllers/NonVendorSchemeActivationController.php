@@ -87,7 +87,7 @@ class NonVendorSchemeActivationController extends Controller {
                         ->select(DB::raw('schemeactivation.totalFundsAllocated   -  SUM(schemedistributiondistrict.amountDistrict) AS TotalFund'), DB::raw('schemeactivation.totalAreaAllocated - SUM(schemedistributiondistrict.areaDistrict) AS TotalArea'), 'schemeactivation.assistance AS Assistance')
                         //'schemeactivation.totalAreaAllocated'- DB::raw('SUM(schemedistributiondistrict.areaDistrict)' ))
                         ->where('schemeactivation.idSchemeActivation', '=', $id)->first();
-        if ($dist_sch) {
+        if ($dist_sch->TotalFund != null) {
             return json_encode($dist_sch);
         }
         return json_encode($schact);
@@ -168,11 +168,17 @@ class NonVendorSchemeActivationController extends Controller {
     }
 
     public function getActivatedProgram($id) {
-        $activated_program = \App\SchemeActivation::with(['program' => function($q) use($id) {
-                                $q->where("idScheme", '=', $id);
-                            }])->get()
+        $activated_program = \App\SchemeActivation::where('idScheme', $id)
+                        ->with('program')->get()
                         ->pluck("program.programName", "idSchemeActivation")->toArray();
         return json_encode($activated_program);
+    }
+
+    public function getPrograms($id) {
+        $program = \App\Program::where("idScheme", '=', $id)
+                        ->get()
+                        ->pluck("programName", "idProgram")->toArray();
+        return json_encode($program);
     }
 
 }

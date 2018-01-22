@@ -117,9 +117,10 @@ use RegistersUsers;
             'father_name' => 'required|string|max:25',
             'aadhaar' => 'required|max:12|min:12|unique:farmers',
             'check' => 'required|accepted',
-            'mobile' => 'required|min:10|max:10|unique:farmers',
+            'mobile' => 'required|min:10|max:10|unique:farmers|regex:/^[6789]\d{9}$/',
             'idDistrict' => 'required',
             'idBlock' => 'required|integer|min:1',
+            'idSubdivision'=>'required|integer|min:1',
             'idVillage' => 'required|integer|min:1',
             'gender' => 'required',
             'marital_status' => 'required',
@@ -139,8 +140,12 @@ use RegistersUsers;
             'aadhaar.unique' => 'Aadhaar Number  is Already Taken.',
             'mobile.required' => 'Mobile Number Must Not be Empty.',
             'mobile.unique' => 'Mobile Number  is Already Taken',
-            'mobile.max' => 'Mobile Number is Not Valid',
+            'mobile.regex' => 'Mobile Number is Not Valid',
+            'mobile.min' => 'Mobile Number Must Have Atleast 10 digits',
             'idDistrict.required' => 'District Must Be selected First',
+            'idSubdivision.required' => 'Subdivision must be selected',
+            'idSubdivision.integer' => 'Subdivision must be selected',
+            'idSubdivision.min' => 'Subdivision must be selected',
             'idBlock.required' => 'Block must be selected',
             'idBlock.integer' => 'Block must be selected',
             'idBlock.min' => 'Block must be selected',
@@ -218,8 +223,13 @@ use RegistersUsers;
         return view('farmer.print_farmer_detail', compact('farmer'));
     }
 
+    public function getSubdivisions($id) {
+        $subdivisions = [0 => '--- अपना उपखंड  चुने ---'] + \App\Subdivision::where("idDistrict", $id)
+                        ->pluck("subDivisionName", "idSubdivision")->toArray();
+        return json_encode($subdivisions);
+    }
     public function getBlocks($id) {
-        $blocks = [0 => '--- अपना ब्लाक चुने ---'] + \App\Block::where("idDistrict", $id)
+        $blocks = [0 => '--- अपना ब्लाक चुने ---'] + \App\Block::where("idSubdivision", $id)
                         ->pluck("blockName", "idBlock")->toArray();
         return json_encode($blocks);
     }

@@ -38,7 +38,7 @@ class SectionController extends Controller {
         //
         //  dd($request->all());
         $rules = [
-            'sectionName' => 'required|unique:section|between:2,50|regex:/^[\pL\s\-]+$/u'
+            'sectionName' => 'required|unique:section|between:2,50|regex:/^[\pL\s\-()]+$/u'
         ];
         $messages = [
             'sectionName.required' => 'Section Name Must be Filled',

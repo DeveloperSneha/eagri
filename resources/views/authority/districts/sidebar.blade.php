@@ -28,7 +28,8 @@
                 </ul>
             </li>
             
-           <li class="treeview {{ checkActive(['authority/districts/schsubdist','authority/districts/schblockdist']) }}">
+           <li class="treeview {{ checkActive(['authority/districts/schsubdist','authority/districts/schblockdist','authority/districts/aprvrejectscheme/*/view',
+                       'authority/districts/aprvrejectscheme','authority/districts/apvrscheme','authority/districts/rejectschemes']) }}">
                 <a href="#">
                     <span>Scheme</span>
                     <span class="pull-right-container">
@@ -38,25 +39,12 @@
                 <ul class="treeview-menu">
                     <li class="{{ checkActive(['authority/districts/schsubdist']) }}"><a href="{{ url('/authority/districts/schsubdist') }}">Scheme Subdv. Distribution</a></li>
                     <li class="{{ checkActive(['authority/districts/schblockdist']) }}"><a href="{{ url('/authority/districts/schblockdist') }}">Scheme Block Distribution</a></li>
-                    <li class=""><a href="{{ url('/authority/districts')}}">Scheme For Approval</a></li>
-                    <li class=""><a href="{{ url('/authority/districts')}}">Approved Scheme</a></li>
-                    <li class=""><a href="{{ url('/authority/districts')}}">Rejected Scheme</a></li>
+                    <li class="{{ checkActive(['authority/districts/aprvrejectscheme/*/view','authority/districts/aprvrejectscheme']) }}"><a href="{{ url('/authority/districts/aprvrejectscheme')}}">Scheme For Approval</a></li>
+                    <li class="{{ checkActive(['authority/districts/apvrscheme']) }}"><a href="{{ url('/authority/districts/apvrscheme')}}">Approved Scheme</a></li>
+                    <li class="{{ checkActive(['authority/districts/rejectschemes']) }}"><a href="{{ url('/authority/districts/rejectschemes')}}">Rejected Scheme</a></li>
                 </ul>
             </li> 
-<!--             <li class="treeview">
-                <a href="#">
-                    <span>Vendor management</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Registered Vendor</a></li>
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Cancel Vendor Registration</a></li>
-                    <li class="{{ checkActive(['/']) }}"><a href="#">Blacklisted Vendor</a></li>
-                </ul>
-            </li>
-            <li class="treeview {{ checkActive(['authority/registeredfarmer','authority/cancelregfarmer','authority/blacklistedfarmer'])}}">
+            <li class="treeview {{ checkActive(['authority/districts/farmer-reg'])}}">
                 <a href="#">
                     <span>Farmer Section</span>
                     <span class="pull-right-container">
@@ -64,22 +52,10 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['authority/registeredfarmer']) }}"><a href="{{ url('/authority/registeredfarmer')}}">Registered Farmer</a></li>
-                    <li class="{{ checkActive(['authority/cancelregfarmer']) }}"><a href="{{ url('/authority/cancelregfarmer')}}">Cancel Farmer Registration</a></li>
-                    <li class="{{ checkActive(['authority/blacklistedfarmer']) }}"><a href="{{ url('/authority/blacklistedfarmer')}}">Blacklisted Farmer</a></li>
+                    <li class="{{ checkActive(['authority/districts/farmer-reg'])}}"><a href="{{ url('authority/districts/farmer-reg')}}">Registered Farmer</a></li>
+                    <li class=""><a href="#">Blacklisted Farmer</a></li>
                 </ul>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <span>Reports</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-
-                </ul>
-            </li>-->
         </ul>
     </section>
     <!-- /.sidebar -->

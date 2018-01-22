@@ -19,7 +19,7 @@
                     <span>Add User in Villages</span>
                 </a>
             </li>
-            <li class="treeview {{ checkActive(['']) }}">
+            <li class="treeview {{ checkActive(['authority/blocks/approvescheme','authority/blocks/approvescheme/*/view','authority/blocks/rjscheme','authority/blocks/aprscheme']) }}">
                 <a href="#">
                     <span>Scheme</span>
                     <span class="pull-right-container">
@@ -27,12 +27,12 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class=""><a href="{{ url('#')}}">Scheme For Approval</a></li>
-                    <li class=""><a href="{{ url('#')}}">Approved Scheme</a></li>
-                    <li class=""><a href="{{ url('#')}}">Rejected Scheme</a></li>
+                    <li class="{{ checkActive(['authority/blocks/approvescheme','authority/blocks/approvescheme/*/view']) }}"><a href="{{ url('authority/blocks/approvescheme')}}">Scheme For Approval</a></li>
+                    <li class="{{ checkActive(['authority/blocks/aprscheme'])}}"><a href="{{ url('authority/blocks/aprscheme')}}">Approved Scheme</a></li>
+                    <li class="{{ checkActive(['authority/blocks/rjscheme'])}}"><a href="{{ url('authority/blocks/rjscheme')}}">Rejected Scheme</a></li>
                 </ul>
             </li> 
-            <li class="treeview {{ checkActive([''])}}">
+            <li class="treeview {{ checkActive(['authority/blocks/reg-farmer'])}}">
                 <a href="#">
                     <span>Farmer Section</span>
                     <span class="pull-right-container">
@@ -40,8 +40,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class=""><a href="#">Registered Farmer</a></li>
-                    <li class=""><a href="#">Cancel Farmer Registration</a></li>
+                    <li class="{{ checkActive(['authority/blocks/reg-farmer'])}}"><a href="{{ url('authority/blocks/reg-farmer')}}">Registered Farmer</a></li>
                     <li class=""><a href="#">Blacklisted Farmer</a></li>
                 </ul>
             </li>

@@ -24,7 +24,7 @@
                     <td>{{$var->districtName}}</td>
                     <td>{{$var->blockName}}</td>
                     <td>{{$var->villageName}}</td>
-                    <td> <a href='{{url('authority/schemes/'.$var->idAppliedScheme)}}' class="btn btn-xs btn-warning">View</a> </td>
+                    <td> <a href='{{url('authority/districts/aprvrejectscheme/'.$var->idSchemeappreject.'/view')}}' class="btn btn-xs btn-warning">View</a> </td>
                 </tr>
                 @endforeach
             </tbody>

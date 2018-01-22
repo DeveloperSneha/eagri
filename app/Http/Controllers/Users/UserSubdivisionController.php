@@ -101,8 +101,8 @@ class UserSubdivisionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-       $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
-      
+        $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
+
 //        $user_section = $user->userdesig()->with('designation.section')->get()->pluck('designation.idSection')->unique();
 //        $user_desig = $user->userdesig()->with('designation')->get();
 //        $user_dist = $user->userdesig()->with('district')->get()->pluck('district.idDistrict')->toArray();
@@ -112,7 +112,7 @@ class UserSubdivisionController extends Controller {
 //        $user_subdivision = $userdesig->idSubdivision;
 //        dd($user_subdivision);
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('users.edituser_subdivision', compact( 'sections', 'designations', 'districts', 'userdesig'));
+        return view('users.edituser_subdivision', compact('sections', 'designations', 'districts', 'userdesig'));
     }
 
     /**
@@ -125,9 +125,9 @@ class UserSubdivisionController extends Controller {
     public function update(Request $request, $id) {
         $rules = [
             'idSection' => 'required',
-            'idSubdivision'=>'required',
-            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idSubdivision,' . $request->idSubdivision,
-           // 'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
+            'idSubdivision' => 'required',
+            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,' . $id . ',iddesgignationdistrictmapping,idSubdivision,' . $request->idSubdivision,
+                // 'userName' => 'required|regex:/^[\pL\s\-)]+$/u|between:2,50'
         ];
 //        if (count($request->idSubdivisions) == 0) {
 //            $rules += ['idSubdivision' => 'required'];
@@ -136,7 +136,7 @@ class UserSubdivisionController extends Controller {
             'idSection.required' => 'Select Section First.',
             'idDesignation.required' => 'Select Designation.',
             'idDesignation.unique' => 'User With This Designation has already been registered in this Subdivision.',
-           // 'userName.required' => 'UserName Must Not Be Empty.'
+                // 'userName.required' => 'UserName Must Not Be Empty.'
         ];
         $this->validate($request, $rules, $messages);
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
@@ -163,7 +163,7 @@ class UserSubdivisionController extends Controller {
 //        $user->userdesig()->saveMany($user_subdivisions);
 //
 //        DB::commit();
-        return redirect('usersubdivision/'.$userdesig->idUser.'/edituser');
+        return redirect('usersubdivision/' . $userdesig->idUser . '/edituser');
     }
 
     /**
@@ -176,13 +176,12 @@ class UserSubdivisionController extends Controller {
         //
     }
 
-     public function getUserDetails($id) {
+    public function getUserDetails($id) {
         $user = \App\User::where('idUser', '=', $id)->first();
         $userdesig = $user->userdesig()->whereNotNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
-        return view('users.userdetails_subdivision', compact('user','userdesig'));
-        
+        return view('users.userdetails_subdivision', compact('user', 'userdesig'));
     }
-    
+
     public function getDesignations($id) {
         $designations = \App\Designation::where("idSection", $id)
                         ->where('level', 2)->get()

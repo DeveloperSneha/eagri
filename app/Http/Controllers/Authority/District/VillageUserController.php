@@ -19,7 +19,7 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
     public function index() {
         $user_list = DB::table('users')
                 ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->where('user_designation_district_mapping.idDistrict','=',Session::get('idDistrict')) 
+                ->where('user_designation_district_mapping.idDistrict', '=', Session::get('idDistrict'))
                 ->whereNotNull('user_designation_district_mapping.idVillage')
                 ->select('users.idUser', 'userName')
                 ->groupBy('idUser')
@@ -39,9 +39,9 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
                         ->get()
                         ->pluck('designation.section.sectionName', 'designation.section.idSection')
                         ->toArray();
-        $subdivisions = ['' => '---Select Subdivision---']+\App\Subdivision::where("idDistrict", Session::get('idDistrict'))->get()
+        $subdivisions = ['' => '---Select Subdivision---'] + \App\Subdivision::where("idDistrict", Session::get('idDistrict'))->get()
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
-        return view('authority.districts.user_villages', compact('subdivisions', 'sections', 'user_district','user_list'));
+        return view('authority.districts.user_villages', compact('subdivisions', 'sections', 'user_district', 'user_list'));
     }
 
     /**
@@ -77,7 +77,7 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
      * @return \Illuminate\Http\Response
      */
     public function store(UserVillageRequest $request) {
-       // dd($request->all());
+        // dd($request->all());
         if ($request->has('existing')) {
             foreach ($request->idVillages as $var) {
                 $user_desig = new \App\UserDesignationDistrictMapping();
@@ -130,19 +130,19 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
                         ->with('district')
                         ->where('idDistrict', '=', Session::get('idDistrict'))
                         ->get()
-                        ->pluck('district.districtName','district.idDistrict')->toArray();
+                        ->pluck('district.districtName', 'district.idDistrict')->toArray();
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
-        $sections = [''=>'---Select Section---']+ $user->userdesig()->with('designation.section')
-                ->where('idDistrict', '=', Session::get('idDistrict'))
-                ->whereNull('idSubdivision')
-                ->whereNull('idBlock')
-                ->whereNull('idVillage')
-                ->get()
-                ->pluck('designation.section.sectionName', 'designation.section.idSection')
-                ->toArray();
+        $sections = ['' => '---Select Section---'] + $user->userdesig()->with('designation.section')
+                        ->where('idDistrict', '=', Session::get('idDistrict'))
+                        ->whereNull('idSubdivision')
+                        ->whereNull('idBlock')
+                        ->whereNull('idVillage')
+                        ->get()
+                        ->pluck('designation.section.sectionName', 'designation.section.idSection')
+                        ->toArray();
         $subdivisions = ['' => '---Select Subdivision---'] + \App\Subdivision::where("idDistrict", Session::get('idDistrict'))->get()
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
-        return view('authority.districts.edituser_village', compact( 'sections','userdesig','user_district','subdivisions'));
+        return view('authority.districts.edituser_village', compact('sections', 'userdesig', 'user_district', 'subdivisions'));
     }
 
     /**
@@ -158,8 +158,8 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
             // 'idSubdivision' => 'required',
             // 'idBlock' => 'required',
             'idSection' => 'required',
-            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,'.$id.',iddesgignationdistrictmapping,idVillage,' . $request->idVillage,
-            'idVillage'=>'required',
+            'idDesignation' => 'required|unique:user_designation_district_mapping,idDesignation,' . $id . ',iddesgignationdistrictmapping,idVillage,' . $request->idVillage,
+            'idVillage' => 'required',
         ];
         $messages = [
             'idDistrict.required' => 'District must be selected.',
@@ -174,7 +174,7 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
         $userdesig->fill($request->all());
         $userdesig->update();
-        return redirect('authority/districts/addvillageuser/'.$userdesig->idUser.'/details');
+        return redirect('authority/districts/addvillageuser/' . $userdesig->idUser . '/details');
     }
 
     /**
@@ -188,9 +188,24 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
     }
 
     public function getDesignations($id) {
-        $designations = \App\Designation::where("idSection", $id)
-                        ->where('level', 4)->get()
-                        ->pluck("designationName", "idDesignation")->toArray();
+        $desig = \App\Designation::where("idSection", $id)->get();
+        if ($desig->count() == 4) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 4)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 3) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 3)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 2) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } else {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        }
         return json_encode($designations);
     }
 
@@ -199,10 +214,11 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
                         ->pluck("villageName", "idVillage")->toArray();
         return json_encode($villages);
     }
+
     public function editUser($id) {
         $user = \App\User::where('idUser', '=', $id)->first();
         $userdesig = $user->userdesig()->whereNotNull('idVillage')->get();
-        return view('authority.districts.userdetails_village', compact('user','userdesig'));
-        
+        return view('authority.districts.userdetails_village', compact('user', 'userdesig'));
     }
+
 }
