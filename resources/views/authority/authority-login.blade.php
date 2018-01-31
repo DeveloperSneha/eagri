@@ -31,7 +31,7 @@
                                 <label>USERNAME</label>
                                 <span class="clearfix"></span>
                                 <!--<input type="text" name="aadhaar" value="{{ old('aadhaar') }}"  autocomplete="off" class="form-control input-b-b" value="" maxlength="12" pattern="[0-9]+" required="">-->
-                                <input type="text" name="userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="form-control input-b-b" value="" maxlength="12"  >
+                                <input type="text" name="userName" value="{{ old('userName') }}" onfocus="this.removeAttribute('readonly');" autocomplete="off" class="validate fl w-100 input-b-b m-b-20" value="" maxlength="12"  >
                                 @if ($errors->has('userName'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('userName') }}</strong>
@@ -41,7 +41,7 @@
                             <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label>PASSWORD</label>
                                 <span class="clearfix"></span>
-                                <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control input-b-b" value="" maxlength="12" >
+                                <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="validate fl w-100 input-b-b m-b-20" value="" maxlength="12" >
 
                                 @if ($errors->has('password'))
                                 <span class="help-block">

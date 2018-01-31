@@ -16,12 +16,12 @@ function checkActive($path, $active = 'active') {
 }
 
 function getGender() {
-    $genders = ['' => '---- लिंग चुने ----', 'Male' => 'Male / पुरुष', 'Female' => 'Female / महिला', 'Others' => 'Others / अन्य लोग'];
+    $genders = ['' => '---- Select /लिंग चुने ----', 'Male' => 'Male / पुरुष', 'Female' => 'Female / महिला', 'Others' => 'Others / अन्य लोग'];
     return $genders;
 }
 
 function getCasteCategory() {
-    $cat = ['' => '---- जाति श्रेणी चुने  ----',
+    $cat = ['' => '---- Select / जाति श्रेणी ----',
         'General' => 'General / सामान्य',
         'SC' => 'SC - Schedule Caste / अनुसूचित जाति',
         'BC' => 'BC - BC / पिछड़े वर्ग',
@@ -41,7 +41,7 @@ function getFarmerCategory() {
 
 
 function getMaritalStatus() {
-    $status = ['' => '---- वैवाहिक स्थिति ----',
+    $status = ['' => '---- Select /वैवाहिक स्थिति ----',
         'Married' => 'Married / विवाहित',
         'Unmarried' => 'Unmarried / अविवाहित',
         'Others' => 'Others / अन्य लोग',
@@ -77,4 +77,5 @@ function yesterday_date() {
 function tomorrow_date() {
   return Carbon\Carbon::tomorrow()->format('d-m-Y');
 }
+
 

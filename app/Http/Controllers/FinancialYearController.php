@@ -15,7 +15,7 @@ class FinancialYearController extends Controller {
      */
     public function index() {
         //$fys = \App\FinancialYear::get();
-		$fys = \App\FinancialYear::orderBy('idFinancialYear')->get();
+	$fys = \App\FinancialYear::orderBy('idFinancialYear')->get();
         return view('financialyear.index', compact('fys'));
     }
 
@@ -38,9 +38,9 @@ class FinancialYearController extends Controller {
         //   dd($request->finanYearStartDate);
         //   dd(Carbon::createFromFormat('d-m-Y H', $request->finanYearStartDate)->format('Y-m-d H'));
         $rules=[
-            'financialYearName' => 'required|regex:/^[0-9-]*$/|max:9',
-            'finanYearStartDate' => 'required',
-            'finanYearEndDate' => 'required'
+            'financialYearName' => 'required|regex:/^[0-9-]*$/|max:9|unique:financialyear,financialYearName', 
+            'finanYearStartDate' => 'required|date|after_or_equal:today|unique:financialyear,finanYearStartDate',
+            'finanYearEndDate' => 'required|date|after:finanYearStartDate|unique:financialyear,finanYearEndDate'
         ];
 //        if(($this->finanYearStartDate)==($this->finanYearEndDate)){
 //          $rules+= ['date'=>'required'];
@@ -52,9 +52,10 @@ class FinancialYearController extends Controller {
             'financialYearName.regex' => 'Financial Year Is Not Valid.',
             'finanYearStartDate.required' => 'Financial Year Start Date Must Be Chosen.',
             'finanYearStartDate.unique' => 'Financial Year Start Date Already Exist.',
+            'finanYearStartDate.after_or_equal'=>'Financial Year Start date Must be a Date From Todays Date',
             'finanYearEndDate.required' => 'Financial Year End Date Must Be Chosen.',
             'finanYearEndDate.unique' => 'Financial Year End Date Already Exist.',
-            'date.required'=>'Financial Year Start date Must Not Be Same as Financial Year End Date'
+            'finanYearEndDate.after'=>'The End Date Must be a Date After Start Date.'
         ];
         $this->Validate($request,$rules,$message);
         
@@ -81,11 +82,22 @@ class FinancialYearController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+//        $fys = \App\FinancialYear::get();
+//        $fy = \App\FinancialYear::where('idFinancialYear', '=', $id)->first();
+//        return view('financialyear.index', compact('fy', 'fys'));
+    }
+    
+    public function editfys($id) {
         $fys = \App\FinancialYear::get();
         $fy = \App\FinancialYear::where('idFinancialYear', '=', $id)->first();
-        return view('financialyear.index', compact('fy', 'fys'));
+        $schact = \App\SchemeActivation::where('idUnit', '=', $id)->get();
+        if ($schact->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Edit this Financial Year Because it is Already in Use!');
+        }
+        else{
+            return view('financialyear.index', compact('fys','fy'));
+        }
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -98,13 +110,16 @@ class FinancialYearController extends Controller {
         //  dd($fy);
         $rules=[
             'financialYearName' => 'required|regex:/^[0-9-]*$/|max:9|unique:financialyear,financialYearName,'.$id.',idFinancialYear',
-            'finanYearStartDate' => 'required',
-            'finanYearEndDate' => 'required'
+            'finanYearStartDate' => 'required|date|after_or_equal:today',
+            'finanYearEndDate' => 'required|date|after:finanYearStartDate'
         ];
         $message=[
-            'financialYearName.required' => 'Financial Year Name Must be Filled.',
+            'financialYearName.required' => 'Financial Year  Must be Filled.',
+            'financialYearName.regex' => 'Financial Year Is Not Valid.',
             'finanYearStartDate.required' => 'Financial Year Start Date Must Be Chosen.',
-            'finanYearEndDate.required' => 'Financial Year End Date Must Be Chosen.'
+            'finanYearStartDate.after_or_equal'=>'Financial Year Start date Must Not Be Less Than Todays Date',
+            'finanYearEndDate.required' => 'Financial Year End Date Must Be Chosen.',
+            'finanYearEndDate.after'=>'Financial Year End date Must Be Greater Than Financial Year Start Date'
         ];
         $this->Validate($request, $rules,$message);
         

@@ -20,7 +20,9 @@
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
                         <span id="Master_lbl_first" class="digital" style="font-size:Small;">Reg. Farmers</span><br>
-                        <span id="spnpermits" class="digital f-b">2</span>
+                        <span id="spnpermits" class="digital f-b">
+                            {{$users = DB::table('farmers')->distinct('idFarmer')->get()->count()}}
+                        </span>
                     </div>
 
                 </li>
@@ -63,3 +65,15 @@
     </nav>
 </header>
 <!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <center><div id="google_translate_element"  class="sidebar-form"></div></center>
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="">
+               
+            </li>
+        </ul>
+    </section>
+</aside>

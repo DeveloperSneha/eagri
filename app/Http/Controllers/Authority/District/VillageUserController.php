@@ -17,13 +17,6 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $user_list = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->where('user_designation_district_mapping.idDistrict', '=', Session::get('idDistrict'))
-                ->whereNotNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName')
-                ->groupBy('idUser')
-                ->get();
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $user_district = $user->userdesig()
                         ->with('district')
@@ -39,6 +32,24 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
                         ->get()
                         ->pluck('designation.section.sectionName', 'designation.section.idSection')
                         ->toArray();
+        $user_section = $user->userdesig()->with('designation.section')
+                        ->where('idDistrict', '=', Session::get('idDistrict'))
+                        ->whereNull('idSubdivision')
+                        ->whereNull('idBlock')
+                        ->whereNull('idVillage')
+                        ->get()
+                        ->pluck('designation.section.idSection')->toArray();
+        $user_list = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                ->join('section', 'designation.idSection', '=', 'section.idSection')
+                ->where('user_designation_district_mapping.idDistrict', '=', Session::get('idDistrict'))
+                ->whereNotNull('user_designation_district_mapping.idVillage')
+                ->whereIn('section.idSection', $user_section)
+                ->select('users.idUser', 'userName')
+                ->groupBy('idUser')
+                ->get();
+
         $subdivisions = ['' => '---Select Subdivision---'] + \App\Subdivision::where("idDistrict", Session::get('idDistrict'))->get()
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
         return view('authority.districts.user_villages', compact('subdivisions', 'sections', 'user_district', 'user_list'));

@@ -38,7 +38,7 @@ class DesignationController extends Controller {
     public function store(Request $request) {
         $rules = [
             'idSection'=>'required',
-            'designationName' => 'required|regex:/^[\pL\s\-()]+$/u|between:2,50|unique:designation,designationName,NULL,idDesignation,idSection,'.$request->idSection,
+            'designationName' => 'required|between:2,50|unique:designation,designationName,NULL,idDesignation,idSection,'.$request->idSection,
             'level' => 'required|integer|between:1,9|unique:designation,level,NULL,idDesignation,idSection,'.$request->idSection
         ];
         $message = [
@@ -73,10 +73,26 @@ class DesignationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+//        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+//        $designations = \App\Designation::orderBy('designationName')->get();
+//        $designation = \App\Designation::where('idDesignation', '=', $id)->first();
+//        return view('designation.index', compact('designations', 'designation','sections'));
+    }
+    
+    public function editDesignation($id) {
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         $designations = \App\Designation::orderBy('designationName')->get();
-        $designation = \App\Designation::where('idDesignation', '=', $id)->first();
-        return view('designation.index', compact('designations', 'designation','sections'));
+        $designation = \App\Designation:: where('idDesignation', '=', $id)->first();
+        $workflow = \App\WorkflowStep::where('idDesignation', '=', $id)->get();
+        $userdesig = \App\UserDesignationDistrictMapping::where('idDesignation', '=', $id)->get();
+        if($workflow->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Edit this Designation Because it is Already Existing in Some workflow!');
+        }elseif($userdesig->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Edit this Designation Because it is Already In Use');
+        }
+        else{
+            return view('designation.index', compact('designations','designation','sections'));
+        }
     }
 
     /**
@@ -90,7 +106,7 @@ class DesignationController extends Controller {
         $rules = [
             'idSection'=>'required',
             'designationName' => 'required|regex:/^[\pL\s\-()]+$/|between:2,50|unique:designation,designationName,'.$id.',idDesignation,idSection,'.$request->idSection,
-            'level' => 'required|integer|between:1,9'
+            'level' => 'required|integer|between:1,9|unique:designation,level,'.$id.',idDesignation,idSection,'.$request->idSection,
         ];
         $message = [
             'idSection.required' => 'Select Section',

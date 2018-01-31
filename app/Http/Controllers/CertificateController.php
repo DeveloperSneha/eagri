@@ -68,9 +68,20 @@ class CertificateController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+//        $certificates = \App\Certificate::orderBy('certificateName')->get();
+//        $certificate = \App\Certificate::where('idCertificate', '=', $id)->first();
+//        return view('certificates.index', compact('certificate', 'certificates'));
+    }
+    
+    public function editCertificate($id) {
         $certificates = \App\Certificate::orderBy('certificateName')->get();
         $certificate = \App\Certificate::where('idCertificate', '=', $id)->first();
-        return view('certificates.index', compact('certificate', 'certificates'));
+        $schemes = \App\Schemecert::where('idCertificate', '=', $id)->get();
+        if ($schemes->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Delete this Certificate Because it is Already in Use!');
+        }else{
+            return view('certificates.index', compact('certificate','certificates'));
+        }
     }
 
     /**

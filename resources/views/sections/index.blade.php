@@ -11,7 +11,7 @@
         <div class="form-group">
             {!! Form::label('Name Of Sections', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('sectionName', null, ['class' => 'form-control','placeholder'=>'Enter Section Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
+                {!! Form::text('sectionName', null, ['class' => 'form-control','placeholder'=>'Enter Section Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'onlylettersandSpecialChar']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -27,6 +27,7 @@
             @if(isset($section))
             <!--{!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}-->
 		    <button type="submit" class="btn btn-danger">Update</button>
+                    <a href="{{url('/sections')}}" class="btn btn-danger">Cancel</a>
             @else
             <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
 		    <button type="submit" class="btn btn-danger">Save</button>
@@ -54,7 +55,7 @@
                     <td>{{ $var->sectionName }}</td>
                     <td>
                        
-                        <a href='{{url('/sections/'.$var->idSection.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
+                        <a href='{{url('/sections/'.$var->idSection.'/editsection')}}' class="btn btn-xs btn-warning">Edit</a>
                       {{--   {{ Form::open(['route' => ['sections.destroy', $var->idSection], 'method' => 'delete']) }} --}}
                        <a href='{{url('/sections/'.$var->idSection.'/deletesection')}}' class="btn btn-xs btn-danger">Delete</a>
                       {{--  {{ Form::close() }} --}}

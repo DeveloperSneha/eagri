@@ -28,19 +28,43 @@ class AuthorityController extends Controller {
     }
 
     public function districts() {
-        return view('authority.districts.dashboard');
+        if (Session::has('idDistrict') && (Session::has('idSubdivision') == false) && (Session::has('idBlock') == false)) {
+            return view('authority.districts.dashboard');
+        } else {
+            return view('errors.404');
+        }
     }
 
     public function subdivisions() {
-        return view('authority.subdivisions.dashboard');
+        if (Session::has('idSubdivision') && (Session::has('idBlock') == false)) {
+            return view('authority.subdivisions.dashboard');
+        } else {
+            return view('errors.404');
+        }
     }
 
     public function blocks() {
-        return view('authority.blocks.dashboard');
+        if (Session::has('idDistrict') && Session::has('idSubdivision') && Session::has('idBlock')) {
+            return view('authority.blocks.dashboard');
+        } else {
+            return view('errors.404');
+        }
     }
 
     public function village() {
-        return view('authority.villages.dashboard');
+        $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
+        $user_in_village = $loggedinuser->userdesig()
+                ->where('idDesignation', '=', Session::get('idDesignation'))
+                ->where('idDistrict', '=', Session::get('idDistrict'))
+                ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                ->where('idBlock', '=', Session::get('idBlock'))
+                ->whereNotNull('idVillage')
+                ->get();
+        if (count($user_in_village) > 0) {
+            return view('authority.villages.dashboard');
+        }else{
+            return view('errors.404');
+        }
     }
 
 }

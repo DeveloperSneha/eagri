@@ -71,7 +71,7 @@
         <div class="form-group">
             {!! Form::label('Username', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50']) !!}
+                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return onlylettersandSpecialChar(event)']) !!}
             </div>
             <span class="help-block">
                 <strong>

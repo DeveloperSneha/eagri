@@ -23,7 +23,7 @@ class SchemeActivation extends Model {
     }
 
     public function schworkflow() {
-        return $this->hasOne(SchemeWorkflowMapping::class, 'idScheme', 'idScheme');
+        return $this->belongsTo(SchemeWorkflowMapping::class, 'idProgram', 'idProgram');
     }
 
     public function documents() {

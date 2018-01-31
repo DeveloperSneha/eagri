@@ -24,7 +24,7 @@
         <div class="form-group">
             {!! Form::label('Scheme Name', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('schemeName', null, ['class' => 'form-control','placeholder'=>'Enter Scheme Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
+                {!! Form::text('schemeName', null, ['class' => 'form-control','placeholder'=>'Enter Scheme Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'onlylettersandSpecialChar']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -54,6 +54,7 @@
                 @if(isset($scheme))
                 <!--{!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}-->
 			    <button type="submit" class="btn btn-danger">Update</button>
+                            <a href="{{url('/schemes')}}" class="btn btn-danger">Cancel</a>
                 @else
                 <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
 			    <button type="submit" class="btn btn-danger">Save</button>

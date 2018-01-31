@@ -46,12 +46,12 @@ class NonVendorSchemeActivationController extends Controller {
         DB::beginTransaction();
         $sch->save();
         if ($request->has('guidelines')) {
-            $guidelines = $sch->idScheme . '_guidelines.' . $request->file('guidelines')->getClientOriginalExtension();
+            $guidelines = $sch->idProgram . '_guidelines.' . $request->file('guidelines')->getClientOriginalExtension();
             $request->file('guidelines')->storeAs('public', $guidelines);
             $sch->guidelines = $guidelines;
         }
         if ($request->has('notiFile')) {
-            $notifications = $sch->idScheme . '_notifications.' . $request->file('notiFile')->getClientOriginalExtension();
+            $notifications = $sch->idProgram . '_notifications.' . $request->file('notiFile')->getClientOriginalExtension();
             $request->file('notiFile')->storeAs('public', $notifications);
             $sch->notiFile = $notifications;
         }
@@ -71,6 +71,9 @@ class NonVendorSchemeActivationController extends Controller {
             }
         }
         DB::commit();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('schemeactivations/nv');
     }
 
@@ -106,9 +109,20 @@ class NonVendorSchemeActivationController extends Controller {
         $units = ['' => 'Select Unit'] + \App\Unit::pluck('unitName', 'idUnit')->toArray();
         $schemecert = \App\Certificate::orderBy('certificateName')->pluck('certificateName', 'idCertificate')->toArray();
         $sch = \App\SchemeActivation::where('idSchemeActivation', '=', $id)->first();
-        $sch_workflow = $sch->with('schworkflow.workflow')->get()->pluck('schworkflow.workflow.workflowName', 'schworkflow.idWorkflow')->toArray();
-        // dd($sch_workflow);
-        return view('schemes.scheme_activation_nonvendor', compact('sch_workflow', 'fys', 'schact', 'sch', 'units', 'sections', 'schemecert', 'workflow'));
+        // dd($sch->idProgram);
+        $sch_workflow = DB::table('scheme_workflow_mapping')
+                        ->join('program', 'scheme_workflow_mapping.idProgram', '=', 'program.idProgram')
+                        ->join('workflow', 'scheme_workflow_mapping.idWorkflow', '=', 'workflow.idWorkflow')
+                        ->where('scheme_workflow_mapping.idProgram', $sch->idProgram)
+                        ->get()->pluck('workflowName', 'idWorkflow')->toArray();
+        //     with('schworkflow.workflow')->get()->pluck('schworkflow.workflow.workflowName', 'schworkflow.idWorkflow')->toArray();
+        //dd($sch_workflow);
+        $schdist = \App\SchDistrictDistribution::where('idSchemeActivation', '=', $id)->get();
+        if ($schdist->count() > 0) {
+            return redirect()->back()->with('message', 'You Can Not Edit This Because it is Already Distributed in Some District!');
+        } else {
+            return view('schemes.scheme_activation_nonvendor', compact('sch_workflow', 'fys', 'schact', 'sch', 'units', 'sections', 'schemecert', 'workflow'));
+        }
     }
 
     /**
@@ -119,37 +133,39 @@ class NonVendorSchemeActivationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(NonVendorSchemeActivationRequest $request, $id) {
+        //  dd('here');
         $sch = \App\SchemeActivation::where('idSchemeActivation', '=', $id)->first();
         $sch->fill($request->all());
         $sch->vendorDeliveryDayLimit = 0;
         if ($request->hasFile('guidelines')) {
-            $guidelines = $sch->idScheme . '_guidelines.' . $request->file('guidelines')->getClientOriginalExtension();
+            $guidelines = $sch->idProgram . '_guidelines.' . $request->file('guidelines')->getClientOriginalExtension();
             $request->file('guidelines')->storeAs('public', $guidelines);
             $sch->guidelines = $guidelines;
         }
         if ($request->hasFile('notiFile')) {
-            $notifications = $sch->idScheme . '_notifications.' . $request->file('notiFile')->getClientOriginalExtension();
+            $notifications = $sch->idProgram . '_notifications.' . $request->file('notiFile')->getClientOriginalExtension();
             $request->file('notiFile')->storeAs('public', $notifications);
             $sch->notiFile = $notifications;
         }
         $old_ids = $sch->documents->pluck('idSchemeCert')->toArray();
-
         $sch_certificates = new \Illuminate\Database\Eloquent\Collection();
-        foreach ($request->schemecerts as $var) {
-            $schemecert = \App\Schemecert::firstOrNew(['idCertificate' => $var, 'idScheme' => $sch->idScheme, 'idProgram' => $sch->idProgram]);
-            $sch_certificates->add($schemecert);
+
+        if (count($request->schemecerts) > 0) {
+            foreach ($request->schemecerts as $var) {
+                $schemecert = \App\Schemecert::firstOrNew(['idCertificate' => $var, 'idScheme' => $sch->idScheme, 'idProgram' => $sch->idProgram]);
+                $sch_certificates->add($schemecert);
+            }
         }
         $new_ids = $sch_certificates->pluck('idSchemeCert')->toArray();
         $detach = array_diff($old_ids, $new_ids);
 //         dd($detach);
         DB::beginTransaction();
-
         $sch->update();
         $schworkflow = \App\SchemeWorkflowMapping::where('idProgram', '=', $sch->idProgram)->first();
-        $schworkflow->idScheme = $sch->idScheme;
-        $schworkflow->idScheme = $sch->idProgram;
+        //$schworkflow->idScheme = $sch->idScheme;
+        //$schworkflow->idScheme = $sch->idProgram;
         $schworkflow->update();
-        \App\WorkflowStep::whereIn('idSchemeCert', $detach)->delete();
+        \App\Schemecert::whereIn('idSchemeCert', $detach)->delete();
         $sch->documents()->saveMany($sch_certificates);
         DB::commit();
         return redirect('schemeactivations/nv');

@@ -11,7 +11,7 @@ class WorkflowController extends Controller {
 
     public function index() {
         //$workflows = \App\Workflow::orderBy('workflowName')->get();
-		$workflows = \App\Workflow::orderBy('idWorkflow')->get();
+	$workflows = \App\Workflow::orderBy('idWorkflow')->get();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         return view('workflow.index', compact('workflows', 'designations', 'sections'));
     }
@@ -34,6 +34,9 @@ class WorkflowController extends Controller {
         }
         // dd($workflow_step);
         DB::commit();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('workflow');
     }
 
@@ -42,13 +45,28 @@ class WorkflowController extends Controller {
     }
 
     public function edit($id) {
+//        $workflow = \App\Workflow::where('idWorkflow', '=', $id)->first();
+//        $section = $workflow->steps()->with('designation.section')->get()->pluck('designation.idSection')->unique();
+//        $step = $workflow->steps()->with('designation')->get();
+//        //  dd($step);
+//        $workflows = \App\Workflow::orderBy('idWorkflow')->get();
+//        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+//        return view('workflow.index', compact('workflow', 'workflows', 'designations', 'section', 'sections', 'step'));
+    }
+    
+    public function editWorkflow($id) {
+        //
         $workflow = \App\Workflow::where('idWorkflow', '=', $id)->first();
         $section = $workflow->steps()->with('designation.section')->get()->pluck('designation.idSection')->unique();
         $step = $workflow->steps()->with('designation')->get();
-        //  dd($step);
         $workflows = \App\Workflow::orderBy('idWorkflow')->get();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        return view('workflow.index', compact('workflow', 'workflows', 'designations', 'section', 'sections', 'step'));
+        $schact = \App\SchemeWorkflowMapping::where('idWorkflow', '=', $id)->get();
+        if ($schact->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Delete this Workflow Because it is Already in Use!');
+        }else{
+            return view('workflow.index', compact('workflow', 'workflows', 'designations', 'section', 'sections', 'step'));
+        }
     }
 
     public function update(WorkflowRequest $request, $id) {

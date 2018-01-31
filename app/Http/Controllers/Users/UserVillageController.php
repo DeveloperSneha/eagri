@@ -169,6 +169,9 @@ class UserVillageController extends Controller {
 //        $user->userdesig()->saveMany($user_villages);
 //
 //        DB::commit();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('uservillage/' . $userdesig->idUser . '/edituser');
     }
 

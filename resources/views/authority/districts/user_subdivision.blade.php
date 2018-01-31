@@ -1,12 +1,12 @@
 @extends('authority.districts.district_layout')
 @section('content')
 <a href="{{url('/authority/districts/addsubuser/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>
-
+<div id='formerrors'></div>
 <!-------------------New User---------------------------------------------------------------------->
 <div class="panel panel-default">
     <div class="panel-heading"><strong>ADD User In Sub Division</strong></div>
     <div class="panel-body">
-        {!! Form::open(['url' => 'authority/districts/addsubuser','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'authority/districts/addsubuser','class'=>'form-horizontal','id'=>'usersubdivision']) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
@@ -58,7 +58,7 @@
         <div class="form-group">
             {!! Form::label('Username', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50']) !!}
+                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return onlylettersandSpecialChar(event)']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -136,6 +136,45 @@
                     });
                 }
             });
-         } 
+         }
+$('#usersubdivision').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('/authority/districts/addsubuser/') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
+                window.location = "{{url('authority/districts/addsubuser')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                       // e.preventDefault(e);
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            $.each( errors, function( key, value ) {                                
+                               var errors = data.responseJSON.errors;
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            $.each( errors, function( key, value ) {    
+                               errorHtml += '<li>' + value + '</li>'; 
+                            });
+                            errorHtml += '</ul></div>';
+                             $('#formerrors').html(errorHtml);
+                            });
+                           
+                     }
+                }
+        });
+        return false;
+    });
 </script>
 @stop

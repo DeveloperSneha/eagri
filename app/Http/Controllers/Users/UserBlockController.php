@@ -169,6 +169,9 @@ class UserBlockController extends Controller {
 //        $user->userdesig()->saveMany($user_blocks);
 //
 //        DB::commit();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('userblock/' . $userdesig->idUser . '/edituser');
     }
 
@@ -211,7 +214,7 @@ class UserBlockController extends Controller {
     }
 
     public function getVillages($id) {
-        $villages = \App\village::where("idBlock", $id)
+        $villages = \App\Village::where("idBlock", $id)
                         ->pluck("villageName", "idVillage")->toArray();
         return json_encode($villages);
     }

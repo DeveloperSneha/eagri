@@ -42,7 +42,7 @@ class UserBlockRequest extends FormRequest {
                 'idDistrict' => 'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-()]+$/u'
             ];
             if (count($this->idBlocks) == 0) {
                 $rules['idBlock'] = 'required';

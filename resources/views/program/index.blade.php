@@ -56,7 +56,9 @@
         <div class="form-group">
             {!! Form::label('Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-               <select name="idScheme" id="idScheme" class="form-control select2" >--- Select Scheme ---</select>
+               <select name="idScheme" id="idScheme" class="form-control select2" >
+                   <!--<option value="">--- Select Scheme ---</option>-->
+               </select>
             </div>
             <span class="help-block"> 
                     <strong>
@@ -70,7 +72,7 @@
         <div class="form-group">
             {!! Form::label('Name Of Program', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('programName', null, ['class' => 'form-control','placeholder'=>'Enter Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
+                {!! Form::text('programName', null, ['class' => 'form-control','placeholder'=>'Enter Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return onlylettersandSpecialChar(event)']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -92,6 +94,7 @@
         @if(isset($program))
         <!--{!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}-->
 	    <button type="submit" class="btn btn-danger">Update</button>
+            <a href="{{url('/programs')}}" class="btn btn-danger">Cancel</a>
         @else
         <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
 	    <button type="submit" class="btn btn-danger">Save</button>
@@ -106,6 +109,7 @@
             <thead>
                 <tr>
                     <th>SNO</th>
+                    <th>Section</th>
                     <th>Scheme</th>
                     <th>Program Name</th>
                     <th>Vendor Required</th>
@@ -117,6 +121,7 @@
                 @foreach($programs as $var)
                 <tr>
                     <td>{{ $i }}</td>
+                    <td>{{ $var->scheme->section->sectionName }}</td>
                     <td>{{ $var->scheme->schemeName }}</td>
                     <td>{{ $var->programName }}</td>
                     <td>@if($var->isVendorRequired == 'Y')Yes @else NO @endif</td>
@@ -147,10 +152,10 @@
                     dataType: "json",
                     success:function(data) {
                         $('select[name="idScheme"]').empty();
+                        $('select[id="idScheme"]').append('<option value="">--- Select Scheme ---</option>');
                         $.each(data, function(key, value) {
                             $('select[name="idScheme"]').append('<option value="'+ key +'">'+ value +'</option>');
                         });
-
                     }
                 });
             }else{

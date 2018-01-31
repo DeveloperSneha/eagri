@@ -2,9 +2,10 @@
 @section('content')
 <a href="{{url('/userdistrict/create')}}" class="btn btn-success" style="margin-bottom: 20px;">Add Existing</a>
 <!-------------------New User---------------------------------------------------------------------->
+<div id="formerrors"></div>
 <div class="panel panel-default">
     <div class="panel-heading"><strong>ADD User In District</strong></div>
-    {!! Form::open(['url' => 'userdistrict','class'=>'form-horizontal']) !!}
+    {!! Form::open(['url' => 'userdistrict','class'=>'form-horizontal','id'=>'userdistrict']) !!}
     <div class="panel-body">
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -50,7 +51,7 @@
         <div class="form-group">
             {!! Form::label('Username', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','pattern'=>'[a-zA-Z0-9 ]+']) !!}
+                {!! Form::text('userName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','pattern'=>'[a-zA-Z0-9 ()]+','onkeypress'=>'return onlylettersandSpecialChar(event)']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -62,7 +63,7 @@
         </div>
     </div>
     <div class="panel-footer">
-          <button type="submit" class="btn btn-danger">@if(isset($user)) Update @else Save @endif</button>
+          <button type="submit" class="btn btn-danger" onkeyPr>@if(isset($user)) Update @else Save @endif</button>
         {!! Form::close() !!}
     </div>
 </div>

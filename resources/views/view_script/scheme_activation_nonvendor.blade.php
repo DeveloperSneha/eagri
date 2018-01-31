@@ -166,40 +166,139 @@
             });
                        
     }
-//    
-//    $('#schemeactivation').on('submit',function(e){
-//        $.ajaxSetup({
-//        header:$('meta[name="_token"]').attr('content')
-//    });
-//    var formData = $(this).serialize();
-//        $.ajax({
-//            type:"POST",
-//            url: "{{url('/schemeactivations/nv/') }}",
-//            data:formData,
-//            dataType: 'json',
-//            success:function(data){
-//                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
-//                window.location = "{{url('schemeactivations/nv')}}";
-//                }
-//                else {					//False Case: With error msg
-//                $("#msg").html(data);	//$msg is the id of empty msg
-//                }
-//
-//            },
-//
-//            error: function(data){
-//                        if( data.status === 422 ) {
-//                            var errors = data.responseJSON.errors;
+    
+    $('#schemeactivation').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData =  new FormData($('#schemeactivation')[0]);
+        $.ajax({
+            type:"POST",
+            url: "{{url('/schemeactivations/nv/') }}",
+            processData: false,
+            contentType: false,
+            async: false,
+            cache: false,
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
+                window.location = "{{url('schemeactivations/nv')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
+
+            },
+
+            error: function(data){
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                                if(errors['idSection']=== undefined){
+                                    $( '#id_section' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['idSection']+'</strong></span>';
+                                   $( '#id_section' ).html( errorname );
+                                }
+                                if(errors['idScheme']=== undefined){
+                                    $( '#id_scheme' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['idScheme']+'</strong></span>';
+                                   $( '#id_scheme' ).html( errorname );
+                                }
+                                if(errors['idProgram']=== undefined){
+                                    $( '#id_program' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['idProgram']+'</strong></span>';
+                                   $( '#id_program' ).html( errorname );
+                                }
+                                if(errors['idFinancialYear']=== undefined){
+                                    $( '#id_fy' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['idFinancialYear']+'</strong></span>';
+                                   $( '#id_fy' ).html( errorname );
+                                }
+                                if(errors['startDate']=== undefined){
+                                    $( '#start_date' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['startDate']+'</strong></span>';
+                                   $( '#start_date' ).html( errorname );
+                                }
+                                if(errors['endDate']=== undefined){
+                                    $( '#end_date' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['endDate']+'</strong></span>';
+                                   $( '#end_date' ).html( errorname );
+                                }if(errors['dateofactivation']=== undefined){
+                                    $( '#dateof_activation' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['dateofactivation']+'</strong></span>';
+                                   $( '#dateof_activation' ).html( errorname );
+                                }if(errors['totalAreaAllocated']=== undefined){
+                                    $( '#total_AreaAllocated' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['totalAreaAllocated']+'</strong></span>';
+                                   $( '#total_AreaAllocated' ).html( errorname );
+                                }
+                                if(errors['totalFundsAllocated']=== undefined){
+                                    $( '#total_FundsAllocated' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['totalFundsAllocated']+'</strong></span>';
+                                   $( '#total_FundsAllocated' ).html( errorname );
+                                }
+                                if(errors['idUnit']=== undefined){
+                                    $( '#id_Unit' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['idUnit']+'</strong></span>';
+                                   $( '#id_Unit' ).html( errorname );
+                                }
+                                if(errors['assistance']=== undefined){
+                                    $( '#Assistance' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['assistance']+'</strong></span>';
+                                   $( '#Assistance' ).html( errorname );
+                                }
+                                if(errors['assistanceamt']=== undefined){
+                                    $( '#Assistanceamt' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['assistanceamt']+'</strong></span>';
+                                   $( '#Assistanceamt' ).html( errorname );
+                                }
+                                if(errors['idWorkflow']=== undefined){
+                                    $( '#id_workflow' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['idWorkflow']+'</strong></span>';
+                                   $( '#id_workflow' ).html( errorname );
+                                }
+                                if(errors['extendDays']=== undefined){
+                                    $( '#extend_days' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['extendDays']+'</strong></span>';
+                                   $( '#extend_days' ).html( errorname );
+                                }
+                                if(errors['guidelines']=== undefined){
+                                    $( '#guideline' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['guidelines']+'</strong></span>';
+                                   $( '#guideline' ).html( errorname );
+                                }
+                                if(errors['notiFile']=== undefined){
+                                    $( '#noti_File' ).empty();
+                                }else{
+                                   errorname = '<span class="help-block"><strong>'+errors['notiFile']+'</strong></span>';
+                                   $( '#noti_File' ).html( errorname );
+                                }
+                                
 //                            var errorHtml = '<div class="alert alert-danger"><ul>';
 //                            $.each( errors, function( key, value ) {    
 //                               errorHtml += '<li>' + value + '</li>'; 
 //                            });
 //                            errorHtml += '</ul></div>';
 //                            $('#formerrors').html(errorHtml);
-//                           
-//                     }
-//                }
-//        });
-//        return false;
-//    });
+                           
+                     }
+                }
+        });
+        return false;
+    });
 </script>

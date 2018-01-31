@@ -15,7 +15,7 @@ class SchemeController extends Controller {
     public function index() {
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         //$schemes = \App\Scheme::orderBy('schemeName')->get();
-		$schemes = \App\Scheme::orderBy('idScheme')->get();
+	$schemes = \App\Scheme::orderBy('idScheme')->get();
         return view('schemes.index', compact('schemes', 'sections'));
     }
 

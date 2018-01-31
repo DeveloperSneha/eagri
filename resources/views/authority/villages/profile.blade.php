@@ -66,7 +66,12 @@
                 <div class="form-group {{ $errors->has('dob') ? ' has-error' : '' }}">
                     {!! Form::label('Date Of Birth :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('dob', null, ['class' => 'form-control datepicker','placeholder'=>'Enter Date Of Birth']) !!}
+                        {!! Form::text('dob', null, ['class' => 'form-control datepicker','placeholder'=>'Enter Date Of Birth','onkeypress'=>'return onlyNumbersandSpecialChar(event)']) !!}
+                        @if ($errors->has('dob'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('dob') }}</strong>
+                                        </span>
+                                    @endif
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('aadhaarabc') ? ' has-error' : '' }}">

@@ -16,7 +16,7 @@ Route::get('user/{id}/{desig}/{subdivision}/block', 'Users\UserDistrictControlle
 Auth::routes();
 
 /* Frontpage */
-Route::get('/index', function () {
+Route::get('/', function () {
     return view('layouts.frontpage');
 });
 /* end frontpage */
@@ -24,7 +24,7 @@ Route::get('/index', function () {
 
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('/', function () {
+    Route::get('/index', function () {
         return view('layouts.dashboard');
     });
 
@@ -48,18 +48,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('userdistrict', 'Users\UserDistrictController');
 
     Route::get('designations/{id}/deletedesignation', 'DesignationController@deleteDesignation');
+    Route::get('designations/{id}/editdesignation', 'DesignationController@editDesignation');
     Route::resource('designations', 'DesignationController');
+
     Route::get('workflow/{id}/designations', 'WorkflowController@designations');
     Route::get('workflow/{id}/deleteworkflow', 'WorkflowController@deleteWorkflow');
+    Route::get('workflow/{id}/editworkflow', 'WorkflowController@editWorkflow');
     Route::resource('workflow', 'WorkflowController');
     Route::resource('roles', 'RoleController');
     Route::get('units/{id}/deleteunit', 'UnitController@deleteUnit');
+    Route::get('units/{id}/editunit', 'UnitController@editUnit');
     Route::resource('units', 'UnitController');
 
     Route::get('section/{id}/workflows', 'SectionController@getWorkflow');
     Route::get('section/{id}/designations', 'SectionController@getDesignations');
     Route::get('section/{id}/schemes', 'SectionController@getScheme');
     Route::get('sections/{id}/deletesection', 'SectionController@deleteSection');
+    Route::get('sections/{id}/editsection', 'SectionController@editSection');
     Route::get('schemes/{id}/deletescheme', 'SchemeController@deleteScheme');
     Route::get('schemes/{id}/editscheme', 'SchemeController@editScheme');
     Route::resource('sections', 'SectionController');
@@ -67,13 +72,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('compcerts', 'CompcertController');
     //Route::resource('schemecerts', 'SchemecertController');
     Route::resource('components', 'ComponentController');
+
     Route::get('certificates/{id}/deletecertificate', 'CertificateController@deleteCertificate');
+    Route::get('certificates/{id}/editcertificate', 'CertificateController@editCertificate');
     Route::resource('certificates', 'CertificateController');
     Route::resource('categories', 'CategoryController');
     Route::get('programs/{id}/editprogram', 'ProgramController@editProgram');
     Route::get('programs/{id}/deleteprogram', 'ProgramController@deleteProgram');
     Route::resource('programs', 'ProgramController');
+
     Route::get('fys/{id}/deletefys', 'FinancialYearController@deletefys');
+    Route::get('fys/{id}/editfys', 'FinancialYearController@editfys');
     Route::resource('fys', 'FinancialYearController');
     Route::resource('compsizes', 'CompsizeController');
     Route::resource('comprates', 'ComprateController');
@@ -107,6 +116,9 @@ Route::prefix('farmer')->group(function() {
     Route::post('/login', 'Auth\FarmerLoginController@login')->name('farmer.login.submit');
     Route::post('/logout', 'Auth\FarmerLoginController@logout')->name('farmer.logout');
     Route::get('/', 'Farmer\FarmerController@index')->name('farmer.dashboard');
+    Route::get('/profile', 'Farmer\FarmerController@getProfile');
+    Route::get('/authinfo', 'Farmer\FarmerController@getAuthinfo');
+    Route::get('/avaschemes', 'Farmer\FarmerController@getAvaschemes');
 
     Route::get('district/{id}/subdivisions', 'Auth\FarmerRegisterController@getSubdivisions');
     Route::get('subdivision/{id}/blocks', 'Auth\FarmerRegisterController@getBlocks');
@@ -131,7 +143,7 @@ Route::prefix('authority')->group(function() {
     Route::post('/login', 'Auth\AuthorityLoginController@login')->name('authority.login.submit');
     Route::post('/secondsteplogin', 'Auth\AuthorityLoginController@secondStepLogin')->name('authority.secondlogin');
     Route::post('/logout', 'Auth\AuthorityLoginController@logout')->name('authority.logout');
-    Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
+    // Route::get('/', 'Authority\AuthorityController@index')->name('authority.dashboard');
 
     Route::prefix('districts')->group(function () {
         Route::get('/', 'Authority\AuthorityController@districts')->name('authority.districts.dashboard');
@@ -163,8 +175,8 @@ Route::prefix('authority')->group(function() {
         Route::get('/schblockdist/{idProgram}/subdivisions', 'Authority\District\BlockwiseSchemeDistController@distSubdivisions');
         Route::resource('/schblockdist', 'Authority\District\BlockwiseSchemeDistController');
         Route::get('/farmer-reg', 'Authority\District\RegFarmerController@registeredFarmer');
-        
-         //Scheme(Program) Approval Or Rejection By District User
+
+        //Scheme(Program) Approval Or Rejection By District User
         Route::get('/apvrscheme', 'Authority\District\SchemeApprRejectController@approvedScheme');
         Route::get('/rejectschemes', 'Authority\District\SchemeApprRejectController@rejectedScheme');
         Route::get('aprvrejectscheme/{idAppliedProgram}/view', 'Authority\District\SchemeApprRejectController@viewAppliedScheme');
@@ -183,7 +195,7 @@ Route::prefix('authority')->group(function() {
         Route::get('/blockdist/{idSchemeActivation}/funddetails', 'Authority\Subdivision\BlockSchemeDistController@getFunds');
         Route::resource('/blockdist', 'Authority\Subdivision\BlockSchemeDistController');
         Route::get('/farmer_reg', 'Authority\Subdivision\RegFarmerController@registeredFarmer');
-        
+
         //Scheme(Program) Approval Or Rejection By Subdivisionlevel User
         Route::get('/apvscheme', 'Authority\Subdivision\SchemeApprRejectController@approvedScheme');
         Route::get('/rjctscheme', 'Authority\Subdivision\SchemeApprRejectController@rejectedScheme');
@@ -196,7 +208,7 @@ Route::prefix('authority')->group(function() {
         Route::resource('/profile', 'Authority\Block\ProfileController');
         Route::get('/viuser/{id}/details', 'Authority\Block\VillageUserController@editUser');
         Route::resource('/viuser', 'Authority\Block\VillageUserController');
-        
+
         //Scheme(Program) Approval Or Rejection By Blocklevel User
         Route::get('/aprscheme', 'Authority\Block\SchemeApprRejectController@approvedScheme');
         Route::get('/rjscheme', 'Authority\Block\SchemeApprRejectController@rejectedScheme');
@@ -204,21 +216,19 @@ Route::prefix('authority')->group(function() {
         Route::resource('/approvescheme', 'Authority\Block\SchemeApprRejectController');
         //Faremer  Rejection By Blocklevel User
         Route::get('/reg-farmer', 'Authority\Block\RegFarmerController@registeredFarmer');
-        
     });
 
     Route::prefix('villages')->group(function () {
         Route::get('/', 'Authority\AuthorityController@village')->name('authority.villages.dashboard');
         Route::resource('/profile', 'Authority\Village\ProfileController');
-         //Scheme(Program) Approval Or Rejection By Villagelevel User
+        //Scheme(Program) Approval Or Rejection By Villagelevel User
         Route::get('apr/{idAppliedProgram}/view', 'Authority\Village\SchemeApprRejectController@viewAppliedScheme');
         Route::get('/apprscheme', 'Authority\Village\SchemeApprRejectController@approvedScheme');
         Route::get('/rejscheme', 'Authority\Village\SchemeApprRejectController@rejectedScheme');
         Route::resource('/schappreject', 'Authority\Village\SchemeApprRejectController');
-         //Faremer  Rejection By Villagelevel User
+        //Faremer  Rejection By Villagelevel User
         Route::get('/regfarmers', 'Authority\Village\RegFarmerController@registeredFarmer');
-        Route::get('farmer/{idFarmer}/cancelreg','Authority\Village\RegFarmerController@cancelFarmerReg');
+        Route::get('farmer/{idFarmer}/cancelreg', 'Authority\Village\RegFarmerController@cancelFarmerReg');
         Route::get('/blistfarmers', 'Authority\Village\RegFarmerController@blacklistedFarmer');
     });
-
 });

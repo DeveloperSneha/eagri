@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
-
+<div id='formerrors'></div>
 <div class="panel panel-default">
     <div class="panel-heading"><strong>@if(isset($workflow)) Edit @else Add @endif  Workflow</strong></div>
     <div class="panel-body">
         @if(isset($workflow))
         {{ Form::model( $workflow, ['route' => ['workflow.update', $workflow->idWorkflow], 'method' => 'patch','class'=>'form-horizontal'] ) }}
         @else
-        {!! Form::open(['url' => 'workflow','class'=>'form-horizontal']) !!}
+        {!! Form::open(['url' => 'workflow','class'=>'form-horizontal','id'=>'workflowform']) !!}
         @endif
         <div class="form-group">
             {!! Form::label('Section', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -37,7 +37,7 @@
         <div class="form-group">
             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >
+                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >---Select Designation ---
                 </select>
             </div>
             <span class="help-block">
@@ -52,7 +52,7 @@
         <div class="form-group">
             {!! Form::label('Workflow Name', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('workflowName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
+                {!! Form::text('workflowName', null, ['class' => 'form-control','maxlength'=>'50','minlength'=>'2','onkeypress'=>'onlylettersandSpecialChar']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -67,6 +67,7 @@
         @if(isset($workflow))
         <!--{!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}-->
 	    <button type="submit" class="btn btn-danger">Update</button>
+            <a href="{{url('/workflow')}}" class="btn btn-danger">Cancel</a>
         @else
         <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
 	    <button type="submit" class="btn btn-danger">Save</button>
@@ -98,7 +99,7 @@
                         @endforeach
                     </td>
                     <td>
-                        <a href='{{url('/workflow/'.$var->idWorkflow.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                        <a href='{{url('/workflow/'.$var->idWorkflow.'/editworkflow')}}' class="btn btn-sm btn-warning">Edit</a>
                       
                        <a href='{{url('/workflow/'.$var->idWorkflow.'/deleteworkflow')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>
@@ -150,10 +151,50 @@
                                 $('select[id="idDesignation"]:selected').append('<option value="'+ key +'" >'+ value +'</option>');
                                 }                            
                         });
+                    @else
+                        $('select[id="idDesignation"]').empty();
+                        $.each(data, function (key, value) {
+                            $('select[id="idDesignation"]').append('<option value="' + key + '">' + value + '</option>');
+                        });
                     @endif
                 }
             });
         }
+    
+    $('#workflowform').on('submit',function(e){
+        $.ajaxSetup({
+        header:$('meta[name="_token"]').attr('content')
+    });
+    var formData = $(this).serialize();
+        $.ajax({
+            type:"POST",
+            url: "{{url('/workflow') }}",
+            data:formData,
+            dataType: 'json',
+            success:function(data){
+                if( data[Object.keys(data)[0]] === 'SUCCESS' ){		//True Case i.e. passed validation
+                window.location = "{{url('workflow')}}";
+                }
+                else {					//False Case: With error msg
+                $("#msg").html(data);	//$msg is the id of empty msg
+                }
 
+            },
+
+            error: function(data){
+                        if( data.status === 422 ) {
+                            var errors = data.responseJSON.errors;
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            $.each( errors, function( key, value ) {    
+                               errorHtml += '<li>' + value + '</li>'; 
+                            });
+                            errorHtml += '</ul></div>';
+                            $('#formerrors').html(errorHtml);
+                           
+                     }
+                }
+        });
+        return false;
+    });
 </script>
 @stop

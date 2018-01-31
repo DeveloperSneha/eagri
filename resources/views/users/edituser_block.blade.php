@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('content')
+<div id="formerrors"></div>
 <div class="panel panel-default tab-pane fade in active" id='new'>
     <div class="panel-heading"><strong>{{ $userdesig->user->userName }}</strong></div>
     <div class="panel-body">
-        {!! Form::model( $userdesig, ['route' => ['userblock.update', $userdesig->iddesgignationdistrictmapping], 'method' => 'patch','class'=>'form-horizontal'] ) !!}
+        {!! Form::model( $userdesig, ['route' => ['userblock.update', $userdesig->iddesgignationdistrictmapping], 'method' => 'patch','class'=>'form-horizontal','id'=>'edituserblock'] ) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">

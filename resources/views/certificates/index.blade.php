@@ -28,7 +28,7 @@
         <div class="form-group">
             {!! Form::label('description', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::textarea('description', null, ['class' => 'form-control','size'=>'30x3','maxlength'=>'150','minlength'=>'2']) !!}
+                {!! Form::textarea('description', null, ['class' => 'form-control','size'=>'30x3','maxlength'=>'150','minlength'=>'2','onkeypress'=>'onlylettersandSpecialChar']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -41,7 +41,8 @@
     </div>
     <div class="panel-footer">
         @if(isset($certificate))
-        {!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}
+        {!!  Form::submit('Update',['class'=>'btn btn-danger'])!!}
+        <a href="{{url('/certificates')}}" class="btn btn-danger">Cancel</a>
         @else
         <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
 	<button type="submit" class="btn btn-danger">Save</button>
@@ -69,7 +70,7 @@
                     <td>{{ $var->certificateName }}</td>
 					<td>{{ $var->description }}</td>
                     <td>
-                        <a href='{{url('/certificates/'.$var->idCertificate.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                        <a href='{{url('/certificates/'.$var->idCertificate.'/editcertificate')}}' class="btn btn-sm btn-warning">Edit</a>
                       
                        <a href='{{url('/certificates/'.$var->idCertificate.'/deletecertificate')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>

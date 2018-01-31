@@ -163,6 +163,9 @@ class UserSubdivisionController extends Controller {
 //        $user->userdesig()->saveMany($user_subdivisions);
 //
 //        DB::commit();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('usersubdivision/' . $userdesig->idUser . '/edituser');
     }
 
@@ -183,9 +186,24 @@ class UserSubdivisionController extends Controller {
     }
 
     public function getDesignations($id) {
-        $designations = \App\Designation::where("idSection", $id)
-                        ->where('level', 2)->get()
-                        ->pluck("designationName", "idDesignation")->toArray();
+        $desig = \App\Designation::where("idSection", $id)->get();
+        if ($desig->count() == 4) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 3) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->whereIn('level', [2, 3])->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } elseif ($desig->count() == 2) {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        } else {
+            $designations = \App\Designation::where("idSection", $id)
+                            ->where('level', 2)->get()
+                            ->pluck("designationName", "idDesignation")->toArray();
+        }
         return json_encode($designations);
     }
 

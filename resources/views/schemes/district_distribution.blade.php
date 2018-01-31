@@ -78,12 +78,12 @@
                             <input type="checkbox" value="{{ $key}}" name="districts[{{$key}}][idDistrict]" id='district' class='count_dist'>
                         </td>
                         <td>
-                            <input type="text"  class="form-control" data-toggle="tooltip" data-placement="right" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})" >
+                            <input type="text"  class="form-control" data-toggle="tooltip" data-placement="right" name="districts[{{$key}}][areaDistrict]"  id="areadistrict{{$key}}" onchange="getArea({{$key}})" onkeypress="return isNumber(event)" maxlength="12" minlength="1">
                             <span id='errorarea{{$key}}'></span>
                             <input type="hidden" id="hiddenarea{{$key}}">
                         </td>
                         <td>
-                            <input type="text"  class="form-control" name="districts[{{$key}}][amountDistrict]" id="amtdistrict{{$key}}">
+                            <input type="text"  class="form-control" name="districts[{{$key}}][amountDistrict]" onkeypress="return isNumber(event)" maxlength="12" minlength="1" id="amtdistrict{{$key}}" onkeydown="return false;">
                             <span id='erroramt{{$key}}'></span>
                             <input type="hidden" id="hiddenamount{{$key}}">
                         </td>
@@ -124,10 +124,10 @@
                     <td>{{ $var->amountDistrict }}</td>
                     <td>{{ $var->areaDistrict }}</td>
                     <td>
-                        {{ Form::open(['route' => ['districtdistribution.destroy', $var->idSchemDistributionDistrict], 'method' => 'delete']) }}
-                        <a href='{{url('/districtdistribution/'.$var->idSchemDistributionDistrict.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>
-                        <button class="btn btn-xs btn-danger" type="submit">Delete</button>
-                        {{ Form::close() }}
+                      {{--  {{ Form::open(['route' => ['districtdistribution.destroy', $var->idSchemDistributionDistrict], 'method' => 'delete']) }} --}}
+                        <!--<a href='{{url('/districtdistribution/'.$var->idSchemDistributionDistrict.'/edit')}}' class="btn btn-xs btn-warning">Edit</a>-->
+                        <!--<button class="btn btn-xs btn-danger" type="submit">Delete</button>-->
+                      {{--  {{ Form::close() }} --}}
                     </td>
                 </tr>
                 @endforeach
@@ -137,5 +137,5 @@
 </div>
 @stop
 @section('script')
-@include('view_Script.district_distjs');
+@include('view_script.district_distjs');
 @stop

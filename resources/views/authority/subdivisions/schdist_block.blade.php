@@ -106,15 +106,15 @@
                         <span id='errorblock{{$key}}' class="help-block"></span>
                         </td>
                         <td>
-                            <input type="checkbox" value="{{ $key}}" name="blocks[{{$key}}][idBlock]" id='block' >                            
+                            <input type="checkbox" value="{{ $key}}" name="blocks[{{$key}}][idBlock]" id='block' class="count_dist">                            
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="blocks[{{$key}}][areaBlock]"  id="areablock{{$key}}" onchange="getArea({{$key}})">
+                            <input type="text" class="form-control" name="blocks[{{$key}}][areaBlock]"  id="areablock{{$key}}" onchange="getArea({{$key}})" onkeypress="return isNumberKey(event)" minlength="1" maxlength="12">
                             <span id='errorarea{{$key}}' class="help-block"></span>
                             <input type="hidden" id="hiddenarea{{$key}}">
                         </td>
                         <td>
-                            <input type="text" class="form-control " name="blocks[{{$key}}][amountBlock]" id="amtblock{{$key}}">
+                            <input type="text" class="form-control " name="blocks[{{$key}}][amountBlock]" id="amtblock{{$key}}" onkeypress="return isNumberKey(event)" minlength="1" maxlength="12" onkeydown="return false;">
                             <span id='erroramt{{$key}}' class="help-block"></span><input type="hidden" id="hiddenamount{{$key}}">
                         </td>
                     </tr>
@@ -224,6 +224,19 @@
                     $.each(data, function(key, value) {
                        $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly></div></div>');
                     });
+                    $('#selectall').prop('checked', false);
+                    var checkAll = this.checked;
+                    $('input[type=checkbox]').each(function () {
+                        this.checked = checkAll;
+                        var area ='#areablock'+ this.value;
+                        var amt = '#amtblock'+ this.value;
+                        var hiddenarea = '#hiddenarea'+this.value;
+                        var hiddenamount = '#hiddenamount'+this.value;
+                            $(area).val('');
+                            $(amt).val('');
+                            $(hiddenarea).val('');
+                            $(hiddenamount).val('');
+                    });
                 }
             });
         }else{
@@ -238,23 +251,53 @@ $(document).ready(function () {
         var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
         var assistance = parseFloat($("#area-fund #aaaaa:last-child input").val());
-        $('input[type=checkbox]').each(function () {
-            
-            this.checked = checkAll;
-            var area ='#areablock'+ this.value;
-            var amt = '#amtblock'+ this.value;
-            var hiddenarea = '#hiddenarea'+this.value;
-            var hiddenamount = '#hiddenamount'+this.value;
+        if(checkAll === true){
+            $('input[type=checkbox]').each(function () {
 
-            $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
-            $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
-        });
-        $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
-        $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
-        
-        if($("#area-fund #aaaaa:first-child input").val() <=0){
+                this.checked = checkAll;
+                var area ='#areablock'+ this.value;
+                var amt = '#amtblock'+ this.value;
+                var hiddenarea = '#hiddenarea'+this.value;
+                var hiddenamount = '#hiddenamount'+this.value;
+
+                $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+                $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+                $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+                $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+            });
+            $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
+            $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
+        }else{
+            $('input[type=checkbox]').each(function () {
+                this.checked = checkAll;
+                var area ='#areablock'+ this.value;
+                var amt = '#amtblock'+ this.value;
+                var hiddenarea = '#hiddenarea'+this.value;
+                var hiddenamount = '#hiddenamount'+this.value;
+                    $(area).val('');
+                    $(amt).val('');
+                    $(hiddenarea).val('');
+                    $(hiddenamount).val('');
+            });
+            var cur_program = $( "#idProgram option:selected" ).val();
+            if(cur_program) {
+                $.ajax({
+                    url: "{{url('/authority/subdivisions/blockdist') }}"+'/' +cur_program + '/funddetails',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('#area-fund').empty();
+                        $.each(data, function(key, value) {
+                           $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'
+                                   + key +'</label><div class="col-sm-2">\n\
+                                <input type="text" value="'+ value +'" readonly ><input type="hidden" name="'+key+'" value="'+ value +'">\n\
+                                </div></div>');
+                        });
+                    }
+                });
+            }
+        }
+        if($("#area-fund #aaaaa:first-child input").val() <0){
            var errors = 'Financial Target Of This Block Exceeded the limit';
             errorHtml='<div class="alert alert-danger"><ul>';
                             errorHtml += '<li>' + errors + '</li>';
@@ -296,7 +339,7 @@ $(document).ready(function () {
                        // e.preventDefault(e);
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
-                            errorHtml='<div class="alert alert-danger">';
+                            errorHtml='<div class="alert alert-danger"><ul>';
                             $.each( errors, function( key, value ) {
                                  if (key.split(".")[1] + '.amountBlock'==key.split(".")[1] + '.' +key.split(".")[2])
                                  {
@@ -313,12 +356,11 @@ $(document).ready(function () {
                                      $( '#errorblock'+key.split(".")[1] ).html( errordist );
                                  }
                                  else{
-                                     errorHtml='<div class="alert alert-danger"><ul>';
-                                     errorHtml += '<p>' + value + '</p>';
-                                     errorHtml += '</div>';
-                                     $( '#formerrors' ).html( errorHtml );
+                                     errorHtml += '<li>' + value + '</li>';
                                  }
                             });
+                                errorHtml += '</ul></div>';
+                                $( '#formerrors' ).html( errorHtml );
                      }
                      
                 }
@@ -337,7 +379,7 @@ function getArea($key){
         var hiddenamount = '#hiddenamount'+$key;
 
   if( $('#selectall').prop('checked')){
-      if($(area).val()<=0){
+      if($(area).val()<0){
              $(area).css('border-color', 'red');
               $(area).tooltip();
               $(area).attr('title', 'Negative Value Not Allowed !!');
@@ -354,7 +396,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
-            if(total_fund <=0){
+            if(total_fund <0){
                var errors = 'Financial Target Of This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -371,7 +413,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
           var hiddenarea =  $(hiddenarea).val($(area).val());
-          if(total_area <=0){
+          if(total_area <0){
                 var errors = 'Physical Target OF This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -384,7 +426,7 @@ function getArea($key){
             }
   
   }else{
-      if($(area).val()<=0){
+      if($(area).val()<0){
              $(area).css('border-color', 'red');
               $(area).tooltip();
               $(area).attr('title', 'Negative Value Not Allowed !!');
@@ -402,7 +444,7 @@ function getArea($key){
                 total_fund = parseFloat(total_fund) - amount;
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
-            if(total_fund <=0){
+            if(total_fund <0){
                 $(area).css('border-color', 'red');
                 $("#area-fund #aaaaa:first-child input").css('border-color', 'red');
                 var errors = 'Financial Target Of This Block Exceeded the limit';
@@ -423,7 +465,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:first-child input").val(total_fund);
             var hiddenamount =  $(hiddenamount).val(amount);
-            if(total_fund <=0){
+            if(total_fund <0){
                var errors = 'Financial Target Of This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -445,7 +487,7 @@ function getArea($key){
                 total_area = parseFloat(total_area) - $(area).val();
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
             var hiddenarea =  $(hiddenarea).val($(area).val());
-            if(total_area <=0){
+            if(total_area <0){
                 var errors = 'Physical Target OF This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';
@@ -462,7 +504,7 @@ function getArea($key){
 
             $("#area-fund #aaaaa:nth-child(2) input").val(total_area);
           var hiddenarea =  $(hiddenarea).val($(area).val());
-          if(total_area <=0){
+          if(total_area <0){
                 var errors = 'Physical Target OF This Block Exceeded the limit';
                 errorHtml='<div class="alert alert-danger"><ul>';
                                 errorHtml += '<li>' + errors + '</li>';

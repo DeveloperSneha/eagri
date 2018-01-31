@@ -78,14 +78,18 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             'ofc_address' => 'required',
             'address' => 'required'
         ];
-        $this->validate($request, $rules);
         if ($request->aadhaar != null) {
             if (Verhoeff::validate($request->aadhaar) === false) {
                 $rules += ['aadhaarabc' => 'required'];
-                $message += ['aadhaarabc.required' => 'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है'];
                 // return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
             }
         }
+        $message = [
+            'aadhaarabc.required'=>'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
+            'dob.required'=>'Date Of Birth must be filled',
+            'dob.before'=>'Date Of Birth is Invalid'
+        ];
+        $this->validate($request, $rules,$message);
         //dd($request->all());
         $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $profile->fill($request->all());

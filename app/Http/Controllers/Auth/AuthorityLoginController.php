@@ -47,7 +47,7 @@ class AuthorityLoginController extends Controller {
                 return view('authority.secondstep_login', compact('user'));
             }
         } else {
-            return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg' => 'Your Credential Doesnot Match Our Record.Plz Try Again !!']);
+            return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg' => 'Your Credential Doesnot Match.Please Try Again !!']);
         }
     }
 

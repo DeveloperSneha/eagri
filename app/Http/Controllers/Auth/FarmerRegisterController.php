@@ -104,7 +104,7 @@ use RegistersUsers;
 //    }
 
     public function showRegistrationForm() {
-        $districts = [''=>'--- अपना जिला चुने ---'] +\App\District::pluck('districtName', 'idDistrict')->toArray();
+        $districts = [''=>'--- Select / जिला चुने ---'] +\App\District::pluck('districtName', 'idDistrict')->toArray();
         return view('farmer.registration', compact('districts'));
     }
 
@@ -115,7 +115,8 @@ use RegistersUsers;
         $rules = [
             'name' => 'required|string|max:25',
             'father_name' => 'required|string|max:25',
-            'aadhaar' => 'required|max:12|min:12|unique:farmers',
+            // 'aadhaar' => 'required|max:12|min:12|unique:farmers',
+            'aadhaar' => 'unique:farmers',
             'check' => 'required|accepted',
             'mobile' => 'required|min:10|max:10|unique:farmers|regex:/^[6789]\d{9}$/',
             'idDistrict' => 'required',
@@ -173,7 +174,8 @@ use RegistersUsers;
             'account_no.required' => 'Account Number Must be Filled',
             'account_no.unique' => 'Account Number  is Already Taken',
             'land_location.required' => 'Land Location Must not be Empty',
-            'total_land.required' => 'Total Land Must Not be Empty'
+            'total_land.required' => 'Total Land Must Not be Empty',
+            'check.required'=>'Please Select the Disclaimer '
         ];
         if ($request->aadhaar != null) {
             if (Verhoeff::validate($request->aadhaar) === false) {
@@ -224,18 +226,18 @@ use RegistersUsers;
     }
 
     public function getSubdivisions($id) {
-        $subdivisions = [0 => '--- अपना उपखंड  चुने ---'] + \App\Subdivision::where("idDistrict", $id)
+        $subdivisions = [0 => '--- Select /उपखंड  चुने ---'] + \App\Subdivision::where("idDistrict", $id)
                         ->pluck("subDivisionName", "idSubdivision")->toArray();
         return json_encode($subdivisions);
     }
     public function getBlocks($id) {
-        $blocks = [0 => '--- अपना ब्लाक चुने ---'] + \App\Block::where("idSubdivision", $id)
+        $blocks = [0 => '--- Select / ब्लाक चुने ---'] + \App\Block::where("idSubdivision", $id)
                         ->pluck("blockName", "idBlock")->toArray();
         return json_encode($blocks);
     }
 
     public function getVillages($id) {
-        $villages = [0 => '--- अपना गाँव चुने ---'] + \App\Village::where("idBlock", $id)
+        $villages = [0 => '--- Select / गाँव चुने ---'] + \App\Village::where("idBlock", $id)
                         ->pluck("villageName", "idVillage")->toArray();
         return json_encode($villages);
     }

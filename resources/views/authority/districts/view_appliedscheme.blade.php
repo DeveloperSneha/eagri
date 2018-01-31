@@ -32,18 +32,32 @@
             {!! Form::label('Remarks', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-6">
                 {!! Form::textarea('remarks', null, ['size'=>'30x3','class' => 'form-control','placeholder'=>'Enter Remarks']) !!}
+                <span class="help-block">
+                    <strong>
+                        @if($errors->has('remarks'))
+                        <p>{{ $errors->first('remarks') }}</p>
+                        @endif
+                    </strong>
+                </span>
             </div>
         </div><br>
         <div class="form-group">
             <div class="col-sm-offset-1 col-sm-10">
                 <input type="checkbox" name="haveChecked" class="minimal" value="Y">
-            <label> I Have Checked And Verified The Details Of The Farmer</label>
+                <label> I Have Checked And Verified The Details Of The Farmer</label>
+                <span class="help-block">
+                    <strong>
+                        @if($errors->has('haveChecked'))
+                        <p>{{ $errors->first('haveChecked') }}</p>
+                        @endif
+                    </strong>
+                </span>
             </div>
         </div>
     </div>
     <div class="panel-footer">
-        	<button type="submit" name="Approve" class="btn btn-danger">Approve</button>
-		<button type="submit" name="Reject" class="btn btn-danger">Reject</button>
+        <button type="submit" name="Approve" class="btn btn-danger">Approve</button>
+        <button type="submit" name="Reject" class="btn btn-danger">Reject</button>
         {!! Form::close() !!}
     </div>
 </div>

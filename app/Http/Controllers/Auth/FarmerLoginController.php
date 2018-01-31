@@ -43,7 +43,7 @@ class FarmerLoginController extends Controller {
         // if unsuccessful, then redirect back to the login with the form data
         // return redirect()->back()->withInput($request->only('aadhaar', 'remember'));
 //        return Redirect::back()->withInput($request->only('mobile', 'remember'))->withErrors(['Mobile Number Is Not vaild ']);
-        return Redirect::back()->withInput($request->only('mobile'))->withErrors(['msg' => 'Your Credential Doesnot Match Our Record.Plz Try Again !!']);
+        return Redirect::back()->withInput($request->only('mobile'))->withErrors(['msg' => 'Your Credential Doesnot Match.Please Try Again !!']);
         // dd('your username and password are wrong.');
     }
 

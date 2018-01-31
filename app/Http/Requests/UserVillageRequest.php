@@ -45,7 +45,7 @@ class UserVillageRequest extends FormRequest {
                 'idBlock'=>'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-()]+$/u'
             ];
             if (count($this->idVillages) == 0) {
                 $rules['idVillage'] = 'required';

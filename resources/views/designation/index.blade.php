@@ -51,7 +51,8 @@
     </div>
     <div class="panel-footer">
         @if(isset($designation))
-        {!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}
+        {!!  Form::submit('Update',['class'=>'btn btn-danger'])!!}
+        <a href="{{url('/designations')}}" class="btn btn-danger">Cancel</a>
         @else
         <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
 	    <button type="submit" class="btn btn-danger">Save</button>
@@ -82,7 +83,7 @@
                     <td>{{ $var->designationName }}</td>
                     <td>{{ $var->level }}</td>
                     <td>
-                        <a href='{{url('/designations/'.$var->idDesignation.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                        <a href='{{url('/designations/'.$var->idDesignation.'/editdesignation')}}' class="btn btn-sm btn-warning">Edit</a>
                       
                        <a href='{{url('/designations/'.$var->idDesignation.'/deletedesignation')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>

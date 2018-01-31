@@ -19,17 +19,18 @@ class RedirectIfAuthenticated {
         switch ($guard) {
             case 'authority':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->route('authority.dashboard');
+                  //  dd(Session::get('idDistrict'));
+                  //  return redirect()->route('authority.dashboard');
                 }
                 break;
             case 'farmer':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->route('farmer.dashboard');
+                    return redirect('/farmer');
                 }
                 break;
             default:
                 if (Auth::guard($guard)->check()) {
-                    return redirect('/');
+                    return redirect('/index');
                 }
                 break;
         }

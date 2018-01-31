@@ -72,10 +72,25 @@ class SectionController extends Controller {
      */
     public function edit($id) {
         //
+//        $sections = \App\Section::orderBy('sectionName')->get();
+//        $section = \App\Section:: where('idSection', '=', $id)->first();
+//        //   dd($role);
+//        return view('sections.index', compact('section', 'sections'));
+    }
+    
+    public function editSection($id) {
         $sections = \App\Section::orderBy('sectionName')->get();
         $section = \App\Section:: where('idSection', '=', $id)->first();
-        //   dd($role);
-        return view('sections.index', compact('section', 'sections'));
+        $schemes = \App\Scheme::where('idSection', '=', $id)->get();
+        $designation = \App\Designation::where('idSection', '=', $id)->get();
+        if ($schemes->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Edit this Section Because it  Already Exist in Some Schemes!');
+        }elseif($designation->count() > 0){
+            return redirect()->back()->with('message', 'You Can not Edit this Section Because it  Already Exist in Some Designation!');
+        }
+        else{
+            return view('sections.index', compact('section','sections'));
+        }
     }
 
     /**

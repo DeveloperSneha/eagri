@@ -62,10 +62,22 @@ class UnitController extends Controller {
      */
     public function edit($id) {
         //
+//        $units = \App\Unit::orderBy('unitName')->get();
+//        $unit = \App\Unit:: where('idUnit', '=', $id)->first();
+//        //   dd($role);
+//        return view('units.index', compact('unit', 'units'));
+    }
+    
+    public function editUnit($id) {
         $units = \App\Unit::orderBy('unitName')->get();
         $unit = \App\Unit:: where('idUnit', '=', $id)->first();
-        //   dd($role);
-        return view('units.index', compact('unit', 'units'));
+        $schact = \App\SchemeActivation::where('idUnit', '=', $id)->get();
+        if ($schact->count() > 0) {
+            return redirect()->back()->with('message', 'You Can not Edit this Unit Because it is Already in Use!');
+        }
+        else{
+            return view('units.index', compact('unit','units'));
+        }
     }
 
     /**

@@ -9,17 +9,22 @@ $user_desig = $user->userdesig()
 ?>
 <!DOCTYPE html>
 <html>
+
     @include('layouts.partials.head')
+    
+    <body style="background-color: #323232;">
     <div class="">
         <div class="register-logo">
-            <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="100" width="160"></a>
+            <p class="register-box-msg" style="color:#fff; height:100px;"></p>
+<!--            <a href="{{url('/')}}"><img src="{{asset('dist/img/DOAH.png')}}" height="100" width="160"></a>-->
         </div>
 
-        <div class="register-box-body">
+        <div class="register-box-body" style="background-color: #323232;">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Select Your Designation And Related Districts</strong>
+                            <a style="color:#fff" href="{{url('authority/login')}}"><span style="float:right;"><i class="fa fa-home fa-2x"></i></span></a>
                     </div>
                     <form class="form-horizontal" id="secondsteplogin" method="POST" action="{{ route('authority.secondlogin') }}">
                         {{ csrf_field() }}
@@ -27,7 +32,7 @@ $user_desig = $user->userdesig()
                         <input type="hidden" name='userName' value="{{$user->userName}}">
 <!--                        <input type="hidden" name='password' value="{{$user->password}}">-->
                         <div class="form-group">
-                            {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            {!! Form::label('Designation', null, ['class' => 'col-sm-3 control-label required']) !!}
                             <div class="col-sm-4">
                                 {!! Form::select('idDesignation',[''=>'Select']+$user_desig,null, ['class' => 'form-control select2','id'=>'idDesignation']) !!}
                             </div>
@@ -40,7 +45,7 @@ $user_desig = $user->userdesig()
                             </span>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            {!! Form::label('District', null, ['class' => 'col-sm-3 control-label required']) !!}
                             <div class="col-sm-4">
                                 <select name = "idDistrict"  id="idDistrict" class="form-control">
                                 </select>
@@ -56,38 +61,31 @@ $user_desig = $user->userdesig()
                         </div>
                         
                         <div class="form-group">
-                            {!! Form::label('Subdivision', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            {!! Form::label('Subdivision', null, ['class' => 'col-sm-3 control-label required']) !!}
                             <div class="col-sm-4">
-                                <select name = "idSubdivision"  id="idSubdivision" class="form-control">
+                                <select name = "idSubdivision"  id="idSubdivision" class="form-control" >
+                                    
                                 </select>
+                                <!-- <span class="help-block" id="typePrompt">Select Only When Subdivisional/Block Agriculture Officer</span> -->
                             </div>
-                            <span class="help-block">
-                                <strong>
-                                    @if($errors->has('idSubdivision'))
-                                    <p>{{ $errors->first('idSubdivision') }}</p>
-                                    @endif
-                                </strong>
-                            </span>
-
+                            <div class="col-sm-4">
+                            <span style="color: #20147b;" id="typePrompt">Select This Only When You Are Subdivisional/Block Level Officer</span>
+                            </div>
                         </div>
                           
                         <div class="form-group">
-                            {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            {!! Form::label('Block', null, ['class' => 'col-sm-3 control-label required']) !!}
                             <div class="col-sm-4">
                                 <select name = "idBlock"  id="idBlock" class="form-control">
                                 </select>
                             </div>
-                            <span class="help-block">
-                                <strong>
-                                    @if($errors->has('idBlock'))
-                                    <p>{{ $errors->first('idBlock') }}</p>
-                                    @endif
-                                </strong>
-                            </span>
+                            <div class="col-sm-4">
+                            <span style="color: #20147b;" id="typePrompt">Select This Only When You Are Block/ Village Level Officer</span>
+                            </div>
 
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Re-type Password', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            {!! Form::label('Re-type Password', null, ['class' => 'col-sm-3 control-label required']) !!}
                             <div class="col-sm-4">
                                 <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control" value="" maxlength="12" >
                             </div>
@@ -113,7 +111,7 @@ $user_desig = $user->userdesig()
             </div>
         </div>
     </div>
-
+    </body>
 @include('layouts.partials.script')
 <script>
  $('select[name="idDesignation"]').on('change', function() {

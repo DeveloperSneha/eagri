@@ -40,7 +40,7 @@ class UserDistrictRequest extends FormRequest {
             $rules = [
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-()]+$/u'
                 // 'userName' => 'required|between:2,50|unique:users,userName,' . $var . ',idUser'
             ];
 			 // }

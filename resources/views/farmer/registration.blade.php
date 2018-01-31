@@ -9,7 +9,7 @@
         <div class="register-box-body" style="background-color: #323232;">
             <p class="register-box-msg" style="color:#fff">New Registration / नया पंजीकरण</p>
            
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>New Registration / नया पंजीकरण</strong>
@@ -21,12 +21,12 @@
                     <form class="form-horizontal" method="POST" action="{{ route('farmer.register.submit') }}" id="register">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            {!! Form::label('Name Of Farmer', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Name Of Farmer', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4  {{ $errors->has('name') ? ' has-error' : '' }}">
                                 {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'किसान का नाम','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
                                 <span id="name1"></span>
                             </div>
-                            {!! Form::label('Father/Husband', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Father/Husband', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('father_name') ? ' has-error' : '' }}">
                                 {!! Form::text('father_name', null, ['class' => 'form-control','placeholder'=>'पिता/पति का नाम','maxlength'=>'50','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
                                 <span id="father_name1"></span>
@@ -39,7 +39,7 @@
                                 <span id="aadhaarabc1"></span>
                                 <span  id="aadhaar1"></span>
                             </div>
-                            {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('rcno') ? ' has-error' : '' }}">
                                 {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isAlphaNumeric(event)']) !!}
                                 <span id="rcno1"></span>
@@ -47,24 +47,24 @@
                         </div>
                         
                         <div class="form-group">
-                            {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
                                 {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$']) !!}
                                 <span id="mobile1"></span>
                             </div>
-                            {!! Form::label('Marital Status', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Marital Status', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('marital_status') ? ' has-error' : '' }}">
                                 {!! Form::select('marital_status', getMaritalStatus(),null, ['class' => 'form-control','id'=>'marital_status']) !!}
                                 <span id="marital_status1"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Gender', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Gender', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('gender') ? ' has-error' : '' }}">
                                 {!! Form::select('gender', getGender(),null, ['class' => 'form-control']) !!}
                                 <span id="gender1"></span>
                             </div>
-                            {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Caste Category', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('caste') ? ' has-error' : '' }}">
                                 {!! Form::select('caste',getCasteCategory(), null, ['class' => 'form-control']) !!}
                                 <span id="caste1"></span>
@@ -74,7 +74,7 @@
                         </div>
                         <legend>Land Details / ज़मीन का विवरण (In acres / एकड़ में )</legend>
                         <div class="form-group">
-                            {!! Form::label('District', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('idDistrict') ? ' has-error' : '' }}">
 <!--                                <select name="idDistrict" class="form-control" id="idDistrict">
                                     <option value="" selected="selected">--- अपना जिला चुने ---</option>
@@ -82,27 +82,29 @@
                                     <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>-->
-                                {!! Form::select('idDistrict',$districts, null, ['class' => 'form-control','id'=>'idDistrict']) !!}
+                                {!! Form::select('idDistrict',$districts, null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
                                 <span id="idDistrict1"></span>
                             </div>
-                            {!! Form::label('Subdivision', null, ['class' => 'col-sm-2 control-label']) !!}
-                                <div class="col-sm-4 {{ $errors->has('idSubdivision') ? ' has-error' : '' }}">
-                                    <select name="idSubdivision" class="form-control select2" id="idSubdivision">--- Select Subdivision ---
-                                    <option value="" selected="selected"></option></select>
-                                    <span id="idSubdivision1"></span>
-                                </div>
+                            {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            <div class="col-sm-4 {{ $errors->has('idVillage') ? ' has-error' : '' }}">
+                                <select name="idVillage" class="form-control select2" id="idVillage" >
+                                    <option value="" selected="selected"></option>
+                                </select>
+                                <span  id="idVillage1"></span>
+                            </div>
+                            
                             
                         
                         </div>
                         <div class="form-group">
-                                                       
-                            {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
-                                <select name="idBlock" class="form-control select2" id="idBlock">--- Select Block ---
+                            {!! Form::label('Subdivision', null, ['class' => 'col-sm-2 control-label required']) !!}
+                                <div class="col-sm-4 {{ $errors->has('idSubdivision') ? ' has-error' : '' }}">
+                                    <select name="idSubdivision" class="form-control select2" id="idSubdivision">--- Select Subdivision ---
                                     <option value="" selected="selected"></option></select>
-                                <span id="idBlock1"></span>
-                            </div>
-                            {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label']) !!}
+                                    <span id="idSubdivision1"></span>
+                                </div>                           
+                            
+                            {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
                                     {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान']) !!}
                                     <span id="land_location1"></span>
@@ -112,14 +114,13 @@
                             
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4 {{ $errors->has('idVillage') ? ' has-error' : '' }}">
-                                <select name="idVillage" class="form-control select2" id="idVillage" >
-                                    <option value="" selected="selected"></option>
-                                </select>
-                                <span  id="idVillage1"></span>
+                            {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label required']) !!}
+                            <div class="col-sm-4 {{ $errors->has('idBlock') ? ' has-error' : '' }}">
+                                <select name="idBlock" class="form-control select2" id="idBlock">--- Select Block ---
+                                    <option value="" selected="selected"></option></select>
+                                <span id="idBlock1"></span>
                             </div>
-                            {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
                                     {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा (in Hectares) ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
                                     <span  id="total_land1"></span>
@@ -131,36 +132,37 @@
                             <legend>Bank Details / बैंक विवरण</legend>
 <!--                            <strong>Bank Details</strong>-->
                             <div class="form-group">
-                                {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label']) !!}
+                                {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('ifsc_code') ? ' has-error' : '' }}">
                                    {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ']) !!}
                                      <span  id="ifsc_code1"></span>
                                 </div>
-                                {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label']) !!}
+                                {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('bank_name') ? ' has-error' : '' }}">
                                     {!! Form::text('bank_name', null, ['class' => 'form-control','placeholder'=>'बैंक का नाम','id'=>'bankname_1','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'50','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
                                     <span  id="bank_name1"></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label']) !!}
+                                {!! Form::label('Branch Details', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('bank_branch') ? ' has-error' : '' }}">
                                     {!! Form::text('bank_branch', null, ['class' => 'form-control','placeholder'=>'अपने बैंक शाखा का नाम डाले ','id'=>'branchname_1','maxlength'=>'40','minlength'=>'3']) !!}
                                     <span class="help-block" id="bank_branch1"></span>
                                 </div>
-                                {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label']) !!}
+                                {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('account_no1') ? ' has-error' : '' }}">
                                     {!! Form::text('account_no', null, ['class' => 'form-control','placeholder'=>'अपने बैंक खाता नंबर डाले ','maxlength'=>'16','minlength'=>'12','onkeypress'=>'return isNumber(event)']) !!}
                                     <span  id="account_no1"></span>
                                 </div>
                             </div>                            
                         </fieldset>
+                        <legend>Disclaimer /अस्वीकरण</legend>
                         <div class="form-group">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-11 checkbox-inline {{ $errors->has('check') ? ' has-error' : '' }}">
-                            <input type="checkbox" name="check" id="check">
-                            <span style="font-color:black; font-size:17px;">All The Above Information Is Correct According To Me | मेरे द्वारा दिए गए सभी प्राप्त जानकारी सही है .</span>
-                            <span class="help-block" id="check1"></span>
+                            <!-- <div class="col-sm-1"></div> -->
+                            <div class="col-sm-12 checkbox-inline {{ $errors->has('check') ? ' has-error' : '' }}">
+                            <center><input type="checkbox" name="check" id="check" >
+                                <label style=" font-size:14px; letter-spacing: 1px; font-family:'DSDIGI' !important;">All The Above Information Is Correct According To Me | मेरे द्वारा दिए गए सभी प्राप्त जानकारी सही है .</label></center>
+                            <center><span class="col-sm-5 help-block" id="check1"></span></center>
                             </div>
                         </div>
                         <div class="form-group">
@@ -328,10 +330,13 @@ $('#register').on('submit',function(e){
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
                             // $.each( errors, function( key, value ) {
-                               if(errors['aadhaar']){
-                                      errorname = '<span class="help-block"><strong>'+errors['aadhaar']+'</strong></span>';
-                                      $( '#aadhaar1' ).html( errorname );
-                                   }
+                               
+                               if(errors['aadhaar']=== undefined){
+                                        $( '#aadhaar1' ).empty();
+                                    }else{
+                                       errorname = '<span class="help-block"><strong>'+errors['aadhaar']+'</strong></span>';
+                                       $( '#aadhaar1' ).html( errorname );
+                                    }
                                    if(errors['idDistrict']=== undefined){
                                         $( '#idDistrict1' ).empty();
                                     }else{

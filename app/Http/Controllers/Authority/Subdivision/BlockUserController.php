@@ -16,14 +16,6 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $user_list = DB::table('users')
-                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
-                ->where('user_designation_district_mapping.idSubdivision', '=', Session::get('idSubdivision'))
-                ->whereNotNull('user_designation_district_mapping.idBlock')
-                ->whereNull('user_designation_district_mapping.idVillage')
-                ->select('users.idUser', 'userName')
-                ->groupBy('idUser')
-                ->get();
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $user_district = $user->userdesig()
                         ->with('district')
@@ -41,7 +33,21 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
                         ->get()
                         ->pluck('designation.section.sectionName', 'designation.section.idSection')
                         ->toArray();
-
+        $user_section = $user->userdesig()->with('designation.section')
+                        ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                        ->get()
+                        ->pluck('designation.section.idSection')->toArray();
+        $user_list = DB::table('users')
+                ->join('user_designation_district_mapping', 'user_designation_district_mapping.idUser', '=', 'users.idUser')
+                ->join('designation', 'user_designation_district_mapping.idDesignation', '=', 'designation.idDesignation')
+                ->join('section', 'designation.idSection', '=', 'section.idSection')
+                ->where('user_designation_district_mapping.idSubdivision', '=', Session::get('idSubdivision'))
+                ->whereNotNull('user_designation_district_mapping.idBlock')
+                ->whereNull('user_designation_district_mapping.idVillage')
+                ->whereIn('section.idSection', $user_section)
+                ->select('users.idUser', 'userName')
+                ->groupBy('idUser')
+                ->get();
         return view('authority.subdivisions.user_block', compact('user_subdivision', 'sections', 'user_district', 'user_list'));
     }
 
@@ -79,7 +85,7 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
      * @return \Illuminate\Http\Response
      */
     public function store(UserBlockRequest $request) {
-       // dd($request->all());
+        // dd($request->all());
         if ($request->has('existing')) {
             foreach ($request->idBlocks as $var) {
                 $user_desig = new \App\UserDesignationDistrictMapping();

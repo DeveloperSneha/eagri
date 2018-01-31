@@ -22,6 +22,7 @@ class UnitRequest extends FormRequest {
      * @return array
      */
     public function rules() {
+        
         $id = $this->route('unit');
         $rules = [
             'unitName' => 'required|unique:units|between:2,20|regex:/^[A-z]+$/|max:25',
@@ -29,6 +30,9 @@ class UnitRequest extends FormRequest {
             'idBaseUnit' => 'required|numeric|min:0',
             'conversionMultipierToBase' => 'required|numeric|min:0'
         ];
+        if(($this->conversionMultipierToBase) < ($this->idBaseUnit)){
+            $rules += ['conversionMultipierToBase1'=>'required'];
+        }
         if ($id)
             $rules = [
                 'unitName' => 'required|regex:/^[\pL\s\-]+$/u|unique:units,unitName,'.$id.',idUnit',
@@ -50,6 +54,7 @@ class UnitRequest extends FormRequest {
             'idBaseUnit.numeric' => 'Base Unit Must Have Numeric Value',
             'idBaseUnit.min' => 'Base Unit Must Not be Negative',
             'conversionMultipierToBase.required' => 'Conversion Multipier To Base Must Not be Empty',
+            'conversionMultipierToBase1.required' => 'Conversion Multipier To Base Must Be Greater than Base Unit',
             'conversionMultipierToBase.min' => 'Conversion Multipier To Base Must Not be Negative',
             'conversionMultipierToBase.numeric' => 'Conversion Multipier To Base Must Have Numeric Value',
             'conversionMultipierToBase.after' => 'Conversion Multipier To Base Must Be Greater than Base Unit '

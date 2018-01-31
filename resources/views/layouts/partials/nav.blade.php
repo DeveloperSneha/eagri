@@ -1,6 +1,6 @@
 <header class="main-header navbar  navbar-fixed-top head-top">
     <!-- Logo -->
-    <a href="{{ url('/')}}" class="logo">
+    <a href="{{ url('/index')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Agri</b></span>
         <span class="logo-lg"><b>Agriculture Department <br>Haryana</b></span>
@@ -119,8 +119,8 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="{{ checkActive(['/']) }}">
-                <a href="{{ url('/')}}">
+            <li class="{{ checkActive(['/index']) }}">
+                <a href="{{ url('/index')}}">
                     <span>HOME</span>
                 </a>
             </li>
@@ -145,28 +145,28 @@
                         </li>-->
             <li class="treeview {{ checkActive([
             'units',
-            'units/*/edit',
+            'units/*/editunit',
             'units/*/deleteunit',
             'designations',
-            'designations/*/edit',
+            'designations/*/editdesignation',
             'designations/*/deletedesignation',
             'programs',
-            'programs/*/edit',
+            'programs/*/editprogram',
             'programs/*/deleteprogram',
             'schemes',
-            'schemes/*/edit',
+            'schemes/*/editscheme',
             'schemes/*/deletescheme',
             'sections',
-            'sections/*/edit',
+            'sections/*/editsection',
             'sections/*/deletesection',
             'workflow',
-            'workflow/*/edit',
+            'workflow/*/editworkflow',
             'workflow/*/deleteworkflow',
             'fys',
-            'fys/*/edit',
+            'fys/*/editfys',
             'fys/*/deletefys',
             'certificates',
-            'certificates/*/edit',
+            'certificates/*/editcertificate',
             'certificates/*/deletecertificate',
             'districtdistribution',
             
@@ -178,14 +178,14 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ checkActive(['sections','sections/*/edit','sections/*/deletesection']) }}"><a href="{{ url('/sections') }}">Section</a></li>
-                    <li class="{{ checkActive(['schemes','schemes/*/edit','schemes/*/deletescheme']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
-                    <li class="{{ checkActive(['programs','programs/*/edit','programs/*/deleteprogram']) }}"><a href="{{ url('/programs') }}">Program</a></li>
-                    <li class="{{ checkActive(['designations','designations/*/edit',          'designations/*/deletedesignation']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
-                    <li class="{{ checkActive(['workflow','workflow/*/edit','workflow/*/deleteunit']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
-                    <li class="{{ checkActive(['units','units/*/edit','units/*/deleteunit']) }}"><a href="{{ url('/units') }}">Units</a></li>
-                    <li class="{{ checkActive(['fys','fys/*/edit','fys/*/deletefys',]) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
-                    <li class="{{ checkActive(['certificates','certificates/*/edit','certificates/*/deletecertificate',]) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
+                    <li class="{{ checkActive(['sections','sections/*/editsection','sections/*/deletesection']) }}"><a href="{{ url('/sections') }}">Section</a></li>
+                    <li class="{{ checkActive(['schemes','schemes/*/editscheme','schemes/*/deletescheme']) }}"><a href="{{ url('/schemes') }}">Scheme</a></li>
+                    <li class="{{ checkActive(['programs','programs/*/editprogram','programs/*/deleteprogram']) }}"><a href="{{ url('/programs') }}">Program</a></li>
+                    <li class="{{ checkActive(['designations','designations/*/editdesignation',          'designations/*/deletedesignation']) }}"><a href="{{ url('/designations') }}">Designations</a></li>
+                    <li class="{{ checkActive(['workflow','workflow/*/editworkflow','workflow/*/deleteunit']) }}"><a href="{{ url('/workflow') }}">Workflows</a></li>
+                    <li class="{{ checkActive(['units','units/*/editunit','units/*/deleteunit']) }}"><a href="{{ url('/units') }}">Units</a></li>
+                    <li class="{{ checkActive(['fys','fys/*/editfys','fys/*/deletefys',]) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
+                    <li class="{{ checkActive(['certificates','certificates/*/editcertificate','certificates/*/deletecertificate',]) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
                     
                 </ul>
             </li>
@@ -203,7 +203,7 @@
 
                 </ul>
             </li>
-            <li class="treeview {{ checkActive(['components','categories','compcerts','compsizes','comprates','schemeactivations','blockdistribution','villagedistribution']) }}">
+<!--            <li class="treeview {{ checkActive(['components','categories','compcerts','compsizes','comprates','schemeactivations','blockdistribution','villagedistribution']) }}">
                 <a href="#">
                     <span>Vendor</span>
                     <span class="pull-right-container">
@@ -217,12 +217,12 @@
                     <li class="{{ checkActive(['compsizes']) }}"><a href="{{ url('/compsizes') }}">Component Size</a></li>
                     <li class="{{ checkActive(['comprates']) }}"><a href="{{ url('/comprates') }}">Component Rates</a></li>
                     <li class="{{ checkActive(['schemeactivations']) }}"><a href="{{ url('/schemeactivations') }}">Scheme Activation</a></li>
-<!--                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>-->
+                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>
                     <li class="{{ checkActive(['blockdistribution']) }}"><a href="{{ url('/blockdistribution') }}">Scheme Distribution Block</a></li>
                     <li class="{{ checkActive(['villagedistribution']) }}"><a href="{{ url('/villagedistribution') }}">Scheme Distribution Village</a></li>
 
                 </ul>
-            </li>
+            </li>-->
         </ul>
     </section>
 <!--     <center  style="color:#fff;">

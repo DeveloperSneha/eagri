@@ -15,7 +15,7 @@
         <div class="form-group">
             {!! Form::label('Financial Year', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-3">
-                {!! Form::text('financialYearName', null, ['class' => 'form-control','maxlength'=>'9','minlength'=>'9','onKeyPress'=>'return onlyNumbersandSpecialChar()']) !!}
+                {!! Form::text('financialYearName', null, ['class' => 'form-control','maxlength'=>'9','minlength'=>'4','onKeyPress'=>'return onlyNumbersandSpecialChar()']) !!}
             </div>
             <span class="help-block">
                     <strong>
@@ -56,7 +56,8 @@
 
 <div class="panel-footer">
     @if(isset($fy))
-    {!!  Form::submit('Update',['class'=>'btn btn-warning'])!!}
+    {!!  Form::submit('Update',['class'=>'btn btn-danger'])!!}
+    <a href="{{url('/fys')}}" class="btn btn-danger">Cancel</a>
     @else
     <!--{!!  Form::submit('Save',['class'=>'btn btn-warning'])!!}-->
     <button type="submit" class="btn btn-danger">Save</button>
@@ -86,7 +87,7 @@
                     <td>{{ $var->finanYearStartDate }}</td>
                     <td>{{ $var->finanYearEndDate }}</td>
                     <td>
-                        <a href='{{url('/fys/'.$var->idFinancialYear.'/edit')}}' class="btn btn-sm btn-warning">Edit</a>
+                        <a href='{{url('/fys/'.$var->idFinancialYear.'/editfys')}}' class="btn btn-sm btn-warning">Edit</a>
                       
                        <a href='{{url('/fys/'.$var->idFinancialYear.'/deletefys')}}' class="btn btn-sm btn-danger">Delete</a>
                     </td>

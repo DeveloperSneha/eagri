@@ -41,7 +41,7 @@ class UserSubdivisionRequest extends FormRequest {
                 'idDistrict' => 'required',
                 'idSection' => 'required',
                 'idDesignation' => 'required',
-                'userName' => 'required|unique:users|regex:/^[\pL\s\-)]+$/u'
+                'userName' => 'required|unique:users|regex:/^[\pL\s\-()]+$/u'
             ];
             if (count($this->idSubdivisions) == 0) {
                 $rules['idSubdivision'] = 'required';

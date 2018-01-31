@@ -7,7 +7,7 @@
         {!! Form::open(['url' => 'authority/districts/schsubdist','class'=>'form-horizontal','id'=>'subdivisiondistribution']) !!}
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control', 'selected']) !!}
             </div>
             <span class="help-block">
@@ -91,12 +91,12 @@
                             <input type="checkbox" value="{{ $key}}" name="subdivisions[{{$key}}][idSubdivision]" id='district' class='count_dist'>
                         </td>
                         <td>
-                            <input type="text"  class="form-control" data-toggle="tooltip" data-placement="right" name="subdivisions[{{$key}}][areaSubdivision]"  id="areasubdivision{{$key}}" onchange="getArea({{$key}})" >
+                            <input type="text"  class="form-control" data-toggle="tooltip" data-placement="right" name="subdivisions[{{$key}}][areaSubdivision]"  id="areasubdivision{{$key}}" onchange="getArea({{$key}})" onkeypress="return isNumberKey(event)" minlength="1" maxlength="12" >
                             <span id='errorarea{{$key}}'></span>
                             <input type="hidden" id="hiddenarea{{$key}}">
                         </td>
                         <td>
-                            <input type="text"  class="form-control" name="subdivisions[{{$key}}][amountSubdivision]" id="amtsubdivision{{$key}}">
+                            <input type="text"  class="form-control" name="subdivisions[{{$key}}][amountSubdivision]" id="amtsubdivision{{$key}}" onkeypress="return isNumberKey(event)" minlength="1" maxlength="12" onkeydown="return false;">
                             <span id='erroramt{{$key}}'></span>
                             <input type="hidden" id="hiddenamount{{$key}}">
                         </td>
@@ -201,21 +201,51 @@
         var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
         var assistance = parseFloat($("#area-fund #aaaaa:last-child input").val());
-        $('input[type=checkbox]').each(function () {
-            
-            this.checked = checkAll;
-            var area ='#areasubdivision'+ this.value;
-            var amt = '#amtsubdivision'+ this.value;
-            var hiddenarea = '#hiddenarea'+this.value;
-            var hiddenamount = '#hiddenamount'+this.value;
+        if(checkAll === true){
+            $('input[type=checkbox]').each(function () {
 
-            $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
-            $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
-        });
-        $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
-        $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
+                this.checked = checkAll;
+                var area ='#areasubdivision'+ this.value;
+                var amt = '#amtsubdivision'+ this.value;
+                var hiddenarea = '#hiddenarea'+this.value;
+                var hiddenamount = '#hiddenamount'+this.value;
+
+                $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+                $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+                $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+                $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+            });
+            $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
+            $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
+        }else{
+            $('input[type=checkbox]').each(function () {
+                this.checked = checkAll;
+                var area ='#areasubdivision'+ this.value;
+                var amt = '#amtsubdivision'+ this.value;
+                var hiddenarea = '#hiddenarea'+this.value;
+                var hiddenamount = '#hiddenamount'+this.value;
+                    $(area).val('');
+                    $(amt).val('');
+                    $(hiddenarea).val('');
+                    $(hiddenamount).val('');
+            });
+            var cur_program = $( "#idProgram option:selected" ).val();
+            if(cur_program) {
+                $.ajax({
+                    url: "{{url('/authority/districts/schsubdist') }}"+'/' +cur_program + '/funddetails',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('#area-fund').empty();
+                        $.each(data, function(key, value) {
+                           $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'
+                                   + key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly ><input type="hidden" name="'+key+'" value="'+ value +'">\n\
+                                </div></div>');
+                        });
+                    }
+                });
+            }
+        }
         
         if($("#area-fund #aaaaa:first-child input").val() < 0){
            var errors = 'Financial Target Of This District Exceeded the limit';
@@ -246,7 +276,20 @@
                 success:function(data) {
                     $('#area-fund').empty();
                     $.each(data, function(key, value) {
-                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly></div></div>');
+                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly><input type="hidden" name="'+key+'" value="'+ value +'"></div></div>');
+                    });
+                    $('#selectall').prop('checked', false);
+                    var checkAll = this.checked;
+                    $('input[type=checkbox]').each(function () {
+                        this.checked = checkAll;
+                        var area ='#areasubdivision'+ this.value;
+                        var amt = '#amtsubdivision'+ this.value;
+                        var hiddenarea = '#hiddenarea'+this.value;
+                        var hiddenamount = '#hiddenamount'+this.value;
+                            $(area).val('');
+                            $(amt).val('');
+                            $(hiddenarea).val('');
+                            $(hiddenamount).val('');
                     });
                 }
             });
@@ -278,6 +321,7 @@
                        // e.preventDefault(e);
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
+                            errorHtml='<div class="alert alert-danger"><ul>';
                             $.each( errors, function( key, value ) {                                
                                if (key.split(".")[1] + '.amountSubdivision'==key.split(".")[1] + '.' +key.split(".")[2])
                                  {
@@ -294,13 +338,11 @@
                                      $( '#errordist'+key.split(".")[1] ).html( errordist );
                                  }
                                  else{
-                                     errorHtml='<div class="alert alert-danger"><ul>';
                                      errorHtml += '<li>' + value + '</li>';
-                                     errorHtml += '</ul></div>';
-                                     $( '#formerrors' ).html( errorHtml );
                                  }
                             });
-                           
+                            errorHtml += '</ul></div>';
+                            $( '#formerrors' ).html( errorHtml );
                      }
                 }
         });

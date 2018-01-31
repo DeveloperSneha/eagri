@@ -28,7 +28,7 @@
                 dataType: "json",
                 success:function(data) {
                     $('select[id="idProgram"]').empty();
-                    $('select[id="idProgram"]').append('<option val>---Select Program--</option>');
+                    $('select[id="idProgram"]').append('<option value="">---Select Program--</option>');
                     $.each(data, function(key, value) {
                         $('select[id="idProgram"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });
@@ -47,21 +47,57 @@ $(document).ready(function () {
         var tf = parseFloat($("#area-fund #aaaaa:first-child input").val());
         var ta = parseFloat($("#area-fund #aaaaa:nth-child(2) input").val());
         var assistance = parseFloat($("#area-fund #aaaaa:last-child input").val());
-        $('input[type=checkbox]').each(function () {
-            
-            this.checked = checkAll;
-            var area ='#areadistrict'+ this.value;
-            var amt = '#amtdistrict'+ this.value;
-            var hiddenarea = '#hiddenarea'+this.value;
-            var hiddenamount = '#hiddenamount'+this.value;
+        if(checkAll === true){
+            $('input[type=checkbox]').each(function () {
 
-            $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
-            $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
-            $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
-        });
-        $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
-        $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
+                this.checked = checkAll;
+                var area ='#areadistrict'+ this.value;
+                var amt = '#amtdistrict'+ this.value;
+                var hiddenarea = '#hiddenarea'+this.value;
+                var hiddenamount = '#hiddenamount'+this.value;
+
+                $(area).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+                $(amt).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+                $(hiddenarea).val((parseFloat(ta)/parseFloat(totalCount)).toFixed(0));
+                $(hiddenamount).val((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0));
+            });
+           $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
+           $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
+       
+        }else{
+            $('input[type=checkbox]').each(function () {
+                this.checked = checkAll;
+                var area ='#areadistrict'+ this.value;
+                var amt = '#amtdistrict'+ this.value;
+                var hiddenarea = '#hiddenarea'+this.value;
+                var hiddenamount = '#hiddenamount'+this.value;
+                    $(area).val('');
+                    $(amt).val('');
+                    $(hiddenarea).val('');
+                    $(hiddenamount).val('');
+            });
+            var cur_program = $( "#idProgram option:selected" ).val();
+            if(cur_program) {
+                $.ajax({
+                    url: "{{url('/schemeactivations/nv') }}"+'/' +cur_program,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('#area-fund').empty();
+                        $.each(data, function(key, value) {
+                           $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'
+                                   + key +'</label><div class="col-sm-2">\n\
+                                            <input type="text" value="'+ value +'" readonly ><input type="hidden" name="total_val" value="'+ value +'">\n\
+                                </div></div>');
+                        });
+                    }
+                });
+            }
+            
+            
+        }
+      //   $("#area-fund #aaaaa:first-child input").val(parseFloat(tf) - (((((parseFloat(ta)/parseFloat(totalCount)).toFixed(0))* parseFloat(assistance)).toFixed(0))*parseFloat(totalCount)));
+      //  $("#area-fund #aaaaa:nth-child(2) input").val(parseFloat(ta) - ((parseFloat(ta)/parseFloat(totalCount)).toFixed(0)* parseFloat(totalCount)));
         
         if($("#area-fund #aaaaa:first-child input").val() < 0){
            var errors = 'Financial Target Of This District Exceeded the limit';
@@ -92,7 +128,23 @@ $(document).ready(function () {
                 success:function(data) {
                     $('#area-fund').empty();
                     $.each(data, function(key, value) {
-                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly></div></div>');
+                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'
+                               + key +'</label><div class="col-sm-2">\n\
+                            <input type="text" value="'+ value +'" readonly ><input type="hidden" name="'+key+'" value="'+ value +'">\n\
+                            </div></div>');
+                    });
+                    $('#selectall').prop('checked', false);
+                    var checkAll = this.checked;
+                    $('input[type=checkbox]').each(function () {
+                        this.checked = checkAll;
+                        var area ='#areadistrict'+ this.value;
+                        var amt = '#amtdistrict'+ this.value;
+                        var hiddenarea = '#hiddenarea'+this.value;
+                        var hiddenamount = '#hiddenamount'+this.value;
+                            $(area).val('');
+                            $(amt).val('');
+                            $(hiddenarea).val('');
+                            $(hiddenamount).val('');
                     });
                 }
             });
@@ -124,6 +176,8 @@ $(document).ready(function () {
                        // e.preventDefault(e);
                         if( data.status === 422 ) {
                             var errors = data.responseJSON.errors;
+                            errorHtml='<div class="alert alert-danger"><ul>';
+                                     
                             $.each( errors, function( key, value ) {                                
                                if (key.split(".")[1] + '.amountDistrict'==key.split(".")[1] + '.' +key.split(".")[2])
                                  {
@@ -140,12 +194,11 @@ $(document).ready(function () {
                                      $( '#errordist'+key.split(".")[1] ).html( errordist );
                                  }
                                  else{
-                                     errorHtml='<div class="alert alert-danger"><ul>';
                                      errorHtml += '<li>' + value + '</li>';
-                                     errorHtml += '</ul></div>';
-                                     $( '#formerrors' ).html( errorHtml );
                                  }
                             });
+                                errorHtml += '</ul></div>';
+                                $( '#formerrors' ).html( errorHtml );
                            
                      }
                 }

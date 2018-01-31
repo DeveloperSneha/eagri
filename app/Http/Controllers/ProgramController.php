@@ -14,8 +14,7 @@ class ProgramController extends Controller {
      */
     public function index() {
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        //$programs = \App\Program::orderBy('programName')->get();
-		$programs = \App\Program::orderBy('idProgram')->get();
+        $programs = \App\Program::orderBy('idProgram')->get();
         return view('program.index', compact('programs','sections'));
     }
 
@@ -72,10 +71,10 @@ class ProgramController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
-        $programs = \App\Program::orderBy('programName')->get();
-        $program = \App\Program::where('idProgram', '=', $id)->first();
-        return view('program.index', compact('program', 'programs','sections'));
+//        $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
+//        $programs = \App\Program::orderBy('programName')->get();
+//        $program = \App\Program::where('idProgram', '=', $id)->first();
+//        return view('program.index', compact('program', 'programs','sections'));
     }
 
     /**
