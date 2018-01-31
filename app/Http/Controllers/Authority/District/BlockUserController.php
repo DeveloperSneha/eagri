@@ -173,7 +173,7 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
         ];
         $messages = [
             'idDistrict.required' => 'District must be selected.',
-            'idSubdivision.required' => 'Subdivision must be selected.',
+            // 'idSubdivision.required' => 'Subdivision must be selected.',
             'idBlock.required' => 'Block must be selected.',
             'idDesignation.unique' => 'User With This Designation has already been registered in this Block.',
             'idSection.required' => 'Select Section First.',
@@ -183,6 +183,9 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
         $userdesig->fill($request->all());
         $userdesig->update();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('authority/districts/addblockuser/' . $userdesig->idUser . '/details');
     }
 

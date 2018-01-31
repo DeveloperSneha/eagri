@@ -47,7 +47,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control', 'selected']) !!}
             </div>
             <span class="help-block">
@@ -60,8 +60,8 @@
         </div>
         <div class="form-group">
             {!! Form::label('Subdivision', null, ['class' => 'col-sm-2 control-label required']) !!}
-            <div class="col-sm-4">
-                <select name="idSubdivision"  class="form-control" id='idSubdivision'>--- Select Subdivision ---</select>
+            <div class="col-sm-5">
+                <select name="idSubdivision"  class="form-control" id='idSubdivision'> --- Select Subdivision ---</select>
             </div>
             <span class="help-block">
                 <strong>
@@ -135,12 +135,12 @@
                 @foreach($schblock as $var)
                 <tr>
                     <td>{{ $i}}</td>
-                    <td>{{ $var->schactivation->scheme->section->sectionName}}</td>
-                    <td>{{ $var->schactivation->scheme->schemeName}}</td>
-                    <td>{{ $var->schactivation->program->programName}}</td>
-                    <td>{{ $var->district->districtName }}</td>
-                    <td>{{ $var->subdivision->subDivisionName }}</td>
-                    <td>{{ $var->block->blockName }}</td>
+                    <td>{{ $var->sectionName}}</td>
+                    <td>{{ $var->schemeName}}</td>
+                    <td>{{ $var->programName}}</td>
+                    <td>{{ $var->districtName}}</td>
+                    <td>{{ $var->subDivisionName}}</td>
+                    <td>{{ $var->blockName}}</td>
                     <td>{{ $var->amountBlock }}</td>
                     <td>{{ $var->areaBlock }}</td>
                     <td></td>
@@ -203,38 +203,14 @@
                 dataType: "json",
                 success:function(data) {
                         $('select[name="idSubdivision"]').empty();
-                        $('select[name="idSubdivision"]').append('<option val>---Select Subdivision--</option>');
+                        $('select[name="idSubdivision"]').append('<option value="">---Select Subdivision--</option>');
                         $.each(data, function(key, value) {
                             $('select[name="idSubdivision"]').append('<option value="'+ key +'">'+ value +'</option>');
                         });
                 }
             });
-             $.ajax({
-                url: "{{url('/authority/districts/schblockdist') }}"+'/' +schemeActivationID + '/funddetails',
-                type: "GET",
-                dataType: "json",
-                success:function(data) {
-                    $('#area-fund').empty();
-                    $.each(data, function(key, value) {
-                       $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly><input type="hidden" name="'+key+'" value="'+ value +'"></div></div>');
-                    });
-                    $('#selectall').prop('checked', false);
-                    var checkAll = this.checked;
-                    $('input[type=checkbox]').each(function () {
-                        this.checked = checkAll;
-                        var area ='#areablock'+ this.value;
-                        var amt = '#amtblock'+ this.value;
-                        var hiddenarea = '#hiddenarea'+this.value;
-                        var hiddenamount = '#hiddenamount'+this.value;
-                            $(area).val('');
-                            $(amt).val('');
-                            $(hiddenarea).val('');
-                            $(hiddenamount).val('');
-                    });
-                }
-            });
         }else{
-            $('#area-fund').empty();
+            $('#idSubdivision').empty();
         }
     });
     $('select[name="idSubdivision"]').on('change', function() {
@@ -258,9 +234,33 @@
                         });
                 }
             });
-           
-        }else{
-            $('#area-fund').empty();
+            var cur_program = $( "#idProgram option:selected" ).val();
+            if(cur_program){
+                $.ajax({
+                    url: "{{url('/authority/districts/schblockdist') }}"+'/'+subDivisionID+'/' +cur_program + '/funddetails',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('#area-fund').empty();
+                        $.each(data, function(key, value) {
+                           $('#area-fund').append('<div id ="aaaaa"><label class="col-sm-2 control-label">'+ key +'</label><div class="col-sm-2"><input type="text" value="'+ value +'" readonly><input type="hidden" name="'+key+'" value="'+ value +'"></div></div>');
+                        });
+                        $('#selectall').prop('checked', false);
+                        var checkAll = this.checked;
+                        $('input[type=checkbox]').each(function () {
+                            this.checked = checkAll;
+                            var area ='#areablock'+ this.value;
+                            var amt = '#amtblock'+ this.value;
+                            var hiddenarea = '#hiddenarea'+this.value;
+                            var hiddenamount = '#hiddenamount'+this.value;
+                                $(area).val('');
+                                $(amt).val('');
+                                $(hiddenarea).val('');
+                                $(hiddenamount).val('');
+                        });
+                    }
+                });
+            }
         }
     });
 $(document).ready(function () {
@@ -298,10 +298,11 @@ $(document).ready(function () {
                     $(hiddenarea).val('');
                     $(hiddenamount).val('');
             });
+            var cur_sub = $( "#idSubdivision option:selected" ).val();
             var cur_program = $( "#idProgram option:selected" ).val();
             if(cur_program) {
                 $.ajax({
-                    url: "{{url('/authority/districts/schblockdist') }}"+'/' +cur_program + '/funddetails',
+                    url: "{{url('/authority/districts/schblockdist') }}"+'/'+cur_sub+'/' +cur_program + '/funddetails',
                     type: "GET",
                     dataType: "json",
                     success:function(data) {

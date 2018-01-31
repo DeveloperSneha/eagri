@@ -6,13 +6,13 @@
  * and open the template in the editor.
  */
 function checkActive($path, $active = 'active') {
-  if (is_string($path)) {
-    return request()->is($path) ? $active : '';
-  }
-  foreach ($path as $str) {
-    if (checkActive($str) == $active)
-      return $active;
-  }
+    if (is_string($path)) {
+        return request()->is($path) ? $active : '';
+    }
+    foreach ($path as $str) {
+        if (checkActive($str) == $active)
+            return $active;
+    }
 }
 
 function getGender() {
@@ -35,10 +35,9 @@ function getFarmerCategory() {
         'Small Farmer' => 'Small Farmer / लघु किसान',
         'Marginal Farmer' => 'Marginal Farmer / सीमांत किसान',
         'Others' => 'Others / अन्य लोग',
-        ];
+    ];
     return $cat;
 }
-
 
 function getMaritalStatus() {
     $status = ['' => '---- Select /वैवाहिक स्थिति ----',
@@ -58,24 +57,23 @@ function getSubScheme() {
     $subschemes = ['' => 'Select SubScheme'] + \App\SubScheme::orderBy('name')->pluck('name', 'id')->toArray();
     return $subschemes;
 }
+
 function deny($redirect = '') {
-  if (strlen($redirect) > 0)
-    return redirect($redirect);
+    if (strlen($redirect) > 0)
+        return redirect($redirect);
 //  abort(403);
-  flash()->warning("You don't have access to this resource!!");
-  return redirect('/authority');
+    flash()->warning("You don't have access to this resource!!");
+    return redirect('/authority');
 }
 
 function today_date() {
-  return Carbon\Carbon::today()->format('d-m-Y');
+    return Carbon\Carbon::today()->format('d-m-Y');
 }
 
 function yesterday_date() {
-  return Carbon\Carbon::yesterday()->format('d-m-Y');
+    return Carbon\Carbon::yesterday()->format('d-m-Y');
 }
 
 function tomorrow_date() {
-  return Carbon\Carbon::tomorrow()->format('d-m-Y');
+    return Carbon\Carbon::tomorrow()->format('d-m-Y');
 }
-
-

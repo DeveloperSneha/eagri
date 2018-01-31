@@ -23,7 +23,6 @@ class SchBlockDistRequest extends FormRequest {
      * @return array
      */
     public function rules() {
-        // dd($this->blocks);
         $rules = [
             'idSection' => 'required',
             'idScheme' => 'required',
@@ -56,7 +55,6 @@ class SchBlockDistRequest extends FormRequest {
             }
             if ($this->idSchemeActivation != null) {
                 $scheme = \App\SchDistrictDistribution::where('idSchemeActivation', '=', $this->idSchemeActivation)->first();
-                dd('here');
                 if ($totalFunds > $scheme->amountDistrict) {
                     $rules += ['totalFunds' => 'required'];
                 }
@@ -76,6 +74,7 @@ class SchBlockDistRequest extends FormRequest {
             'idScheme.required' => 'Select Scheme First',
             'idSection.required' => 'Select Section First',
             'idSchemeActivation.required' => 'Select Any One Of the Program',
+            'idSubdivision.required'=>'Subdivision Must be Selected.',
             //   'schemeDistributionDistrict.required' => 'Scheme Distribution(District) Must be Selected',
             'block.required' => 'Atleast One Block Should Be Selected',
             'totalFunds.required' => 'Financial Target is Exceeded for this District',
@@ -87,7 +86,7 @@ class SchBlockDistRequest extends FormRequest {
             'blocks.*areaBlock.integer' => 'Physical Target Must Have Numeric Value',
             'blocks.*amountBlock.min' => 'Financial Target Must Have Positive Value',
             'blocks.*areaBlock.min' => 'Physical Target Must Have Positive Value',
-            'total_val.required'=>'Your Physical Or Financial Target May be Exceeded the Limit.'
+            'total_val.required'=>'Your Physical Or Financial Target May have Exceeded the Limit.'
         ];
 
         return $messages;

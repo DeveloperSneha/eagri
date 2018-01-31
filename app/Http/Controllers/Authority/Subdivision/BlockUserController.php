@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Authority\Subdivision;
 
 use App\Http\Requests\UserBlockRequest;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Session;
 use DB;
@@ -179,6 +180,9 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
         $userdesig->fill($request->all());
         $userdesig->update();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('authority/subdivisions/blockuseradd/' . $userdesig->idUser . '/details');
     }
 

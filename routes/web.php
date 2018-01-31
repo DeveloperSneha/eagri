@@ -170,7 +170,7 @@ Route::prefix('authority')->group(function() {
 
         //Scheme Distribution By District level Authority in Block 
 
-        Route::get('/schblockdist/{idProgram}/funddetails', 'Authority\District\BlockwiseSchemeDistController@getFunds');
+        Route::get('/schblockdist/{idSubdivision}/{idProgram}/funddetails', 'Authority\District\BlockwiseSchemeDistController@getFunds');
         Route::get('/schblockdist/{idScheme}/programs', 'Authority\District\BlockwiseSchemeDistController@getPrograms');
         Route::get('/schblockdist/{idProgram}/subdivisions', 'Authority\District\BlockwiseSchemeDistController@distSubdivisions');
         Route::resource('/schblockdist', 'Authority\District\BlockwiseSchemeDistController');

@@ -16,8 +16,7 @@ class BlockSchemeDistController extends \App\Http\Controllers\Authority\Authorit
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // dd('here');
-        $schblock = \App\SchBlockDistribution::orderBy('idSchemDistributionBlock')->get();
+        //dd($schblock);
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $user_district = $user->userdesig()
                         ->with('district')
@@ -29,14 +28,29 @@ class BlockSchemeDistController extends \App\Http\Controllers\Authority\Authorit
                         ->where('idSubdivision', '=', Session::get('idSubdivision'))
                         ->get()
                         ->pluck('subdivision.subDivisionName', 'subdivision.idSubdivision')->toArray();
-        // dd($user_district);
         $sections = ['' => '---Select Section---'] + $user->userdesig()->with('designation.section')
                         ->where('idSubdivision', '=', Session::get('idSubdivision'))
                         ->get()
                         ->pluck('designation.section.sectionName', 'designation.section.idSection')
                         ->toArray();
-        $blocks = \App\Block::where('idSubdivision','=',Session::get('idSubdivision'))->pluck('blockName','idBlock')->toArray();
-        return view('authority.subdivisions.schdist_block', compact('blocks','schblock','user_subdivision', 'sections', 'user_district'));
+        $user_section = $user->userdesig()->with('designation.section')
+                ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                ->get()
+                ->pluck('designation.section.idSection')
+                ->toArray();
+        $schblock = DB::table('schemedistributionblock')
+                ->join('schemeactivation', 'schemedistributionblock.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                ->join('program', 'schemeactivation.idProgram', '=', 'program.idProgram')
+                ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
+                ->join('section', 'scheme.idSection', '=', 'section.idSection')
+                ->join('district', 'schemedistributionblock.schemeDistributionDistrict', '=', 'district.idDistrict')
+                ->join('subdivision', 'schemedistributionblock.schemeDistributionSubdivision', '=', 'subdivision.idSubdivision')
+                ->join('block', 'schemedistributionblock.idBlock', '=', 'block.idBlock')
+                ->whereIn('section.idSection', $user_section)
+                ->get();
+       // dd($schblock);
+        $blocks = \App\Block::where('idSubdivision', '=', Session::get('idSubdivision'))->pluck('blockName', 'idBlock')->toArray();
+        return view('authority.subdivisions.schdist_block', compact('blocks', 'schblock', 'user_subdivision', 'sections', 'user_district'));
     }
 
     /**
@@ -55,7 +69,7 @@ class BlockSchemeDistController extends \App\Http\Controllers\Authority\Authorit
      * @return \Illuminate\Http\Response
      */
     public function store(SchBlockDistRequest $request) {
-       // dd($request->all());
+        // dd($request->all());
         foreach ($request->blocks as $var)
             if (isset($var['idBlock'])) {
                 $schblock = new \App\SchBlockDistribution();
@@ -158,12 +172,12 @@ class BlockSchemeDistController extends \App\Http\Controllers\Authority\Authorit
                         ->where('schemedistributionsubdivision.idSchemeActivation', '=', $id)
                         ->select('amountSubdivision AS TotalFund', 'areaSubdivision AS TotalArea', 'assistance AS Assistance')->first();
         $dist_sch = DB::table('schemedistributionsubdivision')
-                        ->leftjoin('schemeactivation', 'schemeactivation.idSchemeActivation', '=', 'schemedistributionsubdivision.idSchemeActivation')
-                        ->leftjoin('schemedistributionblock', 'schemedistributionblock.schemeDistributionSubdivision', '=', 'schemedistributionsubdivision.idSubdivision')
-                        ->select(DB::raw('schemedistributionsubdivision.amountSubdivision   -  SUM(schemedistributionblock.amountBlock) AS TotalFund'), DB::raw('schemedistributionsubdivision.areaSubdivision - SUM(schemedistributionblock.areaBlock) AS TotalArea'),'schemeactivation.assistance AS Assistance')
-                         ->where('schemeDistributionSubdivision', '=', Session::get('idSubdivision'))
-                        ->first();
-        if ($dist_sch->TotalFund!=null){
+                ->leftjoin('schemeactivation', 'schemeactivation.idSchemeActivation', '=', 'schemedistributionsubdivision.idSchemeActivation')
+                ->leftjoin('schemedistributionblock', 'schemedistributionblock.schemeDistributionSubdivision', '=', 'schemedistributionsubdivision.idSubdivision')
+                ->select(DB::raw('schemedistributionsubdivision.amountSubdivision   -  SUM(schemedistributionblock.amountBlock) AS TotalFund'), DB::raw('schemedistributionsubdivision.areaSubdivision - SUM(schemedistributionblock.areaBlock) AS TotalArea'), 'schemeactivation.assistance AS Assistance')
+                ->where('schemeDistributionSubdivision', '=', Session::get('idSubdivision'))
+                ->first();
+        if ($dist_sch->TotalFund != null) {
             return json_encode($dist_sch);
         }
         return json_encode($schact);

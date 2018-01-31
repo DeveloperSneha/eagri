@@ -73,7 +73,7 @@
                         {!! Form::text('motherName', null, ['class' => 'form-control','placeholder'=>'Enter MotherName','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
                     </div>
                 </div>
-                <div class="form-group {{ $errors->has('dob') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('dob') ? ' has-error' : '' }} ">
                     {!! Form::label('Date Of Birth :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
                         {!! Form::text('dob', null, ['class' => 'form-control datepicker','placeholder'=>'Enter Date Of Birth','onkeypress'=>'return onlyNumbersandSpecialChar(event)']) !!}
@@ -84,15 +84,15 @@
                                     @endif
                     </div>
                 </div>
-                <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }}">
+                <div class="form-group {{ $errors->has('aadhaar') ? ' has-error' : '' }} {{ $errors->has('aadhaarabc') ? ' has-error' : '' }}">
                     {!! Form::label('Aadhaar :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
                         {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'Enter Aadhaar here','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
-                        @if ($errors->has('aadhaarabc'))
+                        <!-- @if ($errors->has('aadhaarabc'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('aadhaarabc') }}</strong>
                                         </span>
-                                    @endif
+                                    @endif -->
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('mobile') ? ' has-error' : '' }}">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Http\Verhoeff;
+use App\Http\CheckSession;
 
 class ProfileController extends \App\Http\Controllers\Authority\AuthorityController {
 
@@ -17,7 +18,6 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
     public function index() {
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $userdesig = $user->userdesig()->whereNotNull('idDistrict')->whereNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
-
         return view('authority.districts.profile', compact('user', 'userdesig'));
     }
 
@@ -86,11 +86,11 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             }
         }
         $message = [
-            'aadhaarabc.required'=>'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
-            'dob.required'=>'Date Of Birth must be filled',
-            'dob.before'=>'Date Of Birth is Invalid'
+            'aadhaarabc.required' => 'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
+            'dob.required' => 'Date Of Birth must be filled',
+            'dob.before' => 'Date Of Birth is Invalid'
         ];
-        $this->validate($request, $rules,$message);
+        $this->validate($request, $rules, $message);
         //dd($request->all());
         $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $profile->fill($request->all());

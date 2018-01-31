@@ -185,6 +185,9 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
         $userdesig->fill($request->all());
         $userdesig->update();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('authority/districts/addvillageuser/' . $userdesig->idUser . '/details');
     }
 

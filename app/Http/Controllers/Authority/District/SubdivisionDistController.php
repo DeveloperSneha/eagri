@@ -17,7 +17,7 @@ class SubdivisionDistController extends \App\Http\Controllers\Authority\Authorit
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $schsubdivision = \App\SchSubdivisionDistribution::orderBy('idSchemDistributionSubdivision')->get();
+       // $schsubdivision = \App\SchSubdivisionDistribution::orderBy('idSchemDistributionSubdivision')->get();
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
         $sections = ['' => '---Select Section---'] + $user->userdesig()->with('designation.section')
                         ->where('idDistrict', '=', Session::get('idDistrict'))
@@ -27,6 +27,24 @@ class SubdivisionDistController extends \App\Http\Controllers\Authority\Authorit
                         ->get()
                         ->pluck('designation.section.sectionName', 'designation.section.idSection')
                         ->toArray();
+        $user_section = $user->userdesig()->with('designation.section')
+                ->where('idDistrict', '=', Session::get('idDistrict'))
+                ->whereNull('idSubdivision')
+                ->whereNull('idBlock')
+                ->whereNull('idVillage')
+                ->get()
+                ->pluck('designation.section.idSection')
+                ->toArray();
+        $schsubdivision = DB::table('schemedistributionsubdivision')
+                ->join('schemeactivation', 'schemedistributionsubdivision.idSchemeActivation', '=', 'schemeactivation.idSchemeActivation')
+                ->join('program', 'schemeactivation.idProgram', '=', 'program.idProgram')
+                ->join('scheme', 'schemeactivation.idScheme', '=', 'scheme.idScheme')
+                ->join('section', 'scheme.idSection', '=', 'section.idSection')
+                ->join('district', 'schemedistributionsubdivision.schemeDistributionDistrict', '=', 'district.idDistrict')
+                ->join('subdivision', 'schemedistributionsubdivision.idSubdivision', '=', 'subdivision.idSubdivision')
+                ->whereIn('section.idSection', $user_section)
+                ->get();
+      //  dd($schsubdivision);
         $user_district = $user->userdesig()
                         ->with('district')
                         ->where('idDistrict', '=', Session::get('idDistrict'))

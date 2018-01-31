@@ -17,7 +17,10 @@ class SchBlockDistributionController extends Controller {
     public function index() {
         $schblock = \App\SchBlockDistribution::with('district')->get();
         $schact = ['' => 'Select Scheme'] + \App\SchemeActivation::whereNotNull('idScheme')
-                        ->with('scheme')->get()->pluck('scheme.schemeName', 'idSchemeActivation')->toArray();
+                        ->with('scheme')
+                        ->get()
+                        ->pluck('scheme.schemeName', 'idSchemeActivation')
+                        ->toArray();
         return view('schemes.block_distribution', compact('schact', 'schblock'));
     }
 

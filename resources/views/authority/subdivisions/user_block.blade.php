@@ -4,7 +4,7 @@
 <!-------------------New User---------------------------------------------------------------------->
 <div id="formerrors"></div>
 <div class="panel panel-default tab-pane fade in active" id='new'>
-    <div class="panel-heading"><strong>ADD   User In Block</strong></div>
+    <div class="panel-heading"><strong>ADD User In Block</strong></div>
     <div class="panel-body">
         {!! Form::open(['url' => 'authority/subdivisions/blockuseradd','class'=>'form-horizontal','id'=>'userblock']) !!}
         <div class="form-group">

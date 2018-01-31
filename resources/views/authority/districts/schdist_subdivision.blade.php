@@ -134,14 +134,14 @@
                 @foreach($schsubdivision as $var)
                 <tr>
                     <td>{{ $i }}</td>
-                    <td>{{ $var->schactivation->scheme->section->sectionName}}</td>
-                    <td>{{ $var->schactivation->scheme->schemeName}}</td>
-                    <td>{{ $var->schactivation->program->programName}}</td>
-                    <td>{{ $var->district->districtName }}</td>
-                    <td>{{ $var->subdivision->subDivisionName }}</td>
+                    <td>{{ $var->sectionName}}</td>
+                    <td>{{ $var->schemeName}}</td>
+                    <td>{{ $var->programName}}</td>
+                    <td>{{ $var->districtName }}</td>
+                    <td>{{ $var->subDivisionName }}</td>
                     <td>{{ $var->amountSubdivision }}</td>
                     <td>{{ $var->areaSubdivision }}</td>
-                    <td><a href="#" class="btn btn-xs btn-warning">Edit</a></td>
+                    <td></td>
                 </tr>
                 <?php $i++; ?>
                 @endforeach

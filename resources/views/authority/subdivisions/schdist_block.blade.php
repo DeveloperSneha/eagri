@@ -47,7 +47,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 {!! Form::select('idDistrict',$user_district,null, ['class' => 'form-control', 'selected']) !!}
             </div>
             <span class="help-block">
@@ -60,7 +60,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('Subdivision', null, ['class' => 'col-sm-2 control-label required']) !!}
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                {!! Form::select('idSubdivision',$user_subdivision,null, ['class' => 'form-control','id'=>'idSubdivision']) !!}
             </div>
             <span class="help-block">
@@ -153,12 +153,12 @@
                 @foreach($schblock as $var)
                 <tr>
                     <td>{{ $i}}</td>
-                    <td>{{ $var->schactivation->scheme->section->sectionName}}</td>
-                    <td>{{ $var->schactivation->scheme->schemeName}}</td>
-                    <td>{{ $var->schactivation->program->programName}}</td>
-                    <td>{{ $var->district->districtName }}</td>
-                    <td>{{ $var->subdivision->subDivisionName }}</td>
-                    <td>{{ $var->block->blockName }}</td>
+                    <td>{{ $var->sectionName}}</td>
+                    <td>{{ $var->schemeName}}</td>
+                    <td>{{ $var->programName}}</td>
+                    <td>{{ $var->districtName}}</td>
+                    <td>{{ $var->subDivisionName}}</td>
+                    <td>{{ $var->blockName}}</td>
                     <td>{{ $var->amountBlock }}</td>
                     <td>{{ $var->areaBlock }}</td>
                     <td></td>
@@ -201,7 +201,7 @@
                 dataType: "json",
                 success:function(data) {
                     $('select[id="idProgram"]').empty();
-                    $('select[id="idProgram"]').append('<option val>---Select Program--</option>');
+                    $('select[id="idProgram"]').append('<option value="">---Select Program--</option>');
                     $.each(data, function(key, value) {
                         $('select[id="idProgram"]').append('<option value="'+ key +'">'+ value +'</option>');
                     });
@@ -303,7 +303,7 @@ $(document).ready(function () {
                             errorHtml += '<li>' + errors + '</li>';
                             errorHtml += '</ul></div>';
                           $( '#formerrors' ).html( errorHtml );
-        }else if($("#area-fund #aaaaa:nth-child(2) input").val() <=0){
+        }else if($("#area-fund #aaaaa:nth-child(2) input").val() <0){
             var errors = 'Physical Target Of This Block Exceeded the limit';
             errorHtml='<div class="alert alert-danger"><ul>';
                             errorHtml += '<li>' + errors + '</li>';
