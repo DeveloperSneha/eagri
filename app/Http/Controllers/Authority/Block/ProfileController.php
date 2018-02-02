@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Http\Verhoeff;
+use App\Http\CheckSession;
 
 class ProfileController extends \App\Http\Controllers\Authority\AuthorityController {
 
@@ -15,10 +16,13 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
-        $user_blockdesig = $user->userdesig()->whereNotNull('idBlock')->whereNull('idVillage')->get();
-        
-        return view('authority.blocks.profile', compact('user', 'user_blockdesig'));
+        if (CheckSession::chk_blockuser() === true) {
+            $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
+            $user_blockdesig = $user->userdesig()->whereNotNull('idBlock')->whereNull('idVillage')->get();
+            return view('authority.blocks.profile', compact('user', 'user_blockdesig'));
+        } else {
+            return view('errors.404');
+        }
     }
 
     /**
@@ -79,16 +83,16 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             'address' => 'required|alpha_dash'
         ];
         if ($request->aadhaar != null) {
-        if (Verhoeff::validate($request->aadhaar) === false) {
-            $rules += ['aadhaarabc' => 'required'];
-            // return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
-        }
+            if (Verhoeff::validate($request->aadhaar) === false) {
+                $rules += ['aadhaarabc' => 'required'];
+                // return Redirect::back()->withInput(Input::all())->withErrors(['Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है']);
+            }
         }
         $message = [
-            'aadhaarabc.required'=>'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
-            'dob.required'=>'Date Of Birth must be filled',
-            'dob.before'=>'Date Of Birth is Invalid'];
-        $this->validate($request, $rules,$message);
+            'aadhaarabc.required' => 'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
+            'dob.required' => 'Date Of Birth must be filled',
+            'dob.before' => 'Date Of Birth is Invalid'];
+        $this->validate($request, $rules, $message);
         //dd($request->all());
         $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $profile->fill($request->all());
@@ -105,6 +109,26 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      */
     public function destroy($id) {
         //
+    }
+
+    public function editPassword() {
+        return view('authority.blocks.updt_password');
+    }
+
+    public function updatePassword(Request $request) {
+        $rules = [];
+        $user = $request->user();
+        if (!auth()->attempt(['username' => $user->userName, 'password' => $request->old_password])) {
+            flash()->error('Wrong old password. Authentication failed');
+            return redirect()->back();
+        }
+        $this->validate($request, $rules + [
+            'password' => 'required|min:6|confirmed',
+        ]);
+        $user->password = bcrypt($request['password']);
+        $user->update();
+        flash()->success('Password updated successfully.');
+        return redirect()->back();
     }
 
 }

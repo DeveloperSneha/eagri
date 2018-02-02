@@ -65,6 +65,9 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a href="{{url('/authority/subdivisions/chpwd')}}"><i class="fa fa-edit"></i>&nbsp;&nbsp;Update Password</a>
+                                    </li>
+                                    <li>
                                         <a href="{{ route('authority.logout') }}"
                                            onclick="event.preventDefault();
                                                    document.getElementById('logout-form').submit();">
@@ -75,6 +78,7 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+                                    
                                 </ul>
                             </li>
                         </ul>
@@ -144,7 +148,7 @@
     </div>
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0
+            <b>Version</b> 1.02.01.01
         </div>
 <!--    <center>-->
                             <strong>Copyright &copy; 2018 <a href="https://hkcl.in">HKCL</a>.</strong> All Rights Reserved.

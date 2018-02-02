@@ -74,7 +74,13 @@
                             </div>
                         </form>
                     </div>
+                </div><br><br>
+                <!-- <div class="main-footer">
+                <div >
+                <b>Version</b> 1.02.01.01
                 </div>
+            </div> -->
+
                 <!-- /.login-box-body -->
             </div>
         </div>

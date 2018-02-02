@@ -147,6 +147,8 @@ Route::prefix('authority')->group(function() {
 
     Route::prefix('districts')->group(function () {
         Route::get('/', 'Authority\AuthorityController@districts')->name('authority.districts.dashboard');
+        Route::get('/chpass','Authority\District\ProfileController@editPassword');
+        Route::post('/chpass','Authority\District\ProfileController@updatePassword');
         Route::resource('/profile', 'Authority\District\ProfileController');
 
         Route::get('distuser/{id}', 'Authority\District\SubdivisionUserController@getUserDetail');
@@ -185,6 +187,9 @@ Route::prefix('authority')->group(function() {
 
     Route::prefix('subdivisions')->group(function () {
         Route::get('/', 'Authority\AuthorityController@subdivisions')->name('authority.subdivisions.dashboard');
+
+        Route::get('/chpwd','Authority\Subdivision\ProfileController@editPassword');
+        Route::post('/chpwd','Authority\Subdivision\ProfileController@updatePassword');
         Route::resource('/profile', 'Authority\Subdivision\ProfileController');
         Route::get('blockuseradd/{id}/details', 'Authority\Subdivision\BlockUserController@editUser');
         Route::resource('/blockuseradd', 'Authority\Subdivision\BlockUserController');
@@ -205,6 +210,8 @@ Route::prefix('authority')->group(function() {
 
     Route::prefix('blocks')->group(function () {
         Route::get('/', 'Authority\AuthorityController@blocks')->name('authority.blocks.dashboard');
+        Route::get('/updtps','Authority\Block\ProfileController@editPassword');
+        Route::post('/updtps','Authority\Block\ProfileController@updatePassword');
         Route::resource('/profile', 'Authority\Block\ProfileController');
         Route::get('/viuser/{id}/details', 'Authority\Block\VillageUserController@editUser');
         Route::resource('/viuser', 'Authority\Block\VillageUserController');
@@ -220,6 +227,8 @@ Route::prefix('authority')->group(function() {
 
     Route::prefix('villages')->group(function () {
         Route::get('/', 'Authority\AuthorityController@village')->name('authority.villages.dashboard');
+        Route::get('/updtpwd','Authority\Village\ProfileController@editPassword');
+        Route::post('/updtpwd','Authority\Village\ProfileController@updatePassword');
         Route::resource('/profile', 'Authority\Village\ProfileController');
         //Scheme(Program) Approval Or Rejection By Villagelevel User
         Route::get('apr/{idAppliedProgram}/view', 'Authority\Village\SchemeApprRejectController@viewAppliedScheme');

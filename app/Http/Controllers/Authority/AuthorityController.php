@@ -45,7 +45,20 @@ class AuthorityController extends Controller {
 
     public function blocks() {
         if (Session::has('idDistrict') && Session::has('idSubdivision') && Session::has('idBlock')) {
-            return view('authority.blocks.dashboard');
+            $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
+            $user_in_block = $loggedinuser->userdesig()
+                    ->where('idDesignation', '=', Session::get('idDesignation'))
+                    ->where('idDistrict', '=', Session::get('idDistrict'))
+                    ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                    ->where('idBlock', '=', Session::get('idBlock'))
+                    ->whereNotNull('idBlock')
+                    ->whereNull('idVillage')
+                    ->get();
+            if (count($user_in_block) > 0) {
+                return view('authority.blocks.dashboard');
+            } else {
+                return view('errors.404');
+            }
         } else {
             return view('errors.404');
         }
@@ -62,7 +75,7 @@ class AuthorityController extends Controller {
                 ->get();
         if (count($user_in_village) > 0) {
             return view('authority.villages.dashboard');
-        }else{
+        } else {
             return view('errors.404');
         }
     }

@@ -43,3 +43,32 @@ Use these steps to clone from SourceTree, our client for using the repository co
 4. Open the directory you just created to see your repository’s files.
 
 Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+## 31-jan-2018
+
+1.Farmer Controller (Pankaj)
+2.Subdivision Table (Pankaj)
+3.Frontpage Data Display Fixation view front_page.blade.php (Pooja)
+4.SubdivisionDistController (Pooja)
+5.BlockwiseSchemeDistController index (pooja)
+6.authority.districts.schdist_block(pooja)
+7.authority.districts.schdist_subdivision(pooja)
+8.BlockSchemeDistController index (pooja)
+9.Edit user in block ,Edit user in Subdivision ,Edit user in Village (authority >> district)(Sneha)
+
+10 Edit user in block,Edit user in Village in DDA Panel 
+(authority >> subdivision)
+Profile (authority >> district)
+profile (authority >> subdivision)
+profile (authority >> block)   (Sneha)
+
+
+##01-02-2018
+1. Database Subdivision Mapping ( with help of Dhanvinder Sir, Ashish Sir  and Pankaj)
+2.Subdivion > profileController , profile.blade 
+3. District ,village ,subdivision,block > layout.blade
+4.finanyearcontroller > finanyear .blade
+5.web.php (Sneha)
+6.Profile Controller(Authority/District,Block,Village)
+7.updt_password(authority/districts,blocks,village)
+8.LoginController(redirection Issue)
+9.SchemeAprRejectController(Authority/District,Subdivision,Block,Village)(Pooja)

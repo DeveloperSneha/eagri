@@ -171,7 +171,7 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
      */
     public function update(Request $request, $id) {
         $rules = [
-            'idDistrict' => 'required',
+            // 'idDistrict' => 'required',
             'idSubdivision' => 'required',
             'idBlock' => 'required',
             'idSection' => 'required',
@@ -179,7 +179,7 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
             'idVillage' => 'required',
         ];
         $messages = [
-            'idDistrict.required' => 'District must be selected.',
+            // 'idDistrict.required' => 'District must be selected.',
             'idSubdivision.required' => 'Subdivision must be selected.',
             'idBlock.required' => 'Block must be selected.',
             'idVillage.required' => 'Atleast One Village Must Be selected.',
@@ -191,6 +191,9 @@ class VillageUserController extends \App\Http\Controllers\Authority\AuthorityCon
         $userdesig = \App\UserDesignationDistrictMapping::where('iddesgignationdistrictmapping', '=', $id)->first();
         $userdesig->fill($request->all());
         $userdesig->update();
+        if ($request->ajax()) {
+            return response()->json(['success' => "SUCCESS"], 200, ['app-status' => 'success']);
+        }
         return redirect('authority/blocks/viuser/' . $userdesig->idUser . '/details');
     }
 

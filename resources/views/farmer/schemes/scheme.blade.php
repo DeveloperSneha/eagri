@@ -18,7 +18,7 @@
                <tr>
                    <td><strong>{{ $var->programName}} : </strong>{{ $var->schemeName}}</td>
                     @if($farmer->schemes->contains('idProgram', $var->idProgram))
-                    <td><a href="#" class="btn btn-success">Already Applied</a></td>
+                    <td><a href="#" class="btn btn-alert disabled">Already Applied</a></td>
                      @else
                     <td><a href="{{url('/farmer/program/'.$var->idProgram.'/apply')}}" class="btn btn-danger">Apply Scheme</a></td>
                     @endif

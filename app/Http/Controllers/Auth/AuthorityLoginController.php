@@ -41,14 +41,23 @@ class AuthorityLoginController extends Controller {
         ];
         $this->validate($request, $rules, $messages);
 
-        $user = \App\User::where('userName', $request->userName)->first();
-        if ($user) {
+        if (!auth()->attempt(['username' => $request->userName, 'password' => $request->password])) {
+            return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg' => 'Your Credential Doesnot Match.Please Try Again !!']);
+        }else{
+            $user = \App\User::where('userName', $request->userName)->first();
+            Session::put('pass', $request->password);
             if ($user->userdesig()->count() > 0) {
                 return view('authority.secondstep_login', compact('user'));
             }
-        } else {
-            return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg' => 'Your Credential Doesnot Match.Please Try Again !!']);
         }
+     //   dd($user);
+//        if ($user) {
+//            if ($user->userdesig()->count() > 0) {
+//                return view('authority.secondstep_login', compact('user'));
+//            }
+//        } else {
+//            return Redirect::back()->withInput($request->only('userName'))->withErrors(['msg' => 'Your Credential Doesnot Match.Please Try Again !!']);
+//        }
     }
 
 //    public function secondStepLoginForm() {
@@ -63,7 +72,7 @@ class AuthorityLoginController extends Controller {
     public function secondStepLogin(Request $request) {
         $user = \App\User::where('userName', $request->userName)->first();
         $rules = [
-            'password' => 'required',
+          //  'password' => 'required',
             'idDesignation' => 'required',
             'idDistrict' => 'required'
         ];
@@ -97,7 +106,7 @@ class AuthorityLoginController extends Controller {
         $this->validate($request, $rules, $messages);
         if (Auth::guard('authority')->attempt([
                     'userName' => $request->userName,
-                    'password' => $request->password], $request->remember)) {
+                    'password' => Session::get('pass')], $request->remember)) {
             //dd(Auth::guard('authority')->User());
             Session::put('idDesignation', $request->idDesignation);
             Session::put('idDistrict', $request->idDistrict);

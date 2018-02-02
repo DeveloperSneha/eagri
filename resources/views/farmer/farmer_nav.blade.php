@@ -118,17 +118,13 @@
             </li>
             <li class="{{ checkActive(['farmer/profile'])}}">
                 <a href="{{ url('/farmer/profile')}}">
-                    <span>Profile</span>
+                    <i class="fa fa-address-card"></i> <span>Profile</span>
                 </a>
             </li>
-			<li class="{{ checkActive(['farmer/authinfo'])}}">
-                <a href="{{ url('/farmer/authinfo')}}">
-                    <span>Authorities Information</span>
-                </a>
-            </li>
+			
 			<li class="{{ checkActive(['farmer/avaschemes'])}}">
                 <a href="{{ url('/farmer/avaschemes')}}">
-                    <span>Schemes</span>
+                     <i class="fa fa-trophy"></i> <span>Schemes</span>
                 </a>
             </li>
             @if(count($farmer->schemes)>0)
@@ -138,6 +134,11 @@
                 </a>
             </li>
             @endif
+            <li class="{{ checkActive(['farmer/authinfo'])}}">
+                <a href="{{ url('/farmer/authinfo')}}">
+                    <i class="fa fa-print"></i> <span>Authorities Information</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

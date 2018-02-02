@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Http\Verhoeff;
+use App\Http\CheckSession;
 
 class ProfileController extends \App\Http\Controllers\Authority\AuthorityController {
 
@@ -15,10 +16,14 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
-        $user_desig = $user->userdesig()->whereNotNull('idVillage')->get();
+        if (CheckSession::chk_villageuser() === true) {
+            $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
+            $user_desig = $user->userdesig()->whereNotNull('idVillage')->get();
 
-        return view('authority.villages.profile', compact('user', 'user_desig'));
+            return view('authority.villages.profile', compact('user', 'user_desig'));
+        } else {
+            return view('errors.404');
+        }
     }
 
     /**
@@ -85,11 +90,11 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             }
         }
         $message = [
-            'aadhaarabc.required'=>'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
-            'dob.required'=>'Date Of Birth must be filled',
-            'dob.before'=>'Date Of Birth is Invalid'
+            'aadhaarabc.required' => 'Aadhaar Number Is Not vaild  | आधार संख्या वैध नहीं है',
+            'dob.required' => 'Date Of Birth must be filled',
+            'dob.before' => 'Date Of Birth is Invalid'
         ];
-        $this->validate($request, $rules,$message);
+        $this->validate($request, $rules, $message);
         //dd($request->all());
         $profile = \App\User::where('idUser', '=', Auth::User()->idUser)->first();
         $profile->fill($request->all());
@@ -106,6 +111,26 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      */
     public function destroy($id) {
         //
+    }
+
+    public function editPassword() {
+        return view('authority.villages.updt_password');
+    }
+
+    public function updatePassword(Request $request) {
+        $rules = [];
+        $user = $request->user();
+        if (!auth()->attempt(['username' => $user->userName, 'password' => $request->old_password])) {
+            flash()->error('Wrong old password. Authentication failed');
+            return redirect()->back();
+        }
+        $this->validate($request, $rules + [
+            'password' => 'required|min:6|confirmed',
+        ]);
+        $user->password = bcrypt($request['password']);
+        $user->update();
+        flash()->success('Password updated successfully.');
+        return redirect()->back();
     }
 
 }

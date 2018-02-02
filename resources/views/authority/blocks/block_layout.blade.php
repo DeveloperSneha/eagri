@@ -62,8 +62,11 @@
                                     <i class="fa fa-user"></i>&nbsp;&nbsp;@auth {{ Auth::user()->userName }} @endauth<span class="caret"></span>
                                     <!--@auth <p>{{ Auth::user()->userName }}</p> @endauth-->
                                 </a>
-
+                                
                                 <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{url('/authority/blocks/updtps')}}"><i class="fa fa-edit"></i>&nbsp;&nbsp;Update Password</a>
+                                    </li>
                                     <li>
                                         <a href="{{ route('authority.logout') }}"
                                            onclick="event.preventDefault();
@@ -75,6 +78,7 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+                                   
                                 </ul>
                             </li>
                         </ul>
@@ -116,43 +120,43 @@
                     </ul>
                     @endif
                     @include('flash::message')
-                {{--    @if ($errors->any())
+                    {{--    @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif --}}
-                    @yield('content')
-                </section>
-                <!-- /.content -->
+                    @endforeach
+                    </ul>
             </div>
-            <!-- /.content-wrapper -->
-            <div id="feedback" style="z-index: 100000;" >
-                <div id="feedback-form" style='display: none;background-color:white;' class="col-xs-4 col-md-4 p-10">
-                    <div style='background-color:aqua;'>
-                        <div class="w-100 fl p-5 f-b f-14 txt-cnt m-b-20" style="background-color:#9acd32; color:#fff;padding: 8px;">
-                            HELP DESK
-                        </div>
+            @endif --}}
+            @yield('content')
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div id="feedback" style="z-index: 100000;" >
+        <div id="feedback-form" style='display: none;background-color:white;' class="col-xs-4 col-md-4 p-10">
+            <div style='background-color:aqua;'>
+                <div class="w-100 fl p-5 f-b f-14 txt-cnt m-b-20" style="background-color:#9acd32; color:#fff;padding: 8px;">
+                    HELP DESK
+                </div>
 
-                        <div class="w-100 fl f-b p-5 m-l-10 f-12" style="margin: 10px 10px;">hkcl.co.in</div>
-                    </div>
-                </div>
-                <div id="feedback-tab">Helpdesk</div>
+                <div class="w-100 fl f-b p-5 m-l-10 f-12" style="margin: 10px 10px;">hkcl.co.in</div>
             </div>
-            <footer class="main-footer">
-                <div class="pull-right hidden-xs">
-                    <b>Version</b> 1.0
-                </div>
-        <!--    <center>-->
-                <strong>Copyright &copy; 2018 <a href="https://hkcl.in">HKCL</a>.</strong> All Rights Reserved.
-                <!--    </center>-->
-            </footer>
         </div>
-        <!-- ./wrapper -->
-        @include('layouts.partials.script')
-        @yield('script')
-    </body>
-</html>
+        <div id="feedback-tab">Helpdesk</div>
+    </div>
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.02.01.01
+        </div>
+<!--    <center>-->
+                            <strong>Copyright &copy; 2018 <a href="https://hkcl.in">HKCL</a>.</strong> All Rights Reserved.
+                            <!--    </center>-->
+                            </footer>
+                            </div>
+                            <!-- ./wrapper -->
+                            @include('layouts.partials.script')
+                            @yield('script')
+                            </body>
+                            </html>

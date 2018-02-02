@@ -46,8 +46,8 @@
             <div class="panel-body">
                 @if($districts->count() >0 )
                     @foreach ($districts as $value)
-                        @if($farmer->schemes->contains('idScheme', $value->idScheme))
-                        <strong> {{  $value->schemeName  }} <span class=""> : Applied</span><br></strong>
+                        @if($farmer->schemes->contains('idProgram', $value->idProgram))
+                        <strong> {{  $value->programName  }} : {{  $value->schemeName  }} <span class=""> : Applied</span><br></strong>
                         @else
                         <a href="{{url('/farmer/program/'.$value->idProgram.'/apply')}}">
                             <blink class="blink"> {{  $value->programName  }} : {{  $value->schemeName  }}&nbsp;&nbsp;<img src="{{ asset('dist/img/new_blink.gif') }}"><br></blink>

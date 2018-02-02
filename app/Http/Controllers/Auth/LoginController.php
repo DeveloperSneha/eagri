@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Traits;
+
 class LoginController extends Controller {
     /*
       |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ class LoginController extends Controller {
       |
      */
 
-    use Traits\CaptchaTrait;
+use Traits\CaptchaTrait;
     use AuthenticatesUsers;
 
     /**
@@ -27,7 +28,14 @@ class LoginController extends Controller {
      *
      * @var string
      */
-    protected $redirectTo = '/index';
+    protected function authenticated(Request $request, $user) {
+        if ($this->guard() == 'web') {
+            return redirect('/index');
+        }
+        return redirect('/login');
+    }
+
+    //  protected $redirectTo = '/index';
 
     /**
      * Create a new controller instance.
@@ -70,12 +78,12 @@ class LoginController extends Controller {
         $request['captcha'] = $this->captchaCheck();
         $this->validate($request, [
             $this->username() => 'required|string',
-          //  'g-recaptcha-response' => 'required',
-           // 'captcha'               => 'required|min:1',
+            //  'g-recaptcha-response' => 'required',
+            // 'captcha'               => 'required|min:1',
             'password' => 'required|string',
                 ], [
             'g-recaptcha-response.required' => 'Captcha authentication is required.',
-             'captcha.min'           => 'Wrong captcha, please try again.'
+            'captcha.min' => 'Wrong captcha, please try again.'
         ]);
     }
 

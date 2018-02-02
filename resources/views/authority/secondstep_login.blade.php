@@ -84,7 +84,7 @@ $user_desig = $user->userdesig()
                             </div>
 
                         </div>
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             {!! Form::label('Re-type Password', null, ['class' => 'col-sm-3 control-label required']) !!}
                             <div class="col-sm-4">
                                 <input type="password" name="password" onfocus="this.removeAttribute('readonly');" id="password" autocomplete="off" class="form-control" value="" maxlength="12" >
@@ -97,7 +97,7 @@ $user_desig = $user->userdesig()
                                 </strong>
                             </span>
 
-                        </div>
+                        </div>-->
                        
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-4">
@@ -182,7 +182,7 @@ $user_desig = $user->userdesig()
             $('select[id="idBlock"]').empty();
         }
     });
-        $('#secondsteplogin').on('submit',function(e){
+    $('#secondsteplogin').on('submit',function(e){
         $.ajaxSetup({
         header:$('meta[name="_token"]').attr('content')
     });

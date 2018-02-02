@@ -24,6 +24,8 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                         ->where('idBlock', '=', Session::get('idBlock'))
                         ->whereNotNull('idVillage')
                         ->get()->pluck('idVillage')->toArray();
+        $schapr = \App\SchemeApproveReject::where('idDesignation', '=', Session::get('idDesignation'))
+                ->get()->pluck('idAppliedScheme')->toArray();
         $schemes = DB::table('farmerapplied_scheme')
                 ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
                 ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
@@ -32,8 +34,10 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                 ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                 ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                 ->whereIn('farmers.idVillage', $user_village)
+                ->whereNotIn('farmerapplied_scheme.idAppliedScheme', $schapr)
                 ->select('name', 'farmers.idFarmer', 'schemeName', 'programName', 'villageName', 'blockName', 'scheme.idScheme', 'idAppliedScheme')
                 ->get();
+        
         //dd($schemes);
         return view('authority.villages.scheme_for_approval', compact('schemes'));
     }
@@ -69,6 +73,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
         ];
         $this->validate($request, $rules, $messages);
         $workflow = \App\WorkflowStep::where('idDesignation', '=', Session::get('idDesignation'))->first();
+      //  dd($workflow);
         $approve_scheme = new \App\SchemeApproveReject();
         $approve_scheme->fill($request->all());
         $approve_scheme->haveChecked = $request->has('haveChecked') ? 'Y' : 'N';
@@ -155,7 +160,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                 ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                 ->where('idDesignation', '=', Session::get('idDesignation'))
                 ->where('schemeappreject.status', '=', 'R')
-                ->select('farmers.name', 'scheme.schemeName','programName', 'district.districtName', 'block.blockName', 'village.villageName')
+                ->select('farmers.name', 'scheme.schemeName','program.programName', 'district.districtName', 'block.blockName', 'village.villageName')
                 ->get();
         return view('authority.villages.rejected_scheme', compact('schemes'));
     }

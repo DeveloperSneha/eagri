@@ -16,9 +16,13 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
-        $userdesig = $user->userdesig()->whereNotNull('idDistrict')->whereNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
-        return view('authority.districts.profile', compact('user', 'userdesig'));
+        if (CheckSession::chk_distuser() === true) {
+            $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
+            $userdesig = $user->userdesig()->whereNotNull('idDistrict')->whereNull('idSubdivision')->whereNull('idBlock')->whereNull('idVillage')->get();
+            return view('authority.districts.profile', compact('user', 'userdesig'));
+        } else {
+            return view('errors.404');
+        }
     }
 
     /**
@@ -107,6 +111,26 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
      */
     public function destroy($id) {
         //
+    }
+
+    public function editPassword() {
+        return view('authority.districts.updt_password');
+    }
+
+    public function updatePassword(Request $request) {
+        $rules = [];
+        $user = $request->user();
+        if (!auth()->attempt(['username' => $user->userName, 'password' => $request->old_password])) {
+            flash()->error('Wrong old password. Authentication failed');
+            return redirect()->back();
+        }
+        $this->validate($request, $rules + [
+            'password' => 'required|min:6|confirmed',
+        ]);
+        $user->password = bcrypt($request['password']);
+        $user->update();
+        flash()->success('Password updated successfully.');
+        return redirect()->back();
     }
 
 }

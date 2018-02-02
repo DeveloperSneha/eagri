@@ -8,6 +8,7 @@
 
 namespace App\Http;
 
+use Auth;
 use Session;
 
 /**
@@ -18,20 +19,57 @@ use Session;
 class CheckSession {
 
     static function chk_distuser() {
-        if (Session::get('idDistrict') != null) {
-            return Session::get('idDistrict');
+        if (Session::has('idDistrict') && (Session::has('idSubdivision') == false) && (Session::has('idBlock') == false)) {
+            return true;
         } else {
-            flash()->warning("You don't have access to this resource!!");
-            return redirect('/authority/districts');
+            return false;
         }
     }
 
     static function chk_subuser() {
-        return Session::get('idSubdivision');
+        if (Session::has('idSubdivision') && (Session::has('idBlock') == false)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     static function chk_blockuser() {
-        return Session::get('idBlock');
+        if (Session::has('idDistrict') && Session::has('idSubdivision') && Session::has('idBlock')) {
+            $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
+            $user_in_block = $loggedinuser->userdesig()
+                    ->where('idDesignation', '=', Session::get('idDesignation'))
+                    ->where('idDistrict', '=', Session::get('idDistrict'))
+                    ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                    ->where('idBlock', '=', Session::get('idBlock'))
+                    ->whereNotNull('idBlock')
+                    ->whereNull('idVillage')
+                    ->get();
+            if (count($user_in_block) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    static function chk_villageuser() {
+        $loggedinuser = \App\User::where('idUser', Auth::guard('authority')->User()->idUser)->first();
+        $user_in_village = $loggedinuser->userdesig()
+                ->where('idDesignation', '=', Session::get('idDesignation'))
+                ->where('idDistrict', '=', Session::get('idDistrict'))
+                ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                ->where('idBlock', '=', Session::get('idBlock'))
+                ->whereNotNull('idVillage')
+                ->get();
+        // dd(count($user_in_village));
+        if (count($user_in_village) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

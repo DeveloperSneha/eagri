@@ -25,6 +25,8 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                         ->where('level', '>', $user_level)
                         ->get()
                         ->pluck('idDesignation')->toArray();
+        $schapr = \App\SchemeApproveReject::where('idDesignation', '=', Session::get('idDesignation'))
+                        ->get()->pluck('idAppliedScheme')->toArray();
         if (count($designations)>0) {
             $schemes = DB::table('schemeappreject')
                     ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
@@ -35,6 +37,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                     ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                     ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                     ->whereIn('idDesignation', $designations)
+                    ->whereNotIn('farmerapplied_scheme.idAppliedScheme', $schapr)
                     ->get();
         }else{
             $schemes = DB::table('farmerapplied_scheme')
@@ -150,6 +153,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                 ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                 ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                 ->where('idDesignation', '=', Session::get('idDesignation'))
+                ->where('farmers.idBlock', '=', Session::get('idBlock'))
                 ->where('schemeappreject.status', '=', 'A')
                 ->select('farmers.name', 'scheme.schemeName', 'programName', 'district.districtName', 'block.blockName', 'village.villageName')
                 ->get();
@@ -167,6 +171,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                 ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                 ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                 ->where('idDesignation', '=', Session::get('idDesignation'))
+                ->where('farmers.idBlock', '=', Session::get('idBlock'))
                 ->where('schemeappreject.status', '=', 'R')
                 ->select('farmers.name', 'scheme.schemeName', 'programName', 'district.districtName', 'block.blockName', 'village.villageName')
                 ->get();

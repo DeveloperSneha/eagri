@@ -52,7 +52,7 @@
             </div>
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
-                    <b>Version</b> 1.0
+                    <b>Version</b> 1.02.01.01
                 </div>
         <!--    <center>-->
                 <strong>Copyright &copy; 2018 <a href="https://hkcl.in">HKCL</a>.</strong> All Rights Reserved.
