@@ -42,7 +42,7 @@
             <div id="feedback" style="z-index: 100000;" >
                 <div id="feedback-form" style='display: none;background-color:white;' class="col-xs-4 col-md-4 p-10">
                     <div style='background-color:aqua;'>
-                        <div class="w-100 fl p-5 f-b f-14 txt-cnt m-b-20" style="background-color:#9acd32; color:#fff;padding: 8px;">
+                        <div class="w-100 fl p-5 f-b f-14 txt-cnt m-b-20" style="background-color:rgba(252,139,28,0.9); color:#fff;padding: 8px;">
                             HELP DESK
                         </div>
 

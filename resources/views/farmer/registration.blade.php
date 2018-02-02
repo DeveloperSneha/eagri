@@ -23,7 +23,7 @@
                         <div class="form-group">
                             {!! Form::label('Name Of Farmer', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4  {{ $errors->has('name') ? ' has-error' : '' }}">
-                                {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'किसान का नाम','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'3','onkeypress'=>'return lettersOnly(event)']) !!}
+                                {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'किसान का नाम','pattern'=>'^[^-\s][a-zA-Z_\s-]+$','maxlength'=>'40','minlength'=>'2','onkeypress'=>'return lettersOnly(event)']) !!}
                                 <span id="name1"></span>
                             </div>
                             {!! Form::label('Father/Husband', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('Aadhaar No', null, ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('Aadhaar No', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('aadhaar') ? ' has-error' : '' }}{{ $errors->has('aadhaarabc') ? ' has-error' : '' }}">
                                 {!! Form::text('aadhaar', null, ['class' => 'form-control','placeholder'=>'अपना आधार नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isNumber(event)','id'=>'aadhaar']) !!}
                                 <span id="aadhaarabc1"></span>
@@ -41,7 +41,8 @@
                             </div>
                             {!! Form::label('Ration Card No.', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('rcno') ? ' has-error' : '' }}">
-                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isAlphaNumeric(event)']) !!}
+                                {!! Form::text('rcno', null, ['class' => 'form-control','placeholder'=>'अपना राशन कार्ड नंबर डाले','maxlength'=>'12','minlength'=>'12','onkeypress'=>'return isAlphaNumeric(event)','pattern'=>'^[a-zA-Z0-9_]*(?!\1+$)\d{11}$' ]) !!}
+                                <!-- 'pattern'=>'^(?!.*([A-Za-z0-9_])\1{5})(?=.*[a-z])(?=.*\d)[A-Za-z0-9]+$' -->
                                 <span id="rcno1"></span>
                             </div>
                         </div>
@@ -49,7 +50,7 @@
                         <div class="form-group">
                             {!! Form::label('Mobile No', null, ['class' => 'col-sm-2 control-label required']) !!}
                             <div class="col-sm-4 {{ $errors->has('mobile') ? ' has-error' : '' }} ">
-                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$']) !!}
+                                {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'अपना मोबाइल नंबर डाले ','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$','pattern'=>'^(\d)(?!\1+$)\d{9}$']) !!}
                                 <span id="mobile1"></span>
                             </div>
                             {!! Form::label('Marital Status', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -69,8 +70,6 @@
                                 {!! Form::select('caste',getCasteCategory(), null, ['class' => 'form-control']) !!}
                                 <span id="caste1"></span>
                             </div>
-                            
-                            
                         </div>
                         <legend>Land Details / ज़मीन का विवरण (In acres / एकड़ में )</legend>
                         <div class="form-group">
@@ -106,7 +105,7 @@
                             
                             {!! Form::label('Location Of Land', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('land_location') ? ' has-error' : '' }}">
-                                    {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान']) !!}
+                                    {!! Form::text('land_location', null, ['class' => 'form-control','placeholder'=>'जमीन का स्थान','minlength'=>'2','maxlength'=>'30','pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
                                     <span id="land_location1"></span>
                                 </div>
                             
@@ -122,7 +121,7 @@
                             </div>
                             {!! Form::label('Total Land', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('total_land') ? ' has-error' : '' }}">
-                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा (in Hectares) ','maxlength'=>'8','minlength'=>'1','onkeyup'=>'checkDec(this)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
+                                    {!! Form::text('total_land', null, ['class' => 'form-control','placeholder'=>'कुल रकबा (in Hectares) ','maxlength'=>'12','minlength'=>'1','onkeypress'=>'return isNumber(event)','pattern'=>'^[1-9]\d*(\.\d+)?$']) !!}
                                     <span  id="total_land1"></span>
                                 </div> 
 
@@ -134,7 +133,7 @@
                             <div class="form-group">
                                 {!! Form::label('IFSC', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('ifsc_code') ? ' has-error' : '' }}">
-                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ']) !!}
+                                   {!! Form::text('ifsc_code' ,null, ['class' => 'form-control ', 'placeholder'=>'अपना बैंक का IFSC Code डाले ','minlength'=>'11','maxlength'=>'11','onkeypress'=>'return isAlphaNumeric','pattern'=>'^[A-Za-z]{4}\d{7}$']) !!}
                                      <span  id="ifsc_code1"></span>
                                 </div>
                                 {!! Form::label('Bank Name', null, ['class' => 'col-sm-2 control-label required']) !!}
@@ -151,7 +150,7 @@
                                 </div>
                                 {!! Form::label('Account No.', null, ['class' => 'col-sm-2 control-label required']) !!}
                                 <div class="col-sm-4 {{ $errors->has('account_no1') ? ' has-error' : '' }}">
-                                    {!! Form::text('account_no', null, ['class' => 'form-control','placeholder'=>'अपने बैंक खाता नंबर डाले ','maxlength'=>'16','minlength'=>'12','onkeypress'=>'return isNumber(event)']) !!}
+                                    {!! Form::text('account_no', null, ['class' => 'form-control','placeholder'=>'अपने बैंक खाता नंबर डाले ','maxlength'=>'16','minlength'=>'12','onkeypress'=>'return isNumber(event)','pattern'=>'^(\d)(?!\1+$)\d{15}$']) !!}
                                     <span  id="account_no1"></span>
                                 </div>
                             </div>                            

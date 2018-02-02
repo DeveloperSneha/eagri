@@ -83,19 +83,19 @@
                 <div class="form-group {{ $errors->has('mobile') ? ' has-error' : '' }}">
                     {!! Form::label('Mobile :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter Mobile No.','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$']) !!}
+                        {!! Form::text('mobile', null, ['class' => 'form-control','placeholder'=>'Enter Mobile No.','maxlength'=>'10','minlength'=>'10','onkeypress'=>'return isNumber(event)', 'pattern'=>'^[6789]\d{9}$','pattern'=>'^(\d)(?!\1+$)\d{9}$']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('ofc_address') ? ' has-error' : '' }}">
                     {!! Form::label('Office Address :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::textarea('ofc_address', null, ['class' => 'form-control','size'=>'30x2','pattern'=>'/^[a-z\d\-_\s]+$/i']) !!}
+                        {!! Form::textarea('ofc_address', null, ['class' => 'form-control','size'=>'30x2', 'minlength'=>'2', 'maxlength'=>'30', 'pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('address') ? ' has-error' : '' }}">
                     {!! Form::label('Address :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::textarea('address', null, ['class' => 'form-control','size'=>'30x2','pattern'=>'/^[a-z\d\-_\s]+$/i']) !!}
+                        {!! Form::textarea('address', null, ['class' => 'form-control','size'=>'30x2', 'minlength'=>'2', 'maxlength'=>'30', 'pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
                     </div>
                 </div>
             </div>

@@ -79,8 +79,8 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             'dob' => 'required|date|before:' . today_date(),
             'aadhaar' => 'required',
             'mobile' => 'required|min:10|max:10',
-            'ofc_address' => 'required|alpha_dash',
-            'address' => 'required|alpha_dash'
+            'ofc_address' => 'required',
+            'address' => 'required'
         ];
         if ($request->aadhaar != null) {
             if (Verhoeff::validate($request->aadhaar) === false) {

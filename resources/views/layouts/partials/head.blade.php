@@ -62,7 +62,7 @@
 </style>
 <script>
 function lettersOnly() 
-{
+          {
             var charCode = event.keyCode;
              //alert(charCode);
             if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 32)
@@ -70,78 +70,79 @@ function lettersOnly()
                 return true;
             else
                 return false;
-}
-function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
-    }
-    return true;
-}
+          }
+function isNumber(evt) 
+          {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+          }
 
  function isNumberKey(evt)
-       {
-          var charCode = (evt.which) ? evt.which : evt.keyCode;
-          if (charCode != 46 && charCode > 31 
-            && (charCode < 48 || charCode > 57))
-             return false;
+         {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode != 46 && charCode > 31 
+              && (charCode < 48 || charCode > 57))
+               return false;
 
-          return true;
-       }
+            return true;
+         }
 
    
-function onlyNumbersandSpecialChar(evt) {
-    var e = window.event || evt;
-    var charCode = e.which || e.keyCode;
-	
-    if (charCode > 31 && (charCode < 48 || charCode > 57 || charCode > 107 || charCode > 219 || charCode > 221) && charCode != 40 && charCode != 32 && charCode != 41 && (charCode < 43 || charCode > 46)) {
-        if (window.event) //IE
-            window.event.returnValue = false;
-        else //Firefox
-            e.preventDefault();
-    }
-    return true;
+function onlyNumbersandSpecialChar(evt) 
+        {
+            var e = window.event || evt;
+            var charCode = e.which || e.keyCode;
+        	
+            if (charCode > 31 && (charCode < 48 || charCode > 57 || charCode > 107 || charCode > 219 || charCode > 221) && charCode != 40 && charCode != 32 && charCode != 41 && (charCode < 43 || charCode > 46)) {
+                if (window.event) //IE
+                    window.event.returnValue = false;
+                else //Firefox
+                    e.preventDefault();
+            }
+            return true;
 
-   }
+        }
    
 
-
-function onlylettersandSpecialChar() {
-	 var charCode = event.keyCode;
-
+function onlylettersandSpecialChar() 
+          {
+	         var charCode = event.keyCode;
             if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 46 || charCode == 40 || charCode == 41 || charCode == 32)
-
                 return true;
             else
                 return false;
-}
+          }
 
-function isAlphaNumeric(e){ // Alphanumeric only
+function isAlphaNumeric(e)
+          { // Alphanumeric only
             var k;
             document.all ? k=e.keycode : k=e.which;
             return((k>47 && k<58)||(k>64 && k<91)||(k>96 && k<123)||k==0);
-         }
-		 
-		 
-		 function isNumberKey(evt)
-       {
-          var charCode = (evt.which) ? evt.which : evt.keyCode;
-          if (charCode != 46 && charCode > 31 
-            && (charCode < 48 || charCode > 57))
-             return false;
+          }
+		 		 
+function isNumberKey(evt)
+          {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode != 46 && charCode > 31 
+              && (charCode < 48 || charCode > 57))
+               return false;
 
-          return true;
-       }
+            return true;
+          }
 	   
-	   function checkDec(el){
- var ex = /^[0-9]+\.?[0-9]*$/;
- if(ex.test(el.value)==false){
-   el.value = el.value.substring(0,el.value.length - 1);
-  }
-}
+function checkDec(el)
+          {
+           var ex = /^[0-9]+\.?[0-9]*$/;
+           if(ex.test(el.value)==false)
+            {
+              el.value = el.value.substring(0,el.value.length - 1);
+            }
+          }
    
 </script>
 	<!-- end blinkcss 15-01-2018-->
-	
 </head>

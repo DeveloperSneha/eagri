@@ -37,8 +37,12 @@
                                     <span id="Master_lbl_second" class="digital" style="font-size:Small;">App. Schemes</span><br>
                                     <span id="spntransitforms" class="digital f-b">
                                         {{ $app_program = DB::table('schemeappreject')
+                                                    ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                                                    ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                                                    ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
                                                     ->where('idDesignation','=',Session::get('idDesignation'))
-                                                    ->where('status','=','A')
+                                                    ->where('farmers.idDistrict', '=', Session::get('idDistrict'))
+                                                    ->where('schemeappreject.status','=','A')
                                                     ->get()->count()
                                         }}
                                     </span>
@@ -49,8 +53,12 @@
                                     <span id="Master_lbl_third" class="digital" style="font-size:Small;">Rej. Schemes</span><br>
                                     <span id="spnstationery" class="digital f-b">
                                         {{ $rej_program = DB::table('schemeappreject')
+                                                    ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                                                    ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                                                    ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
                                                     ->where('idDesignation','=',Session::get('idDesignation'))
-                                                    ->where('status','=','R')
+                                                    ->where('farmers.idDistrict', '=', Session::get('idDistrict'))
+                                                    ->where('schemeappreject.status','=','R')
                                                     ->get()->count()
                                         }}
                                     </span>
@@ -138,7 +146,7 @@
     <div id="feedback" style="z-index: 100000;" >
         <div id="feedback-form" style='display: none;background-color:white;' class="col-xs-4 col-md-4 p-10">
             <div style='background-color:aqua;'>
-                <div class="w-100 fl p-5 f-b f-14 txt-cnt m-b-20" style="background-color:#9acd32; color:#fff;padding: 8px;">
+                <div class="w-100 fl p-5 f-b f-14 txt-cnt m-b-20" style="background-color:rgba(252,139,28,0.9); color:#fff;padding: 8px;">
                     HELP DESK
                 </div>
 

@@ -115,8 +115,7 @@ use RegistersUsers;
         $rules = [
             'name' => 'required|string|max:25',
             'father_name' => 'required|string|max:25',
-            // 'aadhaar' => 'required|max:12|min:12|unique:farmers',
-            'aadhaar' => 'unique:farmers',
+            'aadhaar' => 'required|max:12|min:12|unique:farmers',
             'check' => 'required|accepted',
             'mobile' => 'required|min:10|max:10|unique:farmers|regex:/^[6789]\d{9}$/',
             'idDistrict' => 'required',
@@ -131,7 +130,7 @@ use RegistersUsers;
             'bank_name' =>'required|string|max:60|min:3',
             'bank_branch' =>'required|max:60|min:3|regex:/^[a-z\d\-_\s]+$/i',
             'account_no' => 'required|unique:farmers',
-            'land_location' => 'required|max:25',
+            'land_location' => 'required|max:30',
             'total_land' => 'required|numeric|min:0'
         ];
         $message = [
@@ -189,8 +188,8 @@ use RegistersUsers;
         $farmer = new \App\Farmer();
         $farmer->fill($request->all());
         $n = substr($request->name, 0, 4);
-        $rn = substr($request->rcno, -4);
         $an = substr($request->aadhaar, -4);
+        $rn = substr($request->rcno, -4);
         $password = ($n . $an . $rn);
         $farmer->password = bcrypt($password);
         if($request->total_land <=2){

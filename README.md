@@ -72,3 +72,18 @@ profile (authority >> block)   (Sneha)
 7.updt_password(authority/districts,blocks,village)
 8.LoginController(redirection Issue)
 9.SchemeAprRejectController(Authority/District,Subdivision,Block,Village)(Pooja)
+
+
+#02-02-2018
+1. registration.blade
+2. farmerRegisterController
+3. District profileController
+4. Block PrrofieController
+5. subdivision PrrofieController
+6. village PrrofieController(Sneha)
+7.district_layouts.blade.php
+8.subdivision_layouts.blade.php
+9.block_layouts.blade.php
+10.FarmerController
+11.authinfo.php(Pooja)
+12.Version ON LOgin Pages(Pankaj)
