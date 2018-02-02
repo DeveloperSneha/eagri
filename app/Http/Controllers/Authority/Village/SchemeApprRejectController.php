@@ -64,6 +64,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        //dd($request->all());
         $rules = [
             'remarks' => 'required',
             'haveChecked' => 'required'
