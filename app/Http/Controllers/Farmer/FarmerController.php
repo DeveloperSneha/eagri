@@ -42,6 +42,29 @@ class FarmerController extends Controller {
         return view('farmer.profile', compact('farmer'));
     }
 
+    public function updateMobile() {
+        $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
+        return view('farmer.updtmobile', compact('farmer'));
+    }
+
+    public function mobile(Request $request){
+        dd('here');
+        $rules = [
+            'mobile' => 'required|min:10|max:10|unique:farmers|regex:/^[6789]\d{9}$/',
+        ];
+        $message = [
+            'mobile.required' => 'Mobile Number Must Not be Empty.',
+            'mobile.unique' => 'Mobile Number  is Already Taken',
+            'mobile.regex' => 'Mobile Number is Not Valid',
+            'mobile.min' => 'Mobile Number Must Have Atleast 10 digits',
+        ];
+//        $this->Validate($request, $rules, $message);
+//        $mob = new \App\Farmer();
+//        $mob->idFarmer = Auth::user()->idFarmer;
+//        $mob->fill($request->all());
+//        return redirect('/farmer/profile')->with('message', 'YOUR REQUEST HAS BEEN SENT TO YOUR AUTHORITIES!');
+    }
+
     public function getAuthinfo() {
         $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
         $sections = \App\Section::all();

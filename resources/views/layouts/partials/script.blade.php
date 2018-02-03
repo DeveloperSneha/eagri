@@ -42,6 +42,9 @@
 <!-- datepicker -->
 <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js ')}}"></script>
 
+<!--google-chart-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js ')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

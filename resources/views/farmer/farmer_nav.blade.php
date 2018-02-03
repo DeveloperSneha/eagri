@@ -79,7 +79,7 @@
                         </li>
                     </ul>
                 </li>
-             </ul>
+            </ul>
         </div>
     </nav>
 </header>
@@ -113,30 +113,30 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="{{ checkActive(['farmer'])}}">
                 <a href="{{ url('/farmer')}}">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li class="{{ checkActive(['farmer/profile'])}}">
                 <a href="{{ url('/farmer/profile')}}">
-                    <i class="fa fa-address-card"></i> <span>Profile</span>
+                    <span>Profile</span>
                 </a>
             </li>
-			
-			<li class="{{ checkActive(['farmer/avaschemes'])}}">
+
+            <li class="{{ checkActive(['farmer/avaschemes'])}}">
                 <a href="{{ url('/farmer/avaschemes')}}">
-                     <i class="fa fa-trophy"></i> <span>Schemes</span>
+                    <span>Schemes</span>
                 </a>
             </li>
             @if(count($farmer->schemes)>0)
-            <li class="{{ checkActive(['farmer/schemes'])}}">
+            <li class="{{ checkActive(['farmer/schemes','farmer/prostatus/*'])}}">
                 <a href="{{ url('/farmer/schemes')}}">
-                    <i class="fa fa-cog"></i> <span>Applied Schemes</span>
+                    <span>Applied Schemes</span>
                 </a>
             </li>
             @endif
             <li class="{{ checkActive(['farmer/authinfo'])}}">
                 <a href="{{ url('/farmer/authinfo')}}">
-                    <i class="fa fa-print"></i> <span>Authorities Information</span>
+                    <span>Authorities Information</span>
                 </a>
             </li>
         </ul>

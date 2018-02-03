@@ -15,19 +15,19 @@
             <!--New-->
             <tbody>
                 @foreach($schemes as $var) 
-               <tr>
-                   <td><strong>{{ $var->programName}} : </strong>{{ $var->schemeName}}</td>
+                <tr>
+                    <td><strong>{{ $var->programName}} : </strong>{{ $var->schemeName}}</td>
                     @if($farmer->schemes->contains('idProgram', $var->idProgram))
                     <td><a href="#" class="btn btn-alert disabled">Already Applied</a></td>
-                     @else
+                    @else
                     <td><a href="{{url('/farmer/program/'.$var->idProgram.'/apply')}}" class="btn btn-danger">Apply Scheme</a></td>
                     @endif
                 </tr>
                 @endforeach
             </tbody>
             <!--Old-->
-            
-            
+
+
         </table>
     </div>
 </div>

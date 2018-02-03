@@ -1,5 +1,6 @@
 @extends('farmer.farmer_layout')
 @section('content')
+<a href="{{url('/farmer/updtmobile')}}" class="btn btn-success" style="margin-bottom: 20px;"> Update Mobile Number </a>
  <div class="panel panel-default">
             <div class="panel-heading">Farmer Details</div>
             <div class="panel-body">

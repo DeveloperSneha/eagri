@@ -89,6 +89,7 @@ class FarmerSchemeController extends FarmerController {
     public function farmerSchemes() {
         $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
         $fschemes = \App\FarmerAppliedScheme::where('idFarmer', '=', Auth::user()->idFarmer)->get();
+        // dd($fschemes);
         return view('farmer.schemes.applied_schemes', compact('fschemes', 'farmer'));
     }
 
@@ -97,7 +98,7 @@ class FarmerSchemeController extends FarmerController {
      *
      */
     public function printDetails($id) {
-        $fscheme = \App\FarmerAppliedScheme::where('idScheme', '=', $id)->first();
+        $fscheme = \App\FarmerAppliedScheme::where('idProgram', '=', $id)->first();
         return view('farmer.schemes.print_detail', compact('fscheme'));
     }
 
@@ -106,9 +107,21 @@ class FarmerSchemeController extends FarmerController {
      *
      */
     public function downloadPDF($id) {
-        $fscheme = \App\FarmerAppliedScheme::where('idScheme', '=', $id)->first();
+        $fscheme = \App\FarmerAppliedScheme::where('idProgram', '=', $id)->first();
         $pdf = PDF::loadView('farmer.schemes.pdf', compact('fscheme'));
         return $pdf->stream('invoice.pdf');
+    }
+
+    public function getAppliedProgramStatus($id) {
+        $farmer = \App\Farmer::where('idFarmer', '=', Auth::user()->idFarmer)->first();
+        $fscheme = \App\FarmerAppliedScheme::where('idProgram', '=', $id)->first();
+        $sch_section = DB::table('scheme')
+                ->join('section', 'scheme.idSection', '=', 'section.idSection')
+                ->where('idScheme', '=', $fscheme->idScheme)
+                ->first();
+        $auth_desig = \App\Designation::where('idSection', '=', $sch_section->idSection)
+                        ->orderBy('level','desc')->get();
+        return view('farmer.schemes.appliedprogram_status', compact('farmer', 'fscheme', 'auth_desig'));
     }
 
 }

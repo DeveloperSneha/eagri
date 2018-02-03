@@ -118,6 +118,8 @@ Route::prefix('farmer')->group(function() {
     Route::get('/', 'Farmer\FarmerController@index')->name('farmer.dashboard');
     Route::get('/profile', 'Farmer\FarmerController@getProfile');
     Route::get('/authinfo', 'Farmer\FarmerController@getAuthinfo');
+    Route::post('/updtmobile', 'Farmer\FarmerController@mobile');
+    Route::get('/updtmobile', 'Farmer\FarmerController@updateMobile');
     Route::get('/avaschemes', 'Farmer\FarmerController@getAvaschemes');
 
     Route::get('district/{id}/subdivisions', 'Auth\FarmerRegisterController@getSubdivisions');
@@ -132,6 +134,7 @@ Route::prefix('farmer')->group(function() {
     Route::get('/schemes', 'Farmer\FarmerSchemeController@farmerSchemes');
     Route::get('/downloadPDF/{id}', 'Farmer\FarmerSchemeController@downloadPDF');
     Route::get('/printdetails/{id}', 'Farmer\FarmerSchemeController@printDetails');
+    Route::get('prostatus/{idProgram}','Farmer\FarmerSchemeController@getAppliedProgramStatus');
 });
 
 
@@ -179,6 +182,7 @@ Route::prefix('authority')->group(function() {
         Route::get('/farmer-reg', 'Authority\District\RegFarmerController@registeredFarmer');
 
         //Scheme(Program) Approval Or Rejection By District User
+        Route::get('/viewstatus','Authority\District\SchemeApprRejectController@viewStatusAnalytics');
         Route::get('/apvrscheme', 'Authority\District\SchemeApprRejectController@approvedScheme');
         Route::get('/rejectschemes', 'Authority\District\SchemeApprRejectController@rejectedScheme');
         Route::get('aprvrejectscheme/{idAppliedProgram}/view', 'Authority\District\SchemeApprRejectController@viewAppliedScheme');

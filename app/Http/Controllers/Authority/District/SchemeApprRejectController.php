@@ -177,4 +177,23 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
         return view('authority.districts.rejected_scheme', compact('schemes'));
     }
 
+    public function viewStatusAnalytics() {
+        $asch = DB::table('schemeappreject')
+                        ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                        ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
+                        ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
+                        ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                        ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                        ->where('idDesignation', '=', Session::get('idDesignation'))
+                        ->where('farmers.idDistrict', '=', Session::get('idDistrict'))
+                        ->selectRaw('count(schemeappreject.status) as count,schemeappreject.status')
+                        ->groupBy('status')->get();
+        
+        $user = array();
+        foreach ($asch as $result) {
+            $user[$result->status] = (int) $result->count;
+        }
+        return view('authority.districts.status_analytics', compact('user'));
+    }
+
 }

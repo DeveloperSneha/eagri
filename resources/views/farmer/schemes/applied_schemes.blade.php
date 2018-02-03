@@ -15,10 +15,11 @@
             <tbody>
                 @foreach($fschemes as $var)
                 <tr>
-                    <td>{{ $var->scheme->schemeName }}</td>
+                    <td><strong>{{ $var->program->programName}} : </strong>{{ $var->scheme->schemeName}}</td>
                     <td>
-                        <a href="{{action('Farmer\FarmerSchemeController@printDetails', $var->scheme)}}" class="btn btn-sm btn-danger">Print</a>
-                        <a href="{{action('Farmer\FarmerSchemeController@downloadPDF', $var->scheme)}}" class="btn btn-sm btn-danger">Download PDF</a>
+                        <a href="{{url('/farmer/prostatus/'.$var->idProgram)}}" class="btn btn-xs btn-primary">View Status</a>
+                        <a href="{{action('Farmer\FarmerSchemeController@printDetails', $var->program)}}" class="btn btn-xs btn-danger" target="_blank">Print</a>
+                        <a href="{{action('Farmer\FarmerSchemeController@downloadPDF', $var->program)}}" class="btn btn-xs btn-danger" target="_blank">Download PDF</a>
                     </td>
                 </tr>
                 @endforeach
