@@ -77,7 +77,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             'fatherName' => 'required',
             'motherName' => 'required',
             'dob' => 'required|date|before:' . today_date(),
-            'aadhaar' => 'required',
+            'aadhaar' => 'required|unique:users|min:12|max:12|',
             'mobile' => 'required|min:10|max:10',
             'ofc_address' => 'required',
             'address' => 'required'

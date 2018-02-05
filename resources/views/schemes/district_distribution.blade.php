@@ -106,6 +106,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Section Name</th>
                     <th>Scheme</th>
                     <th>Program</th>
                     <th>Districts</th>
@@ -118,6 +119,7 @@
                 @foreach($schdistrict as $var)
                 <tr>
                     <td>{{ $var->idSchemDistributionDistrict }}</td>
+                    <td>{{ $var->schactivation->scheme->section->sectionName}}</td>
                     <td>{{ $var->schactivation->scheme->schemeName}}</td>
                     <td>{{ $var->schactivation->program->programName}}</td>
                     <td>{{ $var->district->districtName }}</td>

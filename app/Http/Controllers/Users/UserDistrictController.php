@@ -28,7 +28,7 @@ class UserDistrictController extends Controller {
                 ->groupBy('idUser')
                 ->get();
         // dd($user_list);
-        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $users = ['Select User'] + \App\User::where('idUser', '>', 1)->pluck('userName', 'idUser')->toArray();
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         return view('users.user_district', compact('users', 'sections', 'districts', 'user_list'));
@@ -40,7 +40,7 @@ class UserDistrictController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 1)->pluck('userName', 'idUser')->toArray();
         $districts = \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         return view('users.existing_userdistrict', compact('users', 'sections', 'districts', 'user_list'));

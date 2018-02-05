@@ -59,7 +59,7 @@ class BlockUserController extends \App\Http\Controllers\Authority\AuthorityContr
      */
     public function create() {
         $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
-        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 1)->pluck('userName', 'idUser')->toArray();
         $user_district = $user->userdesig()
                         ->with('district')
                         ->where('idDistrict', '=', Session::get('idDistrict'))

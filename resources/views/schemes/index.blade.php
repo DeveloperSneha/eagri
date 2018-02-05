@@ -24,7 +24,7 @@
         <div class="form-group">
             {!! Form::label('Scheme Name', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                {!! Form::text('schemeName', null, ['class' => 'form-control','placeholder'=>'Enter Scheme Name','maxlength'=>'50','minlength'=>'2','onkeypress'=>'onlylettersandSpecialChar']) !!}
+                {!! Form::text('schemeName', null, ['class' => 'form-control','placeholder'=>'Enter Scheme Name','maxlength'=>'90','minlength'=>'2','onkeypress'=>'onlylettersandSpecialChar']) !!}
             </div>
             <span class="help-block">
                     <strong>

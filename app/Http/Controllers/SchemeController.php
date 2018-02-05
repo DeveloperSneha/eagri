@@ -39,7 +39,7 @@ class SchemeController extends Controller {
         //  dd($request->all());
         $rules = [
             'idSection' => 'required',
-            'schemeName' => 'required|unique:scheme|regex:/^[\pL\s\-()]+$/u|between:2,50',
+            'schemeName' => 'required|unique:scheme|regex:/^[\pL\s\-()]+$/u|between:2,90',
             'remarks' => 'required|regex:/^[0-9a-zA-Z-()]+/'
         ];
         $messages = [

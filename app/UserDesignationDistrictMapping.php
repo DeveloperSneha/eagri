@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserDesignationDistrictMapping extends Model {
 
-    public $timestamps = false;
+  //  public $timestamps = false;
     protected $primaryKey = 'iddesgignationdistrictmapping';
     protected $table = 'user_designation_district_mapping';
     protected $fillable = ['idUser', 'idDesignation','idSubdivision', 'idDistrict', 'idBlock', 'idVillage'];

@@ -78,10 +78,12 @@ use Traits\CaptchaTrait;
         $request['captcha'] = $this->captchaCheck();
         $this->validate($request, [
             $this->username() => 'required|string',
-            //  'g-recaptcha-response' => 'required',
-            // 'captcha'               => 'required|min:1',
+             'g-recaptcha-response' => 'required',
+            'captcha'               => 'required|min:1',
             'password' => 'required|string',
                 ], [
+            'aadhaar.required'=>'Username must not be Empty',
+            'password.required'=>'Password must not be Empty',
             'g-recaptcha-response.required' => 'Captcha authentication is required.',
             'captcha.min' => 'Wrong captcha, please try again.'
         ]);

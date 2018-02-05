@@ -49,12 +49,16 @@
                                 </span>
                                 @endif
                             </div>
-                            <center><div class="g-recaptcha" data-sitekey="6LebkD4UAAAAAExBzYddN9Lh3HIfQUiIz-LRyFCS"></div></center>
-                            @if ($errors->has('g-recaptcha-response'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                            </span>
-                            @endif
+                            <center>
+                                <div class="g-recaptcha" data-sitekey="6LebkD4UAAAAAExBzYddN9Lh3HIfQUiIz-LRyFCS">
+                                </div>
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                                    @endif
+                            </center><br>
+                            
                             <div class="form-group">
                                 <div class="">
                                     <button type="submit" style="background-color:rgba(252,139,28,0.9);color:#fff;border-color:#fff;" onclick="encrypt();" class="btn btn-block btn-primary" name="btn-login">Login / लॉगिन</button>
@@ -67,20 +71,15 @@
                             <p></p>-->
 <!--                            <p style="border-bottom:1px solid #dbdbdb;"></p>
                             <center>Powered by <a style="color:maroon;" href="http://hkcl.in" target="_blank">HKCL</a></center>-->
-                            <div class="form-group ">
-                                <!--                                <a class="btn btn-link" href="#">
-                                                                    Forgot Your Password?
-                                                                </a>-->
-                            </div>
+                            
                         </form>
                     </div>
                 </div><br><br>
-                <!-- <div class="main-footer">
-                <div >
-                <b>Version</b> 1.02.01.01
+                <br><br>
+                <div class="pull-right hidden-xs">
+                    <label style="color:#ffffff;font-size:10px; letter-spacing: 1px;"><b>Version</b> 1.02.01.01</label>
                 </div>
-            </div> -->
-
+                
                 <!-- /.login-box-body -->
             </div>
         </div>

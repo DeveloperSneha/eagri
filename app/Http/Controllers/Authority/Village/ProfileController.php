@@ -78,7 +78,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
             'fatherName' => 'required',
             'motherName' => 'required',
             'dob' => 'required|date|before:' . today_date(),
-            'aadhaar' => 'required|min:12|max:12',
+            'aadhaar' => 'required|min:12|max:12|unique:users',
             'mobile' => 'required|min:10|max:10',
             'ofc_address' => 'required',
             'address' => 'required'
@@ -100,7 +100,7 @@ class ProfileController extends \App\Http\Controllers\Authority\AuthorityControl
         $profile->fill($request->all());
         $profile->isComplete = 'Y';
         $profile->update();
-        return redirect('authority/blocks/profile');
+        return redirect('authority/villages/profile');
     }
 
     /**

@@ -13,7 +13,7 @@
     }
 </style>
 @foreach($sections as $var)
-<div class="col-lg-4">
+<div class="col-xs-4">
     <!-- small box -->
     <a href="{{url('/farmer/section/'.$var->idSection.'/schemes')}}">
         <div class="small-box bg-gray">

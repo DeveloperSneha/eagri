@@ -286,6 +286,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Section Name</th>
                     <th>Scheme Name</th>
                     <th>Program Name</th>
                     <th>Financial Year</th>
@@ -302,6 +303,7 @@
                 @foreach($schact as $var)
                 <tr>
                     <td>{{ $var->idSchemeActivation }}</td>
+                    <td>{{ $var->scheme->section->sectionName}}</td>
                     <td>{{ $var->scheme->schemeName}}</td>
                     <td>{{ $var->program->programName}}</td>
                     <td>{{ $var->fy->financialYearName}}</td>

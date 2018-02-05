@@ -28,7 +28,7 @@
                         @endif
                     @endforeach
                 @else
-                <span>No Scheme Is Available For You </span>
+                <span> No Scheme Is Available For You </span>
                 @endif
             </div>
         </div>

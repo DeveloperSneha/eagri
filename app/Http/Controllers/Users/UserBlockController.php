@@ -27,7 +27,7 @@ class UserBlockController extends Controller {
                 ->groupBy('idUser')
                 ->get();
         //dd($user_list);
-        $users = ['Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $users = ['Select User'] + \App\User::where('idUser', '>', 1)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         return view('users.user_block', compact('users', 'sections', 'districts', 'user_list'));
@@ -39,7 +39,7 @@ class UserBlockController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 2)->pluck('userName', 'idUser')->toArray();
+        $users = ['' => 'Select User'] + \App\User::where('idUser', '>', 1)->pluck('userName', 'idUser')->toArray();
         $districts = ['' => 'Select District'] + \App\District::pluck('districtName', 'idDistrict')->toArray();
         $sections = ['' => 'Select Section'] + \App\Section::pluck('sectionName', 'idSection')->toArray();
         return view('users.existing_userblock', compact('users', 'sections', 'districts', 'user_list'));

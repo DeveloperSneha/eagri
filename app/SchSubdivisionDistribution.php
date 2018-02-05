@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SchSubdivisionDistribution extends Model
 {
-    public $timestamps = false;
+  //  public $timestamps = false;
     protected $primaryKey = 'idSchemDistributionSubdivision';
     protected $table = 'schemedistributionsubdivision';
     protected $fillable = ['idSchemDistributionSubdivision', 'idSchemeActivation', 'schemeDistributionDistrict','idSubdivision', 'amountSubdivision', 'areaSubdivision'];

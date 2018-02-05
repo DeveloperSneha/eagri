@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SchemeApproveReject extends Model {
 
     //
-    public $timestamps = false;
+   // public $timestamps = false;
     protected $primaryKey = 'idSchemeappreject';
     protected $table = 'schemeappreject';
     protected $fillable = ['idAppliedScheme', 'idDesignation', 'idWorkflow', 'status', 'haveChecked','remarks'];

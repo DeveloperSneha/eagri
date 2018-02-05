@@ -23,8 +23,8 @@
                                     @foreach($user_blockdesig as $var)
                                     <tr>
                                         <td>{{$var->designation->section->sectionName }}</td>
-                                        <td>{{$var->subdivision->subDivisionName }}</td>
                                         <td>{{$var->district->districtName }}</td>
+                                        <td>{{$var->subdivision->subDivisionName }}</td>
                                         <td>{{$var->block->blockName }}</td>
                                         <td>{{$var->designation->designationName }}</td>
                                     </tr>
@@ -92,13 +92,13 @@
                 <div class="form-group {{ $errors->has('ofc_address') ? ' has-error' : '' }}">
                     {!! Form::label('Office Address :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::textarea('ofc_address', null, ['class' => 'form-control','size'=>'30x2', 'minlength'=>'2', 'maxlength'=>'30', 'pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
+                        {!! Form::textarea('ofc_address', null, ['class' => 'form-control','size'=>'30x2', 'minlength'=>'2', 'maxlength'=>'90', 'pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('address') ? ' has-error' : '' }}">
                     {!! Form::label('Address :', null, ['class' => 'col-sm-4 control-label']) !!}
                     <div class="col-sm-6">
-                        {!! Form::textarea('address', null, ['class' => 'form-control','size'=>'30x2', 'minlength'=>'2', 'maxlength'=>'30', 'pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
+                        {!! Form::textarea('address', null, ['class' => 'form-control','size'=>'30x2', 'minlength'=>'2', 'maxlength'=>'90', 'pattern'=>'^[a-zA-Z0-9 !@#$%^&*)(]{2,30}$']) !!}
                     </div>
                 </div>
             </div>

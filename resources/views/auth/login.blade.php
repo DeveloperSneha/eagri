@@ -69,6 +69,10 @@
                         </form>
                     </div>
                 </div>
+                <br><br>
+                <div class="pull-right hidden-xs">
+                    <label style="color:#ffffff;font-size:10px; letter-spacing: 1px;"><b>Version</b> 1.02.01.01</label>
+                </div>
                 <!-- /.login-box-body -->
             </div>
         </div>

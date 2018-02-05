@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Session;
 use DB;
+use Carbon\Carbon;
 
 class SchemeApprRejectController extends \App\Http\Controllers\Authority\AuthorityController {
 
@@ -21,13 +22,23 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                         ->pluck('idSection')->first();
         $user_level = \App\Designation::where('idDesignation', '=', Session::get('idDesignation'))
                         ->pluck('level')->first();
+        //  dd($user_level);
         $designations = \App\Designation::where('idSection', '=', $user_section)
                         ->where('level', '>', $user_level)
                         ->get()
                         ->pluck('idDesignation')->toArray();
         $schapr = \App\SchemeApproveReject::where('idDesignation', '=', Session::get('idDesignation'))
                         ->get()->pluck('idAppliedScheme')->toArray();
-        if (count($designations)>0) {
+        if (count($designations) > 0) {
+
+            $sch_with_noresponse = [];
+            $sch_with_no = DB::table('farmerapplied_scheme')
+                    ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                    ->whereRaw('DATEDIFF(now(),farmerapplied_scheme.created_at) > 7')
+                    ->where('farmers.idBlock', '=', Session::get('idBlock'))
+                    ->get();
+            dd($sch_with_no);
+            
             $schemes = DB::table('schemeappreject')
                     ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
                     ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
@@ -39,17 +50,17 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                     ->whereIn('idDesignation', $designations)
                     ->whereNotIn('farmerapplied_scheme.idAppliedScheme', $schapr)
                     ->get();
-        }else{
+        } else {
             $schemes = DB::table('farmerapplied_scheme')
-                ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
-                ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
-                ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
-                ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
-                ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
-                ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
-                ->whereIn('farmers.idBlock', Session::get('idBlock'))
-                ->select('name', 'farmers.idFarmer', 'schemeName', 'programName', 'villageName', 'blockName', 'scheme.idScheme', 'idAppliedScheme')
-                ->get();
+                    ->join('scheme', 'farmerapplied_scheme.idScheme', '=', 'scheme.idScheme')
+                    ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
+                    ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                    ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                    ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
+                    ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
+                    ->where('farmers.idBlock', '=', Session::get('idBlock'))
+                    ->select('name', 'farmers.idFarmer', 'schemeName', 'programName', 'villageName', 'blockName', 'scheme.idScheme', 'idAppliedScheme')
+                    ->get();
         }
         return view('authority.blocks.scheme_for_approval', compact('schemes'));
     }
