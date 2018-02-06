@@ -8,10 +8,12 @@
                 <tr>
                     <th>S.No.</th>
                     <th>Farmer Name</th>
-                    <th>Scheme Name</th>
-                    <th>District Name</th>
-                    <th>Block Name</th>
-                    <th>Village Name</th>
+                    <th>Scheme</th>
+                    <th>Program</th>
+                    <th>District</th>
+                    <th>Subdivision</th>
+                    <th>Block</th>
+                    <th>Village</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,9 +23,11 @@
                     <td>{{ $i}}</td>
                     <td>{{$var->name }}</td>
                     <td>{{$var->schemeName }}</td>
-                    <td>{{$var->districtName }}</td>
-                    <td>{{$var->blockName }}</td>
-                    <td>{{$var->villageName }}</td>
+                    <td>{{$var->programName}}</td>
+                    <td>{{$var->districtName}}</td>
+                    <td>{{$var->subDivisionName}}</td>
+                    <td>{{$var->blockName}}</td>
+                    <td>{{$var->villageName}}</td>
                 </tr>
                 <?php $i++; ?>
                 @endforeach

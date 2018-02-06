@@ -12,8 +12,9 @@
         100% {color:blue}
     }
 </style>
+<div class="row">
 @foreach($sections as $var)
-<div class="col-xs-4">
+<div class="col-sm-4">
     <!-- small box -->
     <a href="{{url('/farmer/section/'.$var->idSection.'/schemes')}}">
         <div class="small-box bg-gray">
@@ -39,6 +40,8 @@
     </a>
 </div>
 @endforeach
+</div>
+
 <div class="row">
     <div class="col-md-12 marquee_text">
         <div class="panel panel-default">

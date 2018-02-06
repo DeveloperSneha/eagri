@@ -45,7 +45,11 @@
                             HELP DESK
                         </div>
 
-                        <div class="w-100 fl f-b p-5 m-l-10 f-12" style="margin: 10px 10px;">hkcl.co.in</div>
+                        <div class="w-100 fl f-b p-5 m-l-10 f-12" style="margin: 10px 10px; color: #000">
+                            If You Want To update Any Information Like Mobile,Address Please 
+                            Contact Your Corresponding Authority at Your Village, Block Or District Level.
+                            ( Checkout Information Under Authority Information Tab.)  
+                        </div>
                     </div>
                 </div>
                 <div id="feedback-tab">Helpdesk</div>

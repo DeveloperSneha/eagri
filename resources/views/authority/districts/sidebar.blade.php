@@ -56,11 +56,11 @@
                     <li class=""><a href="#">Blacklisted Farmer</a></li>
                 </ul>
             </li>
-            <li class="{{ checkActive(['authority/districts/viewstatus']) }}">
+<!--            <li class="{{ checkActive(['authority/districts/viewstatus']) }}">
                     <a href="{{ url('/authority/districts/viewstatus')}}">
                         <span>Status Analytics</span>
                     </a>
-            </li>
+            </li>-->
         </ul>
     </section>
     <!-- /.sidebar -->

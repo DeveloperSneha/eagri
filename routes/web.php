@@ -185,7 +185,8 @@ Route::prefix('authority')->group(function() {
         Route::get('/viewstatus','Authority\District\SchemeApprRejectController@viewStatusAnalytics');
         Route::get('/apvrscheme', 'Authority\District\SchemeApprRejectController@approvedScheme');
         Route::get('/rejectschemes', 'Authority\District\SchemeApprRejectController@rejectedScheme');
-        Route::get('aprvrejectscheme/{idAppliedProgram}/view', 'Authority\District\SchemeApprRejectController@viewAppliedScheme');
+        Route::get('aprvrejectscheme/{idSchaprreject}/viewscheme', 'Authority\District\SchemeApprRejectController@viewAprRejScheme');
+        Route::get('aprvrejectscheme/{idAppliedProgram}/view', 'Authority\District\SchemeApprRejectController@viewFarmerAppliedScheme');
         Route::resource('/aprvrejectscheme', 'Authority\District\SchemeApprRejectController');
     });
 
@@ -208,7 +209,8 @@ Route::prefix('authority')->group(function() {
         //Scheme(Program) Approval Or Rejection By Subdivisionlevel User
         Route::get('/apvscheme', 'Authority\Subdivision\SchemeApprRejectController@approvedScheme');
         Route::get('/rjctscheme', 'Authority\Subdivision\SchemeApprRejectController@rejectedScheme');
-        Route::get('apprejectscheme/{idAppliedProgram}/view', 'Authority\Subdivision\SchemeApprRejectController@viewAppliedScheme');
+        Route::get('apprejectscheme/{idSchaprreject}/viewscheme', 'Authority\Subdivision\SchemeApprRejectController@viewAprRejScheme');
+        Route::get('apprejectscheme/{idAppliedProgram}/view', 'Authority\Subdivision\SchemeApprRejectController@viewFarmerAppliedScheme');
         Route::resource('/apprejectscheme', 'Authority\Subdivision\SchemeApprRejectController');
     });
 
@@ -223,7 +225,8 @@ Route::prefix('authority')->group(function() {
         //Scheme(Program) Approval Or Rejection By Blocklevel User
         Route::get('/aprscheme', 'Authority\Block\SchemeApprRejectController@approvedScheme');
         Route::get('/rjscheme', 'Authority\Block\SchemeApprRejectController@rejectedScheme');
-        Route::get('approvescheme/{idAppliedProgram}/view', 'Authority\Block\SchemeApprRejectController@viewAppliedScheme');
+        Route::get('approvescheme/{idSchaprreject}/viewscheme', 'Authority\Block\SchemeApprRejectController@viewAprRejScheme');
+        Route::get('approvescheme/{idAppliedProgram}/view', 'Authority\Block\SchemeApprRejectController@viewFarmerAppliedScheme');
         Route::resource('/approvescheme', 'Authority\Block\SchemeApprRejectController');
         //Faremer  Rejection By Blocklevel User
         Route::get('/reg-farmer', 'Authority\Block\RegFarmerController@registeredFarmer');

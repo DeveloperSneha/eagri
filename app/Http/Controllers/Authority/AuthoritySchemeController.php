@@ -125,10 +125,11 @@ class AuthoritySchemeController extends AuthorityController {
                 ->join('farmers','farmerapplied_scheme.idFarmer','=','farmers.idFarmer')
                 ->join('village','farmers.idVillage','=','village.idVillage')
                 ->join('district','farmers.idDistrict','=','district.idDistrict')
+                // ->join('subdivision','farmers.idSubdivision','=','subdivision.idSubdivision')
                 ->join('block','farmers.idBlock','=','block.idBlock')
                 ->where('farmers.idDistrict','=',$authority_dist)
                 ->where('schemeappreject.status','=','A')
-                ->select('farmers.name','village.villageName','scheme.schemeName','block.blockName','district.districtName')
+                ->select('farmers.name','village.villageName','subdivision.subDivisionName','scheme.schemeName','block.blockName','district.districtName')
                 ->get();
 
 //        dd($schemes);

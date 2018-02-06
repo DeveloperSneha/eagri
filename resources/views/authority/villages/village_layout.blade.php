@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
     @include('layouts.partials.head')
+ <?php   $user = \App\User::where('idUser', '=', Auth::guard('authority')->User()->idUser)->first();
+        $user_village = $user->userdesig()
+                        ->where('idDesignation', '=', Session::get('idDesignation'))
+                        ->where('idDistrict', '=', Session::get('idDistrict'))
+                        ->where('idSubdivision', '=', Session::get('idSubdivision'))
+                        ->where('idBlock', '=', Session::get('idBlock'))
+                        ->whereNotNull('idVillage')
+                        ->get()->pluck('idVillage')->toArray(); ?>
     <body class="hold-transition skin-green-light sidebar-mini">
         <div class="wrapper">
             <header class="main-header navbar navbar-fixed-top head-top">
                 <!-- Logo -->
-                <a href="{{ url('/authority')}}" class="logo">
+                <a href="{{ url('/authority/villages')}}" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>Agri</b></span>
                     <!-- logo for regular state and mobile devices -->
@@ -37,8 +45,11 @@
                                     <span id="Master_lbl_second" class="digital" style="font-size:Small;">App. Schemes</span><br>
                                     <span id="spntransitforms" class="digital f-b">
                                         {{ $app_program = DB::table('schemeappreject')
+                                                    ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                                                    ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                                                    ->whereIn('farmers.idVillage', $user_village)
                                                     ->where('idDesignation','=',Session::get('idDesignation'))
-                                                    ->where('status','=','A')
+                                                    ->where('schemeappreject.status','=','A')
                                                     ->get()->count()
                                         }}
                                     </span>
@@ -49,8 +60,11 @@
                                     <span id="Master_lbl_third" class="digital" style="font-size:Small;">Rej. Schemes</span><br>
                                     <span id="spnstationery" class="digital f-b">
                                         {{ $rej_program = DB::table('schemeappreject')
+                                                    ->join('farmerapplied_scheme', 'schemeappreject.idAppliedScheme', '=', 'farmerapplied_scheme.idAppliedScheme')
+                                                    ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
+                                                    ->whereIn('farmers.idVillage', $user_village)
                                                     ->where('idDesignation','=',Session::get('idDesignation'))
-                                                    ->where('status','=','R')
+                                                    ->where('schemeappreject.status','=','R')
                                                     ->get()->count()
                                         }}
                                     </span>

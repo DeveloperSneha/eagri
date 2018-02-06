@@ -10,9 +10,10 @@
                     <th>Farmer Name</th>
                     <th>Scheme Name</th>
                     <th>Program Name</th>
-                    <th>District Name</th>
-                    <th>Block Name</th>
-                    <th>Village Name</th>
+                    <th>District</th>
+                    <th>Subdivision</th>
+                    <th>Block</th>
+                    <th>Village</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                     <td>{{$var->schemeName }}</td>
                     <td>{{$var->programName }}</td>
                     <td>{{$var->districtName}}</td>
+                    <td>{{$var->subDivisionName}}</td>
                     <td>{{$var->blockName}}</td>
                     <td>{{$var->villageName}}</td>
                 </tr>

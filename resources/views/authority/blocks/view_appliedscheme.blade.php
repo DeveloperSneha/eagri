@@ -4,6 +4,7 @@
     <div class="panel-heading"><strong>Schemes for Approval</strong></div>
     <div class="panel-body">
         {!! Form::open(['url' => 'authority/blocks/approvescheme','class'=>'form-horizontal']) !!}
+        @if(isset($app_reject_scheme))
         <input type="hidden" name="idAppliedScheme" value="{{$app_reject_scheme->idAppliedScheme}}">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-1">
@@ -28,6 +29,26 @@
                 <p class="form-control-static">{{ $app_reject_scheme->remarks }}</p>
             </div>
         </div>
+        @else
+        <input type="hidden" name="idAppliedScheme" value="{{$farmer_scheme->idAppliedScheme}}">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <p class="form-control-static"><strong>Farmer Name : </strong>{{ $farmer_scheme->farmer->name }}</p>
+                <p class="form-control-static"><strong>Father Name : </strong>{{ $farmer_scheme->farmer->father_name }}</p>
+                <p class="form-control-static"><strong>Village : </strong>{{ $farmer_scheme->farmer->village->villageName }}</p>
+                <p class="form-control-static"><strong>Block : </strong>{{ $farmer_scheme->farmer->block->blockName }}</p>
+                <p class="form-control-static"><strong>District : </strong>{{ $farmer_scheme->farmer->district->districtName }}</p>
+                <p class="form-control-static"><strong>Maximum Benefit of The Scheme : </strong></p>
+            </div>
+            <div class="col-sm-6">
+                <p class="form-control-static"><strong>Scheme Applied : </strong>{{ $farmer_scheme->scheme->schemeName }}</p>
+                <p class="form-control-static"><strong>Program Applied : </strong>{{ $farmer_scheme->program->programName }}</p>
+                <p class="form-control-static"><strong>Land Information : </strong>{{ $farmer_scheme->farmer->total_land }}</p>
+                <p class="form-control-static"><strong>Contact No.: </strong>{{ $farmer_scheme->farmer->mobile }}</p>
+                <p class="form-control-static"><strong>Area/Number Applied: </strong>{{ $farmer_scheme->areaApplied }}</p>
+            </div>
+        </div>
+        @endif
         <div class="form-group">
             {!! Form::label('Remarks', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-6">

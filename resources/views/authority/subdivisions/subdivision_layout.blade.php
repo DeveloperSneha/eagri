@@ -5,7 +5,7 @@
         <div class="wrapper">
             <header class="main-header navbar navbar-fixed-top head-top">
                 <!-- Logo -->
-                <a href="{{ url('/authority')}}" class="logo">
+                <a href="{{ url('/authority/districts')}}" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>Agri</b></span>
                     <!-- logo for regular state and mobile devices -->

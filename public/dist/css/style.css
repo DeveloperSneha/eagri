@@ -148,23 +148,23 @@ legend{
 }
 .skin-green-light .main-header .navbar {
     border-bottom: 1px #fdfbb0 solid;
-    background: url(../img/TOP-Drop-Shadow.png) #333333c7;
+    background: url(../img/TOP-Drop-Shadow.png) #5f5f5f;
     background-position: bottom;
     background-repeat: repeat-x;
 }
 .skin-green-light .main-header .logo{
     border-bottom: 1px #fdfbb0 solid;
-    background: url(../img/TOP-Drop-Shadow.png) #333333c7;
+    background: url(../img/TOP-Drop-Shadow.png) #5f5f5f;
     background-position: bottom;
     background-repeat: repeat-x;
 }
 .skin-green-light .main-header .logo:hover {
-    background-color: #333333c7;
+    background-color: #5f5f5f;
 }
 .skin-green-light .main-sidebar{
     background:linear-gradient(0deg,rgba(51,51,51,0.78),rgba(51,51,51,0.78)),url(../img/pattern.jpg);
     background-size:cover;
-    /*    background: url(../img/pattern.png) #333333c7;*/
+    /*    background: url(../img/pattern.png) #5f5f5f;*/
 }
 .skin-green-light .sidebar a {
     color: #fff;
@@ -246,11 +246,11 @@ legend{
 }
 .bg-1 {
     background-color: rgba(252,139,28,0.9);
-    border-right: 1px solid #333333c7
+    border-right: 1px solid #5f5f5f
 }
 .bg-3{
     background-color: rgba(252,139,28,0.7);
-    border-right: 1px solid #333333c7
+    border-right: 1px solid #5f5f5f
 }
 .parallelogram span {
     font-size: 25px;
@@ -286,7 +286,7 @@ legend{
 }
 .dataTable th {
     border: 1px solid #c8c8c8;
-    background-color: #333333c7;
+    background-color: #5f5f5f;
     font-weight: normal;
     color: #FFF;
     text-align: center;
@@ -848,3 +848,6 @@ header.main-header.navbar.navbar-inverse.navbar-fixed-top.head-top {
     border: 1px solid #ddd;
 }
 .ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}
+.skin-green-light .main-header .navbar .sidebar-toggle:hover {
+    background-color: #EC8625;
+}
