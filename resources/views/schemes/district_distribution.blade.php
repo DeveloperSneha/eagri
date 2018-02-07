@@ -21,7 +21,7 @@
         <div class="form-group">
             {!! Form::label('Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                <select name="idScheme"  class="form-control select2" id="idScheme">--- Select Scheme ---</select>
+                <select name="idScheme"  class="form-control select2" id="idScheme" data-width="100%">--- Select Scheme ---</select>
                 <span class="help-block">
                     <strong>
                         @if($errors->has('idScheme'))

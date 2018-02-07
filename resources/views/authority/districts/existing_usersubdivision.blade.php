@@ -12,7 +12,7 @@
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser']) !!}
+                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idUser'))
@@ -32,7 +32,7 @@
                 <div class="form-group">
                     {!! Form::label('SubDivision', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idSubdivisions[]',$subdivisions,null, ['class' => 'form-control select2','multiple']) !!}
+                        {!! Form::select('idSubdivisions[]',$subdivisions,null, ['class' => 'form-control select2','multiple','data-width'='100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idSubdivision'))

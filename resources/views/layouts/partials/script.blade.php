@@ -20,6 +20,8 @@
 <!-- DataTables -->
 <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.2.3/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
 <!-- VUE JS -->
 <script src="{{ asset('plugins/vue/vue.js')}}"></script>
 <!--<script src="{{ asset('plugins/vue-resource/vue-resource.min.js')}}"></script>-->
@@ -84,12 +86,16 @@
     
    $(function () {
     $('#table1').DataTable({
+        rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
       'paging'      : true,
       'lengthChange': true,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : false,
+       'responsive': true
     });
   });
 </script>

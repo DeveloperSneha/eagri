@@ -35,7 +35,7 @@
         <div class="form-group">
             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-               <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" >
+               <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" data-width="100%">
                 </select>
             </div>
             <span class="help-block">

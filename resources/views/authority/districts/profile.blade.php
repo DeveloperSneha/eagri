@@ -1,7 +1,7 @@
 @extends('authority.districts.district_layout')
 @section('content')
 <div class="row">
-    <div class="col-sm-5">
+    <div class="col-sm-6">
         <div class="box box-success">
             <div class="box-body box-profile">
                 <img class="profile-user-img img-responsive img-circle" alt="User profile picture" src="{{ asset('dist/img/user.jpg')}}">
@@ -9,7 +9,7 @@
                 <h3 class="profile-username text-center">{{ $user->userName }}</h3>
 
                 <p class="text-muted text-center"><strong></strong></p>
-                    <table class="table table-bordered dataTable">
+                    <table class="table table-bordered dataTable" id="table1">
                         <thead>
                             <tr>
                                <th>District</th>
@@ -47,7 +47,7 @@
         </div>
     </div>
     @if($user->isComplete == 'N')
-    <div class="col-sm-7">
+    <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>Complete Your Profile</strong>
@@ -122,7 +122,7 @@
     </div>
     @endif
     @if($user->isComplete == 'Y')
-    <div class="col-sm-7">
+    <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">Other Details</div>
             <div class="panel-body">

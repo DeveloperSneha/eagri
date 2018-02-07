@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -33,16 +34,13 @@ class RoleController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-                      
         $request->validate([
-            'name' => 'required|unique:roles|regex:/^[\pL\s\-())]+$/u',
-            
+            'name' => 'required',
         ]);
-        //  dd($request->all());
         $role = new \App\Role();
         $role->fill($request->all());
         $role->save();
-        return redirect('roles');
+        return redirect('/roles');
     }
 
     /**
@@ -65,8 +63,7 @@ class RoleController extends Controller {
     public function edit($id) {
         //
         $roles = \App\Role::orderBy('name')->get();
-        $role = \App\Role::findOrfail($id);
-        //   dd($role);
+        $role = \App\Role::where('idRole', '=', $id)->first();
         return view('roles.index', compact('role', 'roles'));
     }
 
@@ -81,8 +78,7 @@ class RoleController extends Controller {
         //
         $role = \App\Role::findOrfail($id);
         $request->validate([
-            'name' => 'required|regex:/^[\pL\s\-)]+$/u',Rule::unique('roles')->ignore($role->id, 'id'),
-            
+            'name' => 'required|regex:/^[\pL\s\-)]+$/u', Rule::unique('roles')->ignore($role->id, 'id'),
         ]);
         $role->fill($request->all());
         $role->update();
@@ -97,9 +93,26 @@ class RoleController extends Controller {
      */
     public function destroy($id) {
         //
-     //   dd('here');
+        dd('here');
         $role = \App\Role::findOrfail($id);
         $role->delete();
+        return redirect('roles');
+    }
+
+    public function showPermissions($role_id) {
+        $role = \App\Role::where('idRole','=',$role_id)->first();
+        $permissions = \App\Permission::
+                //whereIn('idPermission', function($q) {
+                 //   $q->from('permission_role')->select('idPermission');
+              //  })
+                        orderBy('label')->get();
+        return view('roles.permissions_to_role', compact('role', 'permissions', 'group'));
+    }
+
+    public function savePermissions(Request $request, $role_id) {
+       // dd($request->all());
+        $role = \App\Role::where('idRole','=',$role_id)->first();
+        $role->permissions()->sync($request->input('permission_id', []));
         return redirect('roles');
     }
 

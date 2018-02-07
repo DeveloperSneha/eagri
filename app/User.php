@@ -33,9 +33,9 @@ class User extends Authenticatable {
         return $this->hasMany(UserDesignationDistrictMapping::class, 'idUser', 'idUser');
     }
 
-    public function designations() {
-        return $this->hasMany(PermissionDesig::class, 'idPermission', 'idPermission');
-    }
+//    public function designations() {
+//        return $this->hasMany(PermissionDesig::class, 'idPermission', 'idPermission');
+//    }
 
     public function setDobAttribute($date) {
         if (strlen($date) > 0)
@@ -51,18 +51,19 @@ class User extends Authenticatable {
         return '';
     }
 
-    public function hasDesignation($designation) {
-       // dd($designation->contains('idDesignation', 4));
-        foreach($designation as $desig){
-            return $this->userdesig->contains('idDesignation', $desig->idDesignation);
-          //  dd($designation->contains('idDesignation', 4));
-        }
-//        dd($designation->contains('idDesignation', 4));
-//        
-//        if (is_string($designation)) {
-//            return $this->userdesig->contains('idDesignation', $designation->idDesigantion);
-//        }
-//
-//        return !!$designation->intersect($this->userdesig)->count();
+public function roles() {
+    return $this->belongsToMany(Role::class,'role_user','idUser', 'idRole');
+  }
+
+  public function hasRole($role) {
+    if (is_string($role)) {
+      return $this->roles->contains('name', $role);
     }
+    return !!$role->intersect($this->roles)->count();
+  }
+
+  public function getRoleIdAttribute() {
+    $role = $this->roles->first();
+    return $role ? $role->id : 0;
+  }
 }

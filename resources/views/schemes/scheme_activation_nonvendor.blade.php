@@ -41,7 +41,7 @@
         <div class="form-group">
             {!! Form::label('Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                <select name="idScheme"  class="form-control select2" id="idScheme">--- Select Scheme ---</select>
+                <select name="idScheme"  class="form-control select2" id="idScheme" data-width="100%">--- Select Scheme ---</select>
                 <span id="id_scheme"></span>
             </div>
         </div>
@@ -263,7 +263,7 @@
         <div class="form-group">
             {!! Form::label('Certificates', null, ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-7">
-                {!! Form::select('schemecerts[]',$schemecert, isset($sch) ? $sch->documents->pluck('idCertificate')->toArray(): null ,  ['class' => 'form-control select2','multiple'=>'multiple']) !!}
+                {!! Form::select('schemecerts[]',$schemecert, isset($sch) ? $sch->documents->pluck('idCertificate')->toArray(): null ,  ['class' => 'form-control select2','multiple'=>'multiple','data-width'=>'100%']) !!}
             </div>
         </div>
     </div>

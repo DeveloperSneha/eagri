@@ -124,6 +124,13 @@
                     <span>HOME</span>
                 </a>
             </li>
+            @can('add-user')
+            <li class="{{ checkActive(['/useradm']) }}">
+                <a href="{{ url('/useradm')}}">
+                    <span>Add Admin level User</span>
+                </a>
+            </li>
+            @endcan
             <li class="treeview {{ checkActive(['userdistrict','uservillage/*/edituser','userdistrict/create','userdistrict/*/edituser','userdistrict/*/edit','usersubdivision','usersubdivision/create','usersubdivision/*/edit','usersubdivision/*/edituser','userblock','userblock/create','userblock/*/edit','userblock/*/edituser','uservillage','uservillage/create','uservillage/*/edit']) }}">
                 <a href="#">
                     <span>Add User</span>

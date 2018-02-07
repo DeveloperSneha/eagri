@@ -16,7 +16,7 @@
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                {!! Form::select('idDistrict',$districts, isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict','disabled']) !!}
+                {!! Form::select('idDistrict',$districts, isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict','disabled','data-width'=>'100%']) !!}
                 @else
                 {!! Form::select('idDistrict',$districts, isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
                 @endif
@@ -33,7 +33,7 @@
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                <select name = "idSubdivision"  id="idSubdivision" class="form-control select2" disabled="disabled">
+                <select name = "idSubdivision"  id="idSubdivision" class="form-control select2" disabled="disabled" data-width="100%">
                     @foreach($user_subdiv as $key=>$value)
                     <option value="{{ $value }}" selected="selected" >{{ $key }}</option>
                     @endforeach
@@ -62,7 +62,7 @@
                     @endforeach
                 </select>
                 @else
-                <select name = "idBlock"  id="idBlock" class="form-control select2">
+                <select name = "idBlock"  id="idBlock" class="form-control select2" data-width="100%">
                 </select>
                 @endif                
             </div>
@@ -78,13 +78,13 @@
             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
                 @if(isset($user))
-                <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple">
+                <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" data-width="100%">
                     @foreach($user_village as $val)
                     <option value="{{ $val->village->villageName }}" selected="selected" >{{ $val->village->villageName }}</option>
                     @endforeach
                 </select>
                 @else
-                <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" >
+                <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" data-width="100%">
                 </select>
                 @endif
             </div>

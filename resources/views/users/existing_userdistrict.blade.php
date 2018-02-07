@@ -12,7 +12,7 @@
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser']) !!}
+                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idUser'))
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     {!! Form::label('District', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idDistricts[]',$districts, isset($user) ? $user_district: null, ['class' => 'form-control select2','multiple'=>'multiple','id'=>'idDistrict']) !!}
+                        {!! Form::select('idDistricts[]',$districts, isset($user) ? $user_district: null, ['class' => 'form-control select2','multiple'=>'multiple','id'=>'idDistrict','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idDistrict'))

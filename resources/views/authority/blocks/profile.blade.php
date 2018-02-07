@@ -9,7 +9,7 @@
                 <h3 class="profile-username text-center">{{ $user->name }}</h3>
 
                 <p class="text-muted text-center"><strong></strong></p>
-                            <table class="table table-bordered dataTable">
+                            <table class="table table-bordered dataTable" id="table1">
                                 <thead>
                                     <tr>
                                         <th>Section</th>
@@ -110,7 +110,7 @@
     </div>
     @endif
     @if($user->isComplete == 'Y')
-    <div class="col-sm-7">
+    <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">Other Details</div>
             <div class="panel-body">

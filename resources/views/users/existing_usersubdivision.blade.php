@@ -12,7 +12,7 @@
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser']) !!}
+                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idUser'))
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     {!! Form::label('District', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
+                        {!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idDistrict'))
@@ -39,7 +39,7 @@
                 <div class="form-group">
                     {!! Form::label('SubDivision', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        <select name = "idSubdivisions[]"  class="form-control select2" multiple="multiple" id="idSubdivision">
+                        <select name = "idSubdivisions[]"  class="form-control select2" multiple="multiple" id="idSubdivision" data-width="100%">
                         </select>
                         <span class="help-block">
                             <strong>

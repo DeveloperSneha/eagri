@@ -56,7 +56,7 @@
         <div class="form-group">
             {!! Form::label('Scheme', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-               <select name="idScheme" id="idScheme" class="form-control select2" >
+               <select name="idScheme" id="idScheme" class="form-control select2" data-width="100%">
                    <!--<option value="">--- Select Scheme ---</option>-->
                </select>
             </div>

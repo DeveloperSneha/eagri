@@ -36,12 +36,13 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                     ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
                     ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
                     ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                    ->join('subdivision', 'farmers.idSubdivision', '=', 'subdivision.idSubdivision')
                     ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                     ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                     ->whereRaw('DATEDIFF(now(),farmerapplied_scheme.created_at) > 5')
                     ->whereRaw('DATEDIFF(now(),farmerapplied_scheme.created_at) <= 10')
                     ->where('farmers.idBlock', '=', Session::get('idBlock'))
-                    ->select('name', 'farmers.idFarmer', 'schemeName', 'programName', 'villageName', 'districtName', 'blockName', 'scheme.idScheme', 'idAppliedScheme')
+                    ->select('name', 'farmers.idFarmer', 'schemeName', 'programName', 'villageName', 'districtName','subDivisionName', 'blockName', 'scheme.idScheme', 'idAppliedScheme')
                     ->get();
             if ($sch_noresponse->count() > 0) {
                 $sch_with_noresponse = $sch_noresponse;
@@ -52,6 +53,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                     ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
                     ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
                     ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                    ->join('subdivision', 'farmers.idSubdivision', '=', 'subdivision.idSubdivision')
                     ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                     ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                     ->where('farmers.idBlock', '=', Session::get('idBlock'))
@@ -65,6 +67,7 @@ class SchemeApprRejectController extends \App\Http\Controllers\Authority\Authori
                     ->join('program', 'farmerapplied_scheme.idProgram', '=', 'program.idProgram')
                     ->join('farmers', 'farmerapplied_scheme.idFarmer', '=', 'farmers.idFarmer')
                     ->join('district', 'farmers.idDistrict', '=', 'district.idDistrict')
+                    ->join('subdivision', 'farmers.idSubdivision', '=', 'subdivision.idSubdivision')
                     ->join('block', 'farmers.idBlock', '=', 'block.idBlock')
                     ->join('village', 'farmers.idVillage', '=', 'village.idVillage')
                     ->where('farmers.idBlock', '=', Session::get('idBlock'))

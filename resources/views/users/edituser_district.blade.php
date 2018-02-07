@@ -7,7 +7,7 @@
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                 {!! Form::select('idDistrict',$districts, isset($userdesig) ? $userdesig->district->idDistrict:null, ['class' => 'form-control select2']) !!}
+                 {!! Form::select('idDistrict',$districts, isset($userdesig) ? $userdesig->district->idDistrict:null, ['class' => 'form-control select2','data-width'=>'100%']) !!}
             </div>
             <span class="help-block">
                 <strong>

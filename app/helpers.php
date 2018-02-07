@@ -5,6 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 function checkActive($path, $active = 'active') {
     if (is_string($path)) {
         return request()->is($path) ? $active : '';
@@ -59,11 +60,13 @@ function getSubScheme() {
 }
 
 function deny($redirect = '') {
-    if (strlen($redirect) > 0)
+    if (strlen($redirect) > 0) {
         return redirect($redirect);
+    } else {
 //  abort(403);
-    flash()->warning("You don't have access to this resource!!");
-    return redirect('/authority');
+        flash()->warning("You don't have access to this resource!!");
+    }
+    return redirect()->back();
 }
 
 function today_date() {

@@ -93,9 +93,11 @@ legend{
 {
     background-color: #00a65a;
     border: 1px solid #fff;
+    width: 100% !important; 
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     color: #fff;
+    width: 100% !important; 
 }
 /*.select2-container--default .select2-results__option[aria-disabled=true]
 {
@@ -850,4 +852,7 @@ header.main-header.navbar.navbar-inverse.navbar-fixed-top.head-top {
 .ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}
 .skin-green-light .main-header .navbar .sidebar-toggle:hover {
     background-color: #EC8625;
+}
+table.dataTable>tbody>tr.child:hover{
+    color:#000 !important; 
 }

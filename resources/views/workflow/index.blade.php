@@ -26,7 +26,7 @@
         <div class="form-group">
             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >
+                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" data-width="100%">
                     @foreach($step as $val)
                     <option value="{{ $val->designation->idDesignation }}" selected="selected">{{ $val->designation->designationName }}</option>
                     @endforeach 
@@ -37,7 +37,7 @@
         <div class="form-group">
             {!! Form::label('Designation', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-5">
-                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" >---Select Designation ---
+                <select name = "designations[]" id="idDesignation" class="form-control select2" multiple="multiple" data-width="100%">---Select Designation ---
                 </select>
             </div>
             <span class="help-block">

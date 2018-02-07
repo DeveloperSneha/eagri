@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('workflow/{id}/deleteworkflow', 'WorkflowController@deleteWorkflow');
     Route::get('workflow/{id}/editworkflow', 'WorkflowController@editWorkflow');
     Route::resource('workflow', 'WorkflowController');
-    Route::resource('roles', 'RoleController');
+    
     Route::get('units/{id}/deleteunit', 'UnitController@deleteUnit');
     Route::get('units/{id}/editunit', 'UnitController@editUnit');
     Route::resource('units', 'UnitController');
@@ -99,6 +99,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('schact/{id}/blocks', 'SchVillageDistributionController@getBlock');
     Route::resource('blockdistribution', 'SchBlockDistributionController');
     Route::resource('villagedistribution', 'SchVillageDistributionController');
+    // Admin level User ,Roles,Permissions
+    Route::resource('permissions', 'PermissionController');
+    Route::get('roles/{role_id}/permissions', 'RoleController@showPermissions');
+    Route::post('roles/{role_id}/permissions', 'RoleController@savePermissions');
+    Route::resource('roles', 'RoleController');
+    Route::resource('useradm', 'UserController');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 //Farmers Route

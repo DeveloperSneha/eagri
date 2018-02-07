@@ -26,6 +26,8 @@
                         {{ session()->get('message') }}
                     </div>
                     @endif
+                    @include('flash::message')
+                    
                     {{--     @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>

@@ -16,7 +16,7 @@
         <div class="form-group">
             {!! Form::label('SubDivision', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idSubdivisions[]',$subdivisions,null, ['class' => 'form-control select2','multiple']) !!}
+                {!! Form::select('idSubdivisions[]',$subdivisions,null, ['class' => 'form-control select2','multiple','data-width'=>'100%']) !!}
             </div>
             <span class="help-block">
                 <strong>

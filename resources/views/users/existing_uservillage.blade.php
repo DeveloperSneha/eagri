@@ -12,7 +12,7 @@
                 <div class="form-group">
                     {!! Form::label('User', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser']) !!}
+                        {!! Form::select('idUser',$users,null, ['class' => 'form-control select2','id'=>'idUser','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idUser'))
@@ -25,7 +25,7 @@
                 <div class="form-group">
                     {!! Form::label('District', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        {!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict']) !!}
+                        {!! Form::select('idDistrict',$districts,isset($user) ? $user->userdesig->pluck('idDistrict')->toArray(): null, ['class' => 'form-control select2','id'=>'idDistrict','data-width'=>'100%']) !!}
                         <span class="help-block">
                             <strong>
                                 @if($errors->has('idDistrict'))
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     {!! Form::label('Block', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        <select name = "idBlock"  id="idBlock" class="form-control select2">
+                        <select name = "idBlock"  id="idBlock" class="form-control select2" data-width="100%">
                         </select>
                         <span class="help-block">
                             <strong>
@@ -66,7 +66,7 @@
                 <div class="form-group">
                     {!! Form::label('Village', null, ['class' => 'col-sm-4 control-label required']) !!}
                     <div class="col-sm-8">
-                        <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" >
+                        <select name = "idVillages[]"  id="idVillage" class="form-control select2" multiple="multiple" data-width="100%">
                         </select>
                         <span class="help-block">
                             <strong>

@@ -16,7 +16,7 @@
                         <label> Password : </label> <span>{{ substr($farmer->name,0,4) }}{{ substr($farmer->aadhaar,-4) }}{{ substr($farmer->rcno,-4) }}</span><br><br>
                     </div>
                     <center> 
-                        <a href="{{ action('Auth\FarmerRegisterController@printFarmerDetails', $farmer->idFarmer)}}" class="btn btn btn-success">Print</a>
+                        <a href="{{ action('Auth\FarmerRegisterController@printFarmerDetails', $farmer->idFarmer)}}" class="btn btn btn-success" target="_blank">Print</a>
                         <a style="color:#fff" href="{{url('farmer/login')}}" class="btn  btn-success">Login</a>
                     </center>
                 </div>

@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ asset('bower_components/Ionicons/css/ionicons.min.css')}} ">
       <!-- DataTables -->
    <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
+   <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.3/css/rowReorder.dataTables.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css')}}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0-rc.2/themes/smoothness/jquery-ui.css">

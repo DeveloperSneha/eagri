@@ -8,7 +8,7 @@
         <div class="form-group">
             {!! Form::label('District', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                {!! Form::select('idDistrict',$districts,isset($userdesig) ? $userdesig->idDistrict : null, ['class' => 'form-control select2','id'=>'idDistrict','disabled', 'selected']) !!}
+                {!! Form::select('idDistrict',$districts,isset($userdesig) ? $userdesig->idDistrict : null, ['class' => 'form-control select2','id'=>'idDistrict','disabled', 'selected','data-width'=>'100%']) !!}
             </div>
             <span class="help-block">
                 <strong>
@@ -36,7 +36,7 @@
         <div class="form-group">
             {!! Form::label('Block', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                <select name = "idBlock"  id="idBlock" class="form-control select2" disabled="disabled">
+                <select name = "idBlock"  id="idBlock" class="form-control select2" disabled="disabled" data-width="100%">
                     <option value="{{ $userdesig->idBlock }}" selected="selected" ></option>
                 </select>
                
@@ -52,7 +52,7 @@
         <div class="form-group">
             {!! Form::label('Village', null, ['class' => 'col-sm-2 control-label required']) !!}
             <div class="col-sm-4">
-                <select name = "idVillage"  id="idVillage" class="form-control select2">
+                <select name = "idVillage"  id="idVillage" class="form-control select2" data-width="100%">
                     <option value="{{ $userdesig->idVillage }}" selected="selected" >{{ $userdesig->village->villageName}}</option>
                  </select>
             </div>
