@@ -13,6 +13,8 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        if (Gate::denies('add-permission'))
+            return deny();
         $permissions = \App\Permission::orderBy('label')->get();
         return view('permissions.index', compact('permissions'));
     }
@@ -33,8 +35,8 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-//    if (Gate::denies('PERMISSIONS'))
-//      return deny();
+        if (Gate::denies('add-permission'))
+            return deny();
         $this->validate($request, [
             'name' => 'required|unique:permissions,name',
             'label' => 'required|unique:permissions,label'
@@ -62,9 +64,9 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-//    if (Gate::denies('PERMISSIONS'))
-//      return deny();
-        $permission = \App\Permission::where('idPermission','=',$id)->first();
+        if (Gate::denies('add-permission'))
+            return deny();
+        $permission = \App\Permission::where('idPermission', '=', $id)->first();
         $permissions = \App\Permission::orderBy('label')->get();
         return view('permissions.index', compact('permissions', 'permission'));
     }
@@ -77,11 +79,10 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-     
-//    if (Gate::denies('PERMISSIONS'))
-//      return deny();
-        
-        $permission = \App\Permission::where('idPermission','=',$id)->first();
+
+        if (Gate::denies('add-permission'))
+            return deny();
+        $permission = \App\Permission::where('idPermission', '=', $id)->first();
         $permission->fill($request->all());
         $permission->save();
         return redirect('permissions');

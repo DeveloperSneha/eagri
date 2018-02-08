@@ -20,25 +20,25 @@
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
                         <span id="Master_lbl_first" class="digital" style="font-size:Small;">Reg. Farmers</span><br>
-						<!--added count of regFarmers-->
+                        <!--added count of regFarmers-->
                         <span id="spnpermits" class="digital f-b">{{$users = DB::table('farmers')->distinct('idFarmer')->get()->count()}}</span>
                         <!--end count of regFarmers-->
-				   </div>
+                    </div>
 
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-3 txt-cnt fl">
 
                         <span id="Master_lbl_second" class="digital" style="font-size:Small;">Total Schemes</span><br>
-						<!--added count of scheme-->
+                        <!--added count of scheme-->
                         <span id="spntransitforms" class="digital f-b">{{$users = DB::table('scheme')->distinct('idScheme')->get()->count()}}</span>
-						<!--end count of scheme-->
+                        <!--end count of scheme-->
                     </div>
                 </li>
                 <li class="dropdown notifications-menu">
                     <div class="parallelogram bg-1 txt-cnt fl">
                         <span id="Master_lbl_third" class="digital" style="font-size:Small;">Total Program's</span><br>
-						<!--added count of Program-->
+                        <!--added count of Program-->
                         <span id="spnstationery" class="digital f-b">{{$users = DB::table('program')->distinct('idProgram')->get()->count()}}</span>
                         <!--end count of Program-->
                     </div>
@@ -125,10 +125,18 @@
                 </a>
             </li>
             @can('add-user')
-            <li class="{{ checkActive(['/useradm']) }}">
-                <a href="{{ url('/useradm')}}">
-                    <span>Add Admin level User</span>
+            <li class="treeview {{ checkActive(['useradm','roles','roles/*/permissions','roles/*/edit','permissions','permissions/*/edit']) }}">
+                <a href="#">
+                    <span>Admin Users, Roles & Permissions</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
+                <ul class="treeview-menu">
+                    <li class="{{ checkActive(['useradm','useradm/*/edit'])}}"><a href="{{ url('/useradm')}}">Add User-Admin </a></li>
+                    <li class="{{ checkActive(['roles','roles/*/edit','roles/*/permissions'])}}"><a href="{{ url('/roles')}}">Roles</a></li>
+                    <li class="{{ checkActive(['permissions','permissions/*/edit'])}}"><a href="{{ url('/permissions')}}">Permissions</a></li>
+                </ul>
             </li>
             @endcan
             <li class="treeview {{ checkActive(['userdistrict','uservillage/*/edituser','userdistrict/create','userdistrict/*/edituser','userdistrict/*/edit','usersubdivision','usersubdivision/create','usersubdivision/*/edit','usersubdivision/*/edituser','userblock','userblock/create','userblock/*/edit','userblock/*/edituser','uservillage','uservillage/create','uservillage/*/edit']) }}">
@@ -193,7 +201,7 @@
                     <li class="{{ checkActive(['units','units/*/editunit','units/*/deleteunit']) }}"><a href="{{ url('/units') }}">Units</a></li>
                     <li class="{{ checkActive(['fys','fys/*/editfys','fys/*/deletefys',]) }}"><a href="{{ url('/fys') }}">Financial Year</a></li>
                     <li class="{{ checkActive(['certificates','certificates/*/editcertificate','certificates/*/deletecertificate',]) }}"><a href="{{ url('/certificates') }}">Certificates</a></li>
-                    
+
                 </ul>
             </li>
 
@@ -210,30 +218,30 @@
 
                 </ul>
             </li>
-<!--            <li class="treeview {{ checkActive(['components','categories','compcerts','compsizes','comprates','schemeactivations','blockdistribution','villagedistribution']) }}">
-                <a href="#">
-                    <span>Vendor</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="{{ checkActive(['categories']) }}"><a href="{{ url('/categories') }}">Item</a></li>
-                    <li class="{{ checkActive(['components']) }}"><a href="{{ url('/components') }}">Component</a></li>
-                    <li class="{{ checkActive(['compcerts']) }}"><a href="{{ url('/compcerts') }}">Component Certificates</a></li>
-                    <li class="{{ checkActive(['compsizes']) }}"><a href="{{ url('/compsizes') }}">Component Size</a></li>
-                    <li class="{{ checkActive(['comprates']) }}"><a href="{{ url('/comprates') }}">Component Rates</a></li>
-                    <li class="{{ checkActive(['schemeactivations']) }}"><a href="{{ url('/schemeactivations') }}">Scheme Activation</a></li>
-                    <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>
-                    <li class="{{ checkActive(['blockdistribution']) }}"><a href="{{ url('/blockdistribution') }}">Scheme Distribution Block</a></li>
-                    <li class="{{ checkActive(['villagedistribution']) }}"><a href="{{ url('/villagedistribution') }}">Scheme Distribution Village</a></li>
-
-                </ul>
-            </li>-->
+            <!--            <li class="treeview {{ checkActive(['components','categories','compcerts','compsizes','comprates','schemeactivations','blockdistribution','villagedistribution']) }}">
+                            <a href="#">
+                                <span>Vendor</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="{{ checkActive(['categories']) }}"><a href="{{ url('/categories') }}">Item</a></li>
+                                <li class="{{ checkActive(['components']) }}"><a href="{{ url('/components') }}">Component</a></li>
+                                <li class="{{ checkActive(['compcerts']) }}"><a href="{{ url('/compcerts') }}">Component Certificates</a></li>
+                                <li class="{{ checkActive(['compsizes']) }}"><a href="{{ url('/compsizes') }}">Component Size</a></li>
+                                <li class="{{ checkActive(['comprates']) }}"><a href="{{ url('/comprates') }}">Component Rates</a></li>
+                                <li class="{{ checkActive(['schemeactivations']) }}"><a href="{{ url('/schemeactivations') }}">Scheme Activation</a></li>
+                                <li class="{{ checkActive(['districtdistribution']) }}"><a href="{{ url('/districtdistribution') }}"><i class="fa fa-circle-o"></i>Scheme Distribution District</a></li>
+                                <li class="{{ checkActive(['blockdistribution']) }}"><a href="{{ url('/blockdistribution') }}">Scheme Distribution Block</a></li>
+                                <li class="{{ checkActive(['villagedistribution']) }}"><a href="{{ url('/villagedistribution') }}">Scheme Distribution Village</a></li>
+            
+                            </ul>
+                        </li>-->
         </ul>
     </section>
 <!--     <center  style="color:#fff;">
          <strong>Version - 1.0</strong>
     </center>-->
-     <!-- /.sidebar -->
+    <!-- /.sidebar -->
 </aside>

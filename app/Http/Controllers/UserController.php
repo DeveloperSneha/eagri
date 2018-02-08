@@ -37,6 +37,8 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        if (Gate::denies('add-user'))
+            return deny();
         $rules = [
             'name' => 'required',
             'mobile' => 'required',

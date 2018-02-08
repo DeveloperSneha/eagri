@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Gate;
 
 class RoleController extends Controller {
 
@@ -14,6 +15,8 @@ class RoleController extends Controller {
      */
     public function index() {
         //
+        if (Gate::denies('add-role'))
+            return deny();
         $roles = \App\Role::orderBy('name')->get();
         return view('roles.index', compact('roles'));
     }
@@ -34,6 +37,8 @@ class RoleController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        if (Gate::denies('add-role'))
+            return deny();
         $request->validate([
             'name' => 'required',
         ]);
@@ -62,6 +67,8 @@ class RoleController extends Controller {
      */
     public function edit($id) {
         //
+        if (Gate::denies('add-role'))
+            return deny();
         $roles = \App\Role::orderBy('name')->get();
         $role = \App\Role::where('idRole', '=', $id)->first();
         return view('roles.index', compact('role', 'roles'));
@@ -76,6 +83,8 @@ class RoleController extends Controller {
      */
     public function update(Request $request, $id) {
         //
+        if (Gate::denies('add-role'))
+            return deny();
         $role = \App\Role::findOrfail($id);
         $request->validate([
             'name' => 'required|regex:/^[\pL\s\-)]+$/u', Rule::unique('roles')->ignore($role->id, 'id'),
@@ -93,13 +102,16 @@ class RoleController extends Controller {
      */
     public function destroy($id) {
         //
-        dd('here');
+        if (Gate::denies('add-role'))
+            return deny();
         $role = \App\Role::findOrfail($id);
         $role->delete();
         return redirect('roles');
     }
 
     public function showPermissions($role_id) {
+        if (Gate::denies('assign-permission'))
+            return deny();
         $role = \App\Role::where('idRole','=',$role_id)->first();
         $permissions = \App\Permission::
                 //whereIn('idPermission', function($q) {
@@ -111,6 +123,8 @@ class RoleController extends Controller {
 
     public function savePermissions(Request $request, $role_id) {
        // dd($request->all());
+        if (Gate::denies('assign-permission'))
+            return deny();
         $role = \App\Role::where('idRole','=',$role_id)->first();
         $role->permissions()->sync($request->input('permission_id', []));
         return redirect('roles');

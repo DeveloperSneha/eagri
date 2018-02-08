@@ -23,7 +23,10 @@
         <tr>
           <td>{{ $role->idRole }}</td>
           <td>{{ $role->name }}</td>
-          <td><a href="{{ url('roles/' . $role->idRole . '/permissions') }}" class="btn btn-xs btn-danger">Permissions</a></td>
+          <td>
+              <a href="{{ url('roles/' . $role->idRole . '/edit') }}" class="btn btn-xs btn-warning">Edit role</a>
+              <a href="{{ url('roles/' . $role->idRole . '/permissions') }}" class="btn btn-xs btn-danger">Assign Permissions</a>
+          </td>
         </tr>
         @endforeach
       </tbody>
